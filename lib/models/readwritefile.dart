@@ -1,3 +1,6 @@
+Class PlanningFormModel{
+}
+
 class ReadFIle{
 
 }
