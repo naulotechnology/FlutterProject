@@ -1,0 +1,6 @@
+class ReadFIle{
+
+}
+class WriteFile{
+  
+}
