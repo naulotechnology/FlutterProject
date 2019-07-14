@@ -18,3 +18,5 @@ class WriteFile {}
 class WriteFile1 {}
 
 class WriteFile2 {}
+
+class WorkSpace3{}
