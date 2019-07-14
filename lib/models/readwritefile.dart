@@ -14,3 +14,7 @@ class PlanningFormModel {
 class ReadFIle {}
 
 class WriteFile {}
+
+class WriteFile1 {}
+
+class WriteFile2 {}
