@@ -14,7 +14,7 @@ class AdminForm extends State {
     super.initState();
   }
 
-  var displayResult;
+  var displayResult="";
   TextEditingController companyController = TextEditingController();
   TextEditingController departmentController = TextEditingController();
 
@@ -109,7 +109,7 @@ class AdminForm extends State {
               ),
             ),
             Container(
-              child: Text(this.displayResult, style: textStyle),
+              child: Text("${this.displayResult}", style: textStyle),
             )
           ]),
         ),
@@ -120,7 +120,7 @@ class AdminForm extends State {
   String names() {
     String company = (companyController.text).toString();
     String department = (departmentController.text).toString();
-    String result = "${company + department}";
+    String result = "Company and DepartMent name is $company $department";
     return result;
   }
 }
