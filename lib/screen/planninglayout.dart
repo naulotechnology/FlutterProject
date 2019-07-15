@@ -19,10 +19,10 @@ class MyGoodForm extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Flutter Form"),
-        backgroundColor: Colors.blueGrey[900],
-      ),
+      // appBar: AppBar(
+      //   title: Text("Flutter Form"),
+      //   backgroundColor: Colors.blueGrey[900],
+      // ),
       backgroundColor: Colors.blueGrey,
       body: SafeArea(
         child: ListView(
