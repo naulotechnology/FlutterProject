@@ -6,6 +6,14 @@
     List<String> costElements;
     Map<String, MonthlyPlan> monthLevelPlan;
 
+
+    //String get Company / Aa
+    //String get Department /Aa
+    //List<String> get CostElement/ Aa
+    //Map  monthlyLevelPlan / Aa
+    //implements to toString()
+    //implement to Json
+
     
     PlanningFormModel(){
       this.Company = "N Tech";

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterproject/models/readwritefile.dart';
 
 class MyForm extends StatefulWidget {
   @override
@@ -9,10 +10,12 @@ class MyForm extends StatefulWidget {
 
 class MyGoodForm extends State {
   List<Attribute> attributes;
+  PlanningFormModel pmf;
 
   @override
   void initState() {
     attributes = Attribute.getAttributes();
+    pmf = new PlanningFormModel();
     super.initState();
   }
 
@@ -56,7 +59,7 @@ class MyGoodForm extends State {
       rows: attributes
           .map((attr) => DataRow(cells: [
                 DataCell(
-                  Text(attr.rowName),
+                  Text(pmf.costElements.first),
                   onTap: () {
                     print('Selected ${attr.rowName}');
                   },
