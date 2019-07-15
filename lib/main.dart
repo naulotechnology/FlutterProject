@@ -72,7 +72,7 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
       ),
       drawer: new Drawer(
-        child: new Column(
+        child: Column(
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text('PrakashBidari'),
@@ -84,7 +84,7 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            new Column(children: drawerOptions)
+            Column(children: drawerOptions)
           ],
         ),
       ),
