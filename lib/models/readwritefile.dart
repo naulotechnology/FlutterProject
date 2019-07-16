@@ -1,6 +1,9 @@
 
 
-  class PlanningFormModel{
+  import 'dart:io';
+  import 'package:path_provider/path_provider.dart';
+
+class PlanningFormModel{
     String Company;
     String Department;
     List<String> costElements;
@@ -69,10 +72,30 @@
     List<int> amountInMonth;
     List<int> hourInMonth;
   }
-
-  class ReadFIle{
-
+  class Storage {
+  Future<String> get localPath async {
+    final dir = await getApplicationDocumentsDirectory();
+    return dir.path;
   }
-  class WriteFile{
-    
+
+  Future<File> get localFile async {
+    final path = await localPath;
+    return File('$path/db.txt');
   }
+
+  Future<String> readData() async {
+    try {
+      final file = await localFile;
+      String body = await file.readAsString();
+
+      return body;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<File> writeData(String data) async {
+    final file = await localFile;
+    return file.writeAsString("$data");
+  }
+}

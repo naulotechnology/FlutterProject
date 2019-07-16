@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterproject/models/readwritefile.dart';
 
 class MyAdminForm extends StatefulWidget {
   @override
@@ -9,8 +10,10 @@ class MyAdminForm extends StatefulWidget {
 }
 
 class AdminForm extends State {
+  Storage st;
   @override
   void initState() {
+    st = new Storage();
     super.initState();
   }
 
@@ -86,6 +89,8 @@ class AdminForm extends State {
                       setState(() {
                         print("Hellow Prakash");
                         this.displayResult = names();
+                       st.writeData(displayResult);
+                        child: Text('Write to File');
                       });
                     },
                     textColor: Colors.white,
@@ -102,7 +107,43 @@ class AdminForm extends State {
                       ),
                       padding: const EdgeInsets.all(10.0),
                       child:
-                          const Text('Submit', style: TextStyle(fontSize: 20)),
+                          const Text('Write', style: TextStyle(fontSize: 20)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+             SizedBox(
+              height: 40,
+            ),
+            Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        print("Hellow Prakash");
+                        this.displayResult = (st.readData()).toString();
+                       
+                        child: Text('Write to File');
+                      });
+                    },
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Color(0xFF0D47A1),
+                            Color(0xFF1976D2),
+                            Color(0xFF42A5F5),
+                          ],
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(10.0),
+                      child:
+                          const Text('Read', style: TextStyle(fontSize: 20)),
                     ),
                   ),
                 ],
