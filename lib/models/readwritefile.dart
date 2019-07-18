@@ -50,17 +50,21 @@ class PlanningFormModel{
       //instatiate the map to store monthly plan for each costEleemnts
       Map mp = new Map<String,MonthlyPlan>();
 
+
+       //mp = mp.getbykey(legal)
+     //  mp=mp.amountInMonth
+
       for(String ce in this.costElements){
         //creaete monthly plan for each cost element 
         MonthlyPlan mPlan = new MonthlyPlan();
         mPlan.category = ce;
-        List amt = new List<int>();
+        List amtList = new List<int>();
       
         for (int i = 1; i < 13; i++) {
           //assign some amount to each of the 12 months
-          amt.add(i*125);
+          amtList.add(i*125);
         }
-        mPlan.amountInMonth = amt;
+        mPlan.amountInMonth = amtList;
       
         List hr = new List<int>();
       

@@ -9,13 +9,15 @@ class MyForm extends StatefulWidget {
 }
 
 class MyGoodForm extends State {
-  List<Attribute> attributes;
-  PlanningFormModel pmf;
+  //List<Attribute> attributes;
+ PlanningFormModel pmf;
+MonthlyPlan mp;
 
   @override
   void initState() {
     //attributes = Attribute.getAttributes();
     pmf = new PlanningFormModel();    
+    mp = new MonthlyPlan();
     super.initState();
   }
 
@@ -42,9 +44,8 @@ class MyGoodForm extends State {
   dataBody() {
     return DataTable(
       columns: [
-        DataColumn(
+        DataColumn( 
           label: Text("Jan"),
-          
         ),
         DataColumn(
           label: Text("feb"),
@@ -53,20 +54,20 @@ class MyGoodForm extends State {
           label: Text("mar"),
         ),
         DataColumn(
-          label: Text("apr"),
+            label: Text("mar"),
         ),
       ],
-      rows: pmf.
+      rows: pmf.costElements
           .map((attr) => DataRow(cells: [
                 DataCell(
-                  Text(),
+                  Text(attr),
                   onTap: () {
-                    print('Selected ${attr.rowName}');
+                    print('Selected ${attr}');
                   },
                 ),
                 DataCell(
-                  Text(""),
-                  onTap: () {
+                  Text(pmf.amtList.toString()),
+                 onTap: () {
                     print('');
                   },
                 ),
@@ -88,18 +89,19 @@ class MyGoodForm extends State {
   }
 }
 
-class Attribute {
-  String rowName;
-  String columnName;
+// class Attribute {
+//   String rowName;
+//   String columnName;
 
-        Attribute({this.rowName});
+//         Attribute({this.rowName});
 
-  static List<Attribute> getAttributes() {
-    return <Attribute>[
-      Attribute(rowName: "Employee"),
-      Attribute(rowName: "Transport"),
-      Attribute(rowName: "ItCost"),
-      Attribute(rowName: "Deep"),
-    ];
-  }
-}
+
+//   static List<Attribute> getAttributes() {
+//     return <Attribute>[
+//       Attribute(rowName: "Employee"),
+//       Attribute(rowName: "Transport"),
+//       Attribute(rowName: "ItCost"),
+//       Attribute(rowName: "Deep"),
+//     ];
+//   }
+// }

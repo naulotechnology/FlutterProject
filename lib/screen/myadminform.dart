@@ -6,7 +6,6 @@ import 'package:flutterproject/models/readwritefile.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 
-
 class MyAdminForm extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -22,7 +21,7 @@ class AdminForm extends State {
   //   super.initState();
   // }
 
-  var displayResult="";
+  var displayResult = "";
   TextEditingController companyController = TextEditingController();
   TextEditingController departmentController = TextEditingController();
 
@@ -32,7 +31,7 @@ class AdminForm extends State {
   bool fileExists = false;
   Map<String, String> fileContent;
 
- @override
+  @override
   void initState() {
     st = new Storage();
     super.initState();
@@ -40,41 +39,37 @@ class AdminForm extends State {
       dir = directory;
       jsonFile = new File(dir.path + "/" + fileName);
       fileExists = jsonFile.existsSync();
-      if (fileExists) this.setState(() => fileContent = json.decode(jsonFile.readAsStringSync()));           //
+      if (fileExists)
+        this.setState(
+            () => fileContent = json.decode(jsonFile.readAsStringSync())); //
     });
   }
-
-
-
 
   void createFile(Map<String, String> content, Directory dir, String fileName) {
     print("Creating file!");
     File file = new File(dir.path + "/" + fileName);
     file.createSync();
     fileExists = true;
-    file.writeAsStringSync(json.encode(content));                                                     //
+    file.writeAsStringSync(json.encode(content)); //
   }
-
-
 
   void writeToFile(String key, String value) {
     print("Writing to file!");
     Map<String, String> content = {key: value};
     if (fileExists) {
       print("File exists");
-      Map<String, String> jsonFileContent = json.decode(jsonFile.readAsStringSync());
+      Map<String, String> jsonFileContent =
+          json.decode(jsonFile.readAsStringSync());
       jsonFileContent.addAll(content);
-      jsonFile.writeAsStringSync(json.encode(jsonFileContent));                                                  //
+      jsonFile.writeAsStringSync(json.encode(jsonFileContent)); //
     } else {
       print("File does not exist!");
       createFile(content, dir, fileName);
     }
-    this.setState(() => fileContent = json.decode(jsonFile.readAsStringSync()));                              //
+    this.setState(
+        () => fileContent = json.decode(jsonFile.readAsStringSync())); //
     print(fileContent);
   }
-
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -84,21 +79,12 @@ class AdminForm extends State {
       body: SafeArea(
         child: Form(
           child: ListView(children: <Widget>[
-
             new Text(fileContent.toString()),
-
             Padding(
               padding: EdgeInsets.only(bottom: 30),
             ),
-
-             
-
             Container(child: Text("Company: ", style: textStyle)),
             Container(
-
-               
-              
-
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 style: textStyle,
@@ -150,16 +136,13 @@ class AdminForm extends State {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   RaisedButton(
-                    
                     onPressed: () {
-                      writeToFile(companyController.text, departmentController.text);
+                      writeToFile(
+                          companyController.text, departmentController.text);
                       // setState(() {
                       //   print("Hellow Prakash");
                       // //   this.displayResult = names();
                       // //  st.writeData(displayResult);
-                        
-                      
-
 
                       //   child: Text('Write to File');
                       // });
@@ -176,7 +159,7 @@ class AdminForm extends State {
                           ],
                         ),
                       ),
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
                       child:
                           const Text('Write', style: TextStyle(fontSize: 20)),
                     ),
@@ -184,7 +167,7 @@ class AdminForm extends State {
                 ],
               ),
             ),
-             SizedBox(
+            SizedBox(
               height: 40,
             ),
             Container(
@@ -196,8 +179,9 @@ class AdminForm extends State {
                       setState(() {
                         print("Hellow Prakash");
                         this.displayResult = (st.readData()).toString();
-                       
-                        child: Text('Write to File');
+
+                        child:
+                        Text('Write to File');
                       });
                     },
                     textColor: Colors.white,
@@ -212,9 +196,8 @@ class AdminForm extends State {
                           ],
                         ),
                       ),
-                      padding: const EdgeInsets.all(10.0),
-                      child:
-                          const Text('Read', style: TextStyle(fontSize: 20)),
+                      padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
+                      child: const Text('Read', style: TextStyle(fontSize: 20)),
                     ),
                   ),
                 ],
