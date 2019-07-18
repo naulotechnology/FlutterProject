@@ -40,7 +40,7 @@ class PlanningFormModel{
       
         for (int i = 1; i < 13; i++) {
           //assign some amount to each of the 12 months
-          amt.add(i*125+.25);
+          amt.add(i*125);
         }
         mPlan.amountInMonth = amt;
       
