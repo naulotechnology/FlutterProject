@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterproject/models/readwritefile.dart';
 
@@ -17,7 +18,7 @@ MonthlyPlan mp;
   void initState() {
     //attributes = Attribute.getAttributes();
     pmf = new PlanningFormModel();    
-    mp = new MonthlyPlan();
+//    mp = new MonthlyPlan();
     super.initState();
   }
 
@@ -43,48 +44,27 @@ MonthlyPlan mp;
 
   dataBody() {
     return DataTable(
-      columns: [
-        DataColumn( 
-          label: Text("Jan"),
-        ),
-        DataColumn(
-          label: Text("feb"),
-        ),
-        DataColumn(
-          label: Text("mar"),
-        ),
-        DataColumn(
-            label: Text("mar"),
-        ),
-      ],
-      rows: pmf.costElements
-          .map((attr) => DataRow(cells: [
-                DataCell(
-                  Text(attr),
-                  onTap: () {
-                    print('Selected ${attr}');
-                  },
-                ),
-                DataCell(
-                  Text(pmf.amtList.toString()),
-                 onTap: () {
-                    print('');
-                  },
-                ),
-                DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-                DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-              ]))
+      
+      columns: pmf.monthLevelPlan[attr].periods
+          .map((period)=>
+            DataColumn( 
+              label: Text(period),
+            ))
           .toList(),
+        
+        rows: pmf.costElements
+          .map((attr) => DataRow(
+            //cells: 
+            //[
+              //DataCell(Text(attr),onTap:(){print('Selected ${attr}');},),
+              cells:pmf.monthLevelPlan[attr].amountInPeriod
+              .map((cellVal) =>
+                DataCell(Text(cellVal.toString()),onTap:(){print('Selected $cellVal');},),
+              ).toList(), 
+              //]
+              ))
+          .toList(),
+      }
     );
   }
 }
