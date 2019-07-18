@@ -9,10 +9,12 @@ class MyForm extends StatefulWidget {
 
 class MyGoodForm extends State {
   List<Attribute> attributes;
+  PlanningFormModel pmf;
 
   @override
   void initState() {
-    attributes = Attribute.getAttributes();
+    //attributes = Attribute.getAttributes();
+    pmf = new PlanningFormModel();    
     super.initState();
   }
 
@@ -53,10 +55,10 @@ class MyGoodForm extends State {
           label: Text("apr"),
         ),
       ],
-      rows: attributes
+      rows: pmf.
           .map((attr) => DataRow(cells: [
                 DataCell(
-                  Text(attr.rowName),
+                  Text(),
                   onTap: () {
                     print('Selected ${attr.rowName}');
                   },
