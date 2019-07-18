@@ -2,6 +2,7 @@
 
   import 'dart:io';
   import 'package:path_provider/path_provider.dart';
+  import 'dart:convert';
 
 class PlanningFormModel{
     String Company;
@@ -29,6 +30,23 @@ class PlanningFormModel{
       this.costElements.add("Information Technology");
       this.costElements.add("Legal");
     
+  //   String result = utf8.decode(costElements);
+
+       List<String> file() {
+        List<String> clist;
+           for (int i = 0; i < 5; i++) {
+               clist = costElements;
+                
+               }
+
+        return clist;
+      }
+
+
+
+
+
+
       //instatiate the map to store monthly plan for each costEleemnts
       Map mp = new Map<String,MonthlyPlan>();
 
