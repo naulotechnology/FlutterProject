@@ -45,7 +45,7 @@ MonthlyPlan mp;
   dataBody() {
     return DataTable(
       
-      columns: pmf.monthLevelPlan[attr].periods
+      columns: pmf.periods
           .map((period)=>
             DataColumn( 
               label: Text(period),
@@ -54,6 +54,7 @@ MonthlyPlan mp;
         
         rows: pmf.costElements
           .map((attr) => DataRow(
+           // label:Text(attr),
             //cells: 
             //[
               //DataCell(Text(attr),onTap:(){print('Selected ${attr}');},),
@@ -64,7 +65,6 @@ MonthlyPlan mp;
               //]
               ))
           .toList(),
-      }
     );
   }
 }

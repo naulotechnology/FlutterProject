@@ -2,12 +2,12 @@
 
   import 'dart:io';
   import 'package:path_provider/path_provider.dart';
-  import 'dart:convert';
 
 class PlanningFormModel{
     String Company;
     String Department;
     List<String> costElements;
+    List<String> periods;
     Map<String, MonthlyPlan> monthLevelPlan;
 
 
@@ -23,48 +23,33 @@ class PlanningFormModel{
       this.Company = "N Tech";
       this.Department = "Marketing";
       this.costElements = new List<String>();
+      this.periods = new List<String>();
     
       this.costElements.add("Transportation");
       this.costElements.add("Marketing");
       this.costElements.add("Human Resources");
       this.costElements.add("Information Technology");
       this.costElements.add("Legal");
-    
-  //   String result = utf8.decode(costElements);
 
-       List<String> file() {
-        List<String> clist;
-           for (int i = 0; i < 5; i++) {
-               clist = costElements;
-                
-               }
-
-        return clist;
+      for (int i = 1; i<13; i++) {
+        DateTime aDate = new DateTime(2019,i,1);
+        this.periods.add(aDate.month.toString());
       }
-
-
-
-
-
-
+    
       //instatiate the map to store monthly plan for each costEleemnts
       Map mp = new Map<String,MonthlyPlan>();
-
-
-       //mp = mp.getbykey(legal)
-     //  mp=mp.amountInMonth
 
       for(String ce in this.costElements){
         //creaete monthly plan for each cost element 
         MonthlyPlan mPlan = new MonthlyPlan();
         mPlan.category = ce;
-        List amtList = new List<int>();
+        List amt = new List<int>();
       
         for (int i = 1; i < 13; i++) {
           //assign some amount to each of the 12 months
-          amtList.add(i*125);
+          amt.add(i*125);
         }
-        mPlan.amountInMonth = amtList;
+        mPlan.amountInPeriod = amt;
       
         List hr = new List<int>();
       
@@ -72,7 +57,7 @@ class PlanningFormModel{
           //assign some amount to each of the 12 months
           hr.add(i*7);
         }
-        mPlan.hourInMonth = hr;
+        mPlan.hourInPeriod = hr;
 
         //add monthly plan for the is 
         mp[ce] = mPlan;
@@ -91,14 +76,14 @@ class PlanningFormModel{
 
   class MonthlyPlan{
     String category;
-    List<int> amountInMonth;
-    List<int> hourInMonth;
+    List<int> amountInPeriod;
+    List<int> hourInPeriod;
   }
   class Storage {
-  Future<String> get localPath async {
-    final dir = await getApplicationDocumentsDirectory();
-    return dir.path;
-  }
+    Future<String> get localPath async {
+      final dir = await getApplicationDocumentsDirectory();
+      return dir.path;
+    }
 
   Future<File> get localFile async {
     final path = await localPath;
