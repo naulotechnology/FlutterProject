@@ -66,7 +66,7 @@ MonthlyPlan mp;
                   },
                 ),
                 DataCell(
-                  Text(pmf.amtList.toString()),
+                  Text(""),
                  onTap: () {
                     print('');
                   },

@@ -14,10 +14,11 @@ class MyAdminForm extends StatefulWidget {
 }
 
 class AdminForm extends State {
+  PlanningFormModel pfm = PlanningFormModel();
   Storage st;
   @override
-  // void initState() {
-  //   st = new Storage();        chgd b m
+  //  void initState() {
+  //   st = new Storage();      // chgd b m
   //   super.initState();
   // }
 
@@ -179,7 +180,7 @@ class AdminForm extends State {
                       setState(() {
                         print("Hellow Prakash");
                         this.displayResult = (st.readData()).toString();
-
+                         print(pfm.toString());
                         child:
                         Text('Write to File');
                       });
