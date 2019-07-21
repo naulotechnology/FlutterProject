@@ -2,12 +2,16 @@
 
   import 'dart:io';
   import 'package:path_provider/path_provider.dart';
+  import 'dart:convert';
+
+ 
 
 class PlanningFormModel{
     String Company;
     String Department;
     List<String> costElements;
     Map<String, MonthlyPlan> monthLevelPlan;
+   String cost = "";
 
 
     //String get Company / Aa
@@ -29,6 +33,26 @@ class PlanningFormModel{
       this.costElements.add("Information Technology");
       this.costElements.add("Legal");
     
+  //   String result = utf8.decode(costElements);
+
+      //  List<String> file() {
+      //   List<String> clist;
+      //      for (int i = 0; i < 5; i++) {
+      //          clist = costElements;
+                
+      //          }
+
+      //   return clist;
+      // }
+          
+         for (int i = 0; i < costElements.length; i++) {
+      cost += costElements[i];
+    }
+
+
+
+
+
       //instatiate the map to store monthly plan for each costEleemnts
       Map mp = new Map<String,MonthlyPlan>();
 
@@ -65,7 +89,7 @@ class PlanningFormModel{
     }
     
     String toString(){
-      String planningFormInString = ""+this.Company+" "+this.Department;
+      String planningFormInString = ""+this.Company+" "+this.Department + cost;
       return planningFormInString;
     }
       
