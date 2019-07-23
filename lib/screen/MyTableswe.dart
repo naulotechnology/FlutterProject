@@ -1,21 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutterproject/models/readwritefile.dart';
 
+void main() async {
+  runApp(MyApp());
+}
 
-class MyForm extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  MyFormState createState() {
-    return MyFormState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'stack overflow',
+      theme: ThemeData(
+        primarySwatch: Colors.pink,
+      ),
+      routes: {},
+      home: KanbanState(),
+    );
   }
 }
 
-class MyFormState extends State<MyForm> {
-  String dropdownValue = "Naulo Technology";
-  String dropdownValue1 = "Nepali";
-  PlanningFormModel pmf;
-  MonthlyPlan mp;
-
+class KanbanState extends StatefulWidget {
   @override
+  KanbanStateState createState() {
+    return KanbanStateState();
+  }
+}
+
+class KanbanStateState extends State<KanbanState> {
+    String dropdownValue = "Naulo Technology";
+    PlanningFormModel pmf;
+    MonthlyPlan mp;
+
+    @override
   void initState() {
     //attributes = Attribute.getAttributes();
     pmf = new PlanningFormModel();
@@ -25,58 +41,35 @@ class MyFormState extends State<MyForm> {
 
   @override
   Widget build(BuildContext context) {
+
     Widget tagList = Container(
-      height: 220.0,
+      color: Colors.green,
+      height: 100.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
-          Column(
+          Row(
             children: <Widget>[
-              Text("Company"),
               DropdownButton<String>(
-                value: dropdownValue,
-                onChanged: (String newValue) {
-                  setState(() {
-                    dropdownValue = newValue;
-                  });
+              value: dropdownValue,
+              onChanged: (String newValue) {
+                setState(() {
+                  dropdownValue = newValue;
+                });
+              },
+              items: <String>[
+                "Naulo Technology",
+                "My Technology",
+                "Your Technology"
+              ].map<DropdownMenuItem<String>>(
+                (String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
                 },
-                items: <String>[
-                  "Naulo Technology",
-                  "My Technology",
-                  "Your Technology"
-                ].map<DropdownMenuItem<String>>(
-                  (String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  },
-                ).toList(),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Text("DepartMent"),
-              DropdownButton<String>(
-                value: dropdownValue1,
-                onChanged: (String newValue) {
-                  setState(() {
-                    dropdownValue1 = newValue;
-                  });
-                },
-                items: <String>[
-                  "Nepali",
-                  "Chemestry",
-                  "Physics"
-                ].map<DropdownMenuItem<String>>(
-                  (String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  },
-                ).toList(),
-              ),
+              ).toList(),
+            ),
             ],
           )
         ],
@@ -84,26 +77,32 @@ class MyFormState extends State<MyForm> {
     );
 
     Widget boardView = Container(
-        //  color: Colors.blue,
-        child: ListView(
-      scrollDirection: Axis.horizontal,
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[dataBody()],
+      color: Colors.blue,
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: 15,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            onTap: () {},
+            title: Row(
+              children: <Widget>[
+                dataBody()
+              ],
             ),
-          ],
-        ),
-      ],
-    ));
+          );
+        },
+      ),
+    );
 
     //  int _value=0;
     return Scaffold(
+        appBar: AppBar(
+          elevation: 1.0,
+          title: Text("Test title"),
+        ),
         body: Container(
-          //color: Colors.amber,
+          color: Colors.amber,
           child: new Column(
-            //  scrollDirection: Axis.vertical,
             children: <Widget>[
               tagList,
               Expanded(
@@ -238,5 +237,8 @@ class MyFormState extends State<MyForm> {
               ]))
           .toList(),
     );
+
   }
+
 }
+
