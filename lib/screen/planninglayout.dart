@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterproject/models/readwritefile.dart';
 
-
 class MyForm extends StatefulWidget {
   @override
   MyFormState createState() {
@@ -12,6 +11,10 @@ class MyForm extends StatefulWidget {
 class MyFormState extends State<MyForm> {
   String dropdownValue = "Naulo Technology";
   String dropdownValue1 = "Nepali";
+
+  DateTime _date = new DateTime.now();
+  TimeOfDay _time = new TimeOfDay.now();
+
   PlanningFormModel pmf;
   MonthlyPlan mp;
 
@@ -23,6 +26,33 @@ class MyFormState extends State<MyForm> {
     super.initState();
   }
 
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        //_kDayPickerRowHeight: 22,
+        context: context,
+        initialDate: _date,
+        firstDate: new DateTime(2016),
+        lastDate: new DateTime(2030));
+
+    if (picked != null && picked != _date) {
+      print('Date selected: ${_date.toString()}');
+      setState(() {
+        _date = picked;
+      });
+    }
+  }
+
+  Future<Null> _selectTime(BuildContext context) async {
+    final TimeOfDay picked =
+        await showTimePicker(context: context, initialTime: _time);
+    if (picked != null && picked != _time) {
+      print('Time selected: ${_time.toString()}');
+      setState(() {
+        _time = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget tagList = Container(
@@ -32,6 +62,7 @@ class MyFormState extends State<MyForm> {
         children: <Widget>[
           Column(
             children: <Widget>[
+              // MyDateTime(),
               Text("Company"),
               DropdownButton<String>(
                 value: dropdownValue,
@@ -64,11 +95,8 @@ class MyFormState extends State<MyForm> {
                     dropdownValue1 = newValue;
                   });
                 },
-                items: <String>[
-                  "Nepali",
-                  "Chemestry",
-                  "Physics"
-                ].map<DropdownMenuItem<String>>(
+                items: <String>["Nepali", "Chemestry", "Physics"]
+                    .map<DropdownMenuItem<String>>(
                   (String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -77,6 +105,25 @@ class MyFormState extends State<MyForm> {
                   },
                 ).toList(),
               ),
+              Row(
+                children: <Widget>[
+                //  new Text('Date selected: ${_date.toString()}'),
+                  new RaisedButton(
+                    child: new Text("Select Date"),
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                  ),
+                  new Text(' '),
+                //  new Text('Time selected: ${_time.toString()}'),
+                  new RaisedButton(
+                    child: new Text("Select Time"),
+                    onPressed: () {
+                      _selectTime(context);
+                    },
+                  ),
+                ],
+              )
             ],
           )
         ],
@@ -101,18 +148,18 @@ class MyFormState extends State<MyForm> {
     //  int _value=0;
     return Scaffold(
         body: Container(
-          //color: Colors.amber,
-          child: new Column(
-            //  scrollDirection: Axis.vertical,
-            children: <Widget>[
-              tagList,
-              Expanded(
-                child: boardView,
-              )
-            ],
-          ),
-          margin: EdgeInsets.all(10.0),
-        ));
+      //color: Colors.amber,
+      child: new Column(
+        //  scrollDirection: Axis.vertical,
+        children: <Widget>[
+          tagList,
+          Expanded(
+            child: boardView,
+          )
+        ],
+      ),
+      margin: EdgeInsets.all(10.0),
+    ));
   }
 
   dataBody() {
@@ -240,3 +287,4 @@ class MyFormState extends State<MyForm> {
     );
   }
 }
+
