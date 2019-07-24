@@ -56,7 +56,7 @@ class MyFormState extends State<MyForm> {
   @override
   Widget build(BuildContext context) {
     Widget tagList = Container(
-      height: 220.0,
+      height: 239.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
@@ -122,6 +122,12 @@ class MyFormState extends State<MyForm> {
                       _selectTime(context);
                     },
                   ),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                     new Text('Date : ${_date.toString()}'),
+                     new Text('Time : ${_time.toString()}')
                 ],
               )
             ],
