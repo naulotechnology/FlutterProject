@@ -99,6 +99,12 @@ class PlanningFormModel{
     String category;
     List<int> amountInMonth;
     List<int> hourInMonth;
+    
+    List<int> getMonthlyPlan(bool isHour){
+       if(isHour) return this.hourInMonth;
+       else return this.amountInMonth;
+    }
+
   }
   class Storage {
   Future<String> get localPath async {

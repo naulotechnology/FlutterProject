@@ -17,6 +17,7 @@ class MyFormState extends State<MyForm> {
 
   PlanningFormModel pmf;
   MonthlyPlan mp;
+  bool showHour = true;
 
   @override
   void initState() {
@@ -51,6 +52,10 @@ class MyFormState extends State<MyForm> {
         _time = picked;
       });
     }
+  }
+
+  void onChange(bool showHours) {
+    this.showHour = showHours;
   }
 
   @override
@@ -107,7 +112,7 @@ class MyFormState extends State<MyForm> {
               ),
               Row(
                 children: <Widget>[
-                //  new Text('Date selected: ${_date.toString()}'),
+                  //  new Text('Date selected: ${_date.toString()}'),
                   new RaisedButton(
                     child: new Text("Select Date"),
                     onPressed: () {
@@ -115,19 +120,25 @@ class MyFormState extends State<MyForm> {
                     },
                   ),
                   new Text(' '),
-                //  new Text('Time selected: ${_time.toString()}'),
+                  //  new Text('Time selected: ${_time.toString()}'),
                   new RaisedButton(
                     child: new Text("Select Time"),
                     onPressed: () {
                       _selectTime(context);
                     },
                   ),
+                     Padding(
+                       padding: EdgeInsets.only(left: 70),
+                     ),
+                     new Switch(value: showHour,onChanged: (bool value){
+                        onChange(value);
+              },),
                 ],
               ),
               Column(
                 children: <Widget>[
-                     new Text('Date : ${_date.toString()}'),
-                     new Text('Time : ${_time.toString()}')
+                  new Text('Date : ${_date.toString()}'),
+                  new Text('Time : ${_time.toString()}')
                 ],
               )
             ],
@@ -143,9 +154,12 @@ class MyFormState extends State<MyForm> {
       children: <Widget>[
         Column(
           children: <Widget>[
-            Row(
-              children: <Widget>[dataBody()],
-            ),
+            costElementTable(),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Row(children: <Widget>[dataBody()]),
           ],
         ),
       ],
@@ -169,11 +183,12 @@ class MyFormState extends State<MyForm> {
   }
 
   dataBody() {
+    // if (showHour) {
     return DataTable(
       columns: [
-        DataColumn(
-          label: Text("Date"),
-        ),
+        // DataColumn(
+        //   label: Text("Date"),
+        // ),
         DataColumn(
           label: Text("Jan"),
         ),
@@ -212,85 +227,40 @@ class MyFormState extends State<MyForm> {
         ),
       ],
       rows: pmf.costElements
-          .map((attr) => DataRow(cells: [
-                /*1*/ DataCell(
-                  Text(attr),
-                  onTap: () {
-                    print('Selected ${attr}');
-                  },
-                ),
-                DataCell(
-                  Text(""),
-                  onTap: () {},
-                ),
-
-                /*1*/ DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-                /*1*/ DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-                /*1*/ DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-                /*1*/ DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-                /*1*/ DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-                DataCell(
-                  Text(""),
-                  onTap: () {},
-                ),
-                /*1*/ DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-                /*1*/ DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-                /*1*/ DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-                /*1*/ DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-                /*1*/ DataCell(
-                  Text(""),
-                  onTap: () {
-                    print('');
-                  },
-                ),
-              ]))
+          .map((attr) => DataRow(
+                cells: pmf.monthLevelPlan[attr].hourInMonth
+                    .map(
+                      (monthlyAmount) => DataCell(
+                            Text(monthlyAmount.toString()),
+                            onTap: () {
+                              print('Selected $monthlyAmount');
+                            },
+                          ),
+                    )
+                    .toList(),
+              ))
           .toList(),
     );
+    // }
+  }
+
+  costElementTable() {
+    return DataTable(
+        columns: [
+          DataColumn(
+            label: Text("Date"),
+          ),
+        ],
+        rows: pmf.costElements
+            .map(
+              (attr) => DataRow(
+                    cells: [
+                      /*1*/ DataCell(Text(attr), onTap: () {
+                        print('Selected ${attr}');
+                      }),
+                    ],
+                  ),
+            )
+            .toList());
   }
 }
-
