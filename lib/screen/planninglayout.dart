@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterproject/models/readwritefile.dart';
+import 'package:material_switch/material_switch.dart';
+import 'dart:async';
 
 class MyForm extends StatefulWidget {
   @override
@@ -12,12 +14,16 @@ class MyFormState extends State<MyForm> {
   String dropdownValue = "Naulo Technology";
   String dropdownValue1 = "Nepali";
 
+  List<String> optionList = <String>['Month', 'Hour'];
+
+  String optionSelect = 'Month';
+
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
 
   PlanningFormModel pmf;
   MonthlyPlan mp;
-  bool showHour = true;
+  bool showHour = false;
 
   @override
   void initState() {
@@ -127,14 +133,37 @@ class MyFormState extends State<MyForm> {
                       _selectTime(context);
                     },
                   ),
-                     Padding(
-                       padding: EdgeInsets.only(left: 70),
-                     ),
-                     new Switch(value: showHour,onChanged: (bool value){
-                        onChange(value);
-              },),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  //Switch Button Start
+                  Container(
+                    height: 40,
+                    width: 180,
+                    child: MaterialSwitch(
+                      padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
+                      options: optionList,
+                      selectedOption: optionSelect,
+                      selectedBackgroundColor: Colors.indigo,
+                      selectedTextColor: Colors.white,
+                      onSelect: (String optionList) {
+                        setState(() {
+                          optionSelect = optionList;
+                          if (optionSelect == "Month") {
+                            showHour=false;
+                            print("Month");
+                          } else {
+                            showHour=true;
+                            print("Hour");
+                          }
+                        });
+                      },
+                    ),
+                  ),
                 ],
               ),
+
+              //Show date and time
               Column(
                 children: <Widget>[
                   new Text('Date : ${_date.toString()}'),
@@ -183,7 +212,7 @@ class MyFormState extends State<MyForm> {
   }
 
   dataBody() {
-    // if (showHour) {
+
     return DataTable(
       columns: [
         // DataColumn(
@@ -228,7 +257,7 @@ class MyFormState extends State<MyForm> {
       ],
       rows: pmf.costElements
           .map((attr) => DataRow(
-                cells: pmf.monthLevelPlan[attr].hourInMonth
+                cells: pmf.monthLevelPlan[attr].getMonthlyPlan(showHour)
                     .map(
                       (monthlyAmount) => DataCell(
                             Text(monthlyAmount.toString()),
@@ -241,7 +270,6 @@ class MyFormState extends State<MyForm> {
               ))
           .toList(),
     );
-    // }
   }
 
   costElementTable() {
