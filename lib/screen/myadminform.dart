@@ -15,62 +15,66 @@ class MyAdminForm extends StatefulWidget {
 
 class AdminForm extends State {
   PlanningFormModel pfm = PlanningFormModel();
+  String body = "write";
+   String data;
+   
+
   Storage st;
   @override
-  //  void initState() {
-  //   st = new Storage();      // chgd b m
-  //   super.initState();
-  // }
+   void initState() {
+    st = new Storage();      // chgd b m
+    super.initState();
+  }
 
   var displayResult = "";
   TextEditingController companyController = TextEditingController();
   TextEditingController departmentController = TextEditingController();
 
-  File jsonFile;
-  Directory dir;
-  String fileName = "myJSONFile.json";
-  bool fileExists = false;
-  Map<String, String> fileContent;
+  // File jsonFile;
+  // Directory dir;
+  // String fileName = "myJSONFile.json";
+  // bool fileExists = false;
+  // Map<String, String> fileContent;
 
-  @override
-  void initState() {
-    st = new Storage();
-    super.initState();
-    getApplicationDocumentsDirectory().then((Directory directory) {
-      dir = directory;
-      jsonFile = new File(dir.path + "/" + fileName);
-      fileExists = jsonFile.existsSync();
-      if (fileExists)
-        this.setState(
-            () => fileContent = json.decode(jsonFile.readAsStringSync())); //
-    });
-  }
+  // @override
+  // void initState() {
+  //   st = new Storage();
+  //   super.initState();
+  //   getApplicationDocumentsDirectory().then((Directory directory) {
+  //     dir = directory;
+  //     jsonFile = new File(dir.path + "/" + fileName);
+  //     fileExists = jsonFile.existsSync();
+  //     if (fileExists)
+  //       this.setState(
+  //           () => fileContent = json.decode(jsonFile.readAsStringSync())); //
+  //   });
+  // }
 
-  void createFile(Map<String, String> content, Directory dir, String fileName) {
-    print("Creating file!");
-    File file = new File(dir.path + "/" + fileName);
-    file.createSync();
-    fileExists = true;
-    file.writeAsStringSync(json.encode(content)); //
-  }
+  // void createFile(Map<String, String> content, Directory dir, String fileName) {
+  //   print("Creating file!");
+  //   File file = new File(dir.path + "/" + fileName);
+  //   file.createSync();
+  //   fileExists = true;
+  //   file.writeAsStringSync(json.encode(content)); //
+  // }
 
-  void writeToFile(String key, String value) {
-    print("Writing to file!");
-    Map<String, String> content = {key: value};
-    if (fileExists) {
-      print("File exists");
-      Map<String, String> jsonFileContent =
-          json.decode(jsonFile.readAsStringSync());
-      jsonFileContent.addAll(content);
-      jsonFile.writeAsStringSync(json.encode(jsonFileContent)); //
-    } else {
-      print("File does not exist!");
-      createFile(content, dir, fileName);
-    }
-    this.setState(
-        () => fileContent = json.decode(jsonFile.readAsStringSync())); //
-    print(fileContent);
-  }
+  // void writeToFile(String key, String value) {
+  //   print("Writing to file!");
+  //   Map<String, String> content = {key: value};
+  //   if (fileExists) {
+  //     print("File exists");
+  //     Map<String, String> jsonFileContent =
+  //         json.decode(jsonFile.readAsStringSync());
+  //     jsonFileContent.addAll(content);
+  //     jsonFile.writeAsStringSync(json.encode(jsonFileContent)); //
+  //   } else {
+  //     print("File does not exist!");
+  //     createFile(content, dir, fileName);
+  //   }
+  //   this.setState(
+  //       () => fileContent = json.decode(jsonFile.readAsStringSync())); //
+  //   print(fileContent);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +84,7 @@ class AdminForm extends State {
       body: SafeArea(
         child: Form(
           child: ListView(children: <Widget>[
-            new Text(fileContent.toString()),
+            new Text(st.toString()),
             Padding(
               padding: EdgeInsets.only(bottom: 30),
             ),
@@ -138,8 +142,7 @@ class AdminForm extends State {
                 children: <Widget>[
                   RaisedButton(
                     onPressed: () {
-                      writeToFile(
-                          companyController.text, departmentController.text);
+                      st.writeData(pfm.toString());
                       // setState(() {
                       //   print("Hellow Prakash");
                       // //   this.displayResult = names();
@@ -160,7 +163,8 @@ class AdminForm extends State {
                           ],
                         ),
                       ),
-                      padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 10),
                       child:
                           const Text('Write', style: TextStyle(fontSize: 20)),
                     ),
@@ -177,14 +181,21 @@ class AdminForm extends State {
                 children: <Widget>[
                   RaisedButton(
                     onPressed: () {
-                      setState(() {
-                        print("Hellow Prakash");
-                        this.displayResult = (st.readData()).toString();
-                         print(pfm.toString());
-                        child:
-                        Text('Write to File');
+                      st.readData().then((contents) {
+                        setState(() {
+                          body = contents;
+                        });
                       });
+                      print("Hellow Prakash");
+                      print(st.readData());
                     },
+                    // setState(() {
+                    //   print("Hellow Prakash");
+                    //   // this.displayResult = (st.readData()).toString();
+                    //    print(st.readData());
+                    //   child:
+                    //   Text('Write to File');
+
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
                     child: Container(
@@ -197,7 +208,8 @@ class AdminForm extends State {
                           ],
                         ),
                       ),
-                      padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 10),
                       child: const Text('Read', style: TextStyle(fontSize: 20)),
                     ),
                   ),

@@ -2,7 +2,8 @@
 
   import 'dart:io';
   import 'package:path_provider/path_provider.dart';
-  import 'dart:convert';
+  import 'dart:async';
+
 
  
 
@@ -11,7 +12,7 @@ class PlanningFormModel{
     String Department;
     List<String> costElements;
     Map<String, MonthlyPlan> monthLevelPlan;
-   String cost = "";
+   String currentSavedState;
 
 
     //String get Company / Aa
@@ -107,6 +108,9 @@ class PlanningFormModel{
 
   }
   class Storage {
+ PlanningFormModel pfm = PlanningFormModel();
+ 
+
   Future<String> get localPath async {
     final dir = await getApplicationDocumentsDirectory();
     return dir.path;
