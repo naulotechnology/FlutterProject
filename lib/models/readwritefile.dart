@@ -176,6 +176,6 @@
 
   Future<File> writeData(String data) async {
     final file = await localFile;
-    return file.writeAsString("");
+    return file.writeAsString("$data");
   }
 }
