@@ -150,10 +150,10 @@ class MyFormState extends State<MyForm> {
                         setState(() {
                           optionSelect = optionList;
                           if (optionSelect == "Month") {
-                            showHour=false;
+                            showHour = false;
                             print("Month");
                           } else {
-                            showHour=true;
+                            showHour = true;
                             print("Hour");
                           }
                         });
@@ -188,6 +188,7 @@ class MyFormState extends State<MyForm> {
         ),
         Column(
           children: <Widget>[
+            // costElementTable(),
             Row(children: <Widget>[dataBody()]),
           ],
         ),
@@ -212,7 +213,6 @@ class MyFormState extends State<MyForm> {
   }
 
   dataBody() {
-
     return DataTable(
       columns: [
         // DataColumn(
@@ -257,14 +257,27 @@ class MyFormState extends State<MyForm> {
       ],
       rows: pmf.costElements
           .map((attr) => DataRow(
-                cells: pmf.monthLevelPlan[attr].getMonthlyPlan(showHour)
+                cells: pmf.monthLevelPlan[attr]
+                    .getMonthlyPlan(showHour)
                     .map(
                       (monthlyAmount) => DataCell(
-                            Text(monthlyAmount.toString()),
-                            onTap: () {
-                              print('Selected $monthlyAmount');
-                            },
+                            TextField(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: monthlyAmount.toString()),
+                                  // save the txt to amount in month
+                              onChanged: (txt) {
+                                 pmf.setAmount(showHour, attr, txt,0);
+                                
+                              },
+                            ),
                           ),
+                      // DataCell(
+                      //       Text(monthlyAmount.toString()),
+                      //       onTap: () {
+                      //         print('Selected $monthlyAmount');
+                      //       },
+                      //     ),
                     )
                     .toList(),
               ))
