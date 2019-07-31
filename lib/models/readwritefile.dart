@@ -10,13 +10,9 @@ class PlanningFormModel {
   MonthlyPlan mPlan = new MonthlyPlan();
   String currentSavedState;
   String cost = "";
-<<<<<<< HEAD
-  String savedStateFromFile="This is What default means";
-=======
-  String savedStateFromFile="This is default";
-  Storage st ;
->>>>>>> 8e4523eb84eb76c02a077aa7f7b6ad9de776504d
 
+String savedStateFromFile="This is default";
+  Storage st ;
 
   
 
