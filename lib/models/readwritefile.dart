@@ -9,7 +9,7 @@ class PlanningFormModel {
   Map<String, MonthlyPlan> monthLevelPlan;
   String currentSavedState;
   String cost = "";
-  String savedStateFromFile="This is default";
+  String savedStateFromFile="This is What default means";
 
   //String get Company / Aa
   //String get Department /Aa
@@ -88,7 +88,7 @@ class PlanningFormModel {
     if (isHour) {
       this.monthLevelPlan[costElement].hourInMonth[idx]=(int.parse(amount));
     } else {
-      this.monthLevelPlan[costElement].amountInMonth;
+      this.monthLevelPlan[costElement].amountInMonth[idx]=(int.parse(amount));
     }
   }
 }
