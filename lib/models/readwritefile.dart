@@ -182,7 +182,6 @@ class Storage {
   }
 }
 
-<<<<<<< HEAD
 class PlanValue {
   int value;
   int index;
@@ -192,6 +191,3 @@ class PlanValue {
     this.index = idx;
   }
 }
-=======
-}
->>>>>>> e31bea7dacdab82f20bbbdc5fc2cb45837f3d9c1
