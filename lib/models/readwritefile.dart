@@ -6,15 +6,14 @@ class PlanningFormModel {
   String Company;
   String Department;
   List<String> costElements;
+  Map<String, MonthlyPlan> ceToMpMap;
   Map<String, MonthlyPlan> monthLevelPlan;
   MonthlyPlan mPlan = new MonthlyPlan();
   String currentSavedState;
   String cost = "";
 
-String savedStateFromFile="This is default";
-  Storage st ;
-
-  
+  String savedStateFromFile = "This is default";
+  Storage st;
 
   PlanningFormModel() {
     this.Company = "N Tech";
@@ -54,26 +53,29 @@ String savedStateFromFile="This is default";
       //creaete monthly plan for each cost element
       MonthlyPlan mPlan = new MonthlyPlan();
       mPlan.category = ce;
-      List amtList = new List<int>();
+      //List amtList = new List<int>();
+      List amtList = new List<PlanValue>();
 
       for (int i = 1; i < 13; i++) {
         //assign some amount to each of the 12 months
-        amtList.add(i * 125);
+        PlanValue pa = new PlanValue(i * 125, i);
+        amtList.add(pa);
       }
       mPlan.amountInMonth = amtList;
 
-      List hr = new List<int>();
+      List hrList = new List<PlanValue>();
 
       for (int i = 1; i < 13; i++) {
         //assign some amount to each of the 12 months
-        hr.add(i * 7);
+        PlanValue pa = new PlanValue(i * 7, i);
+        hrList.add(pa);
       }
-      mPlan.hourInMonth = hr;
+      mPlan.hourInMonth = hrList;
 
       //add monthly plan for the is
       mp[ce] = mPlan;
     }
-    //assign month plan
+    // assign month plan
     this.monthLevelPlan = mp;
   }
 
@@ -83,57 +85,57 @@ String savedStateFromFile="This is default";
     return planningFormInString;
   }
 
-  setAmount(bool isHour, String costElement, String amount,int idx) {
+  setAmount(bool isHour, String costElement, String amount, int idx) {
     if (isHour) {
-      this.monthLevelPlan[costElement].hourInMonth[idx]=(int.parse(amount));
+      this.monthLevelPlan[costElement].hourInMonth[idx] =
+          (int.parse(amount)) as PlanValue;
     } else {
-      this.monthLevelPlan[costElement].amountInMonth[idx]=(int.parse(amount));
+      this.monthLevelPlan[costElement].amountInMonth[idx] =
+          (int.parse(amount)) as PlanValue;
     }
   }
 
- savePfmToFile(){
-   this.st.writeData(this.PlanningFormModeltoJsonv2());
- }
-   String PlanningFormModeltoJsonv2() {
+  savePfmToFile() {
+    this.st.writeData(this.PlanningFormModeltoJsonv2());
+  }
+
+  String PlanningFormModeltoJsonv2() {
     String p = "";
     p = p + "{";
     p = p + "'Company':" + "'${this.Company}'" + ",";
     p = p + "'Department':" + "'${this.Department}'" + ",";
-     p = p + "'costElements':[";
-    for(String ce in this.costElements){
-      p = p + "'" + ce + "'," ;
+    p = p + "'costElements':[";
+    for (String ce in this.costElements) {
+      p = p + "'" + ce + "',";
     }
-     p = p +"],";
-    p = p + "{'ceToMpMap':[" +  "${mPlan.monthlyplantoJsonv2()}"+"]";
-   
-  
+    p = p + "],";
+    p = p + "{'ceToMpMap':[" + "${mPlan.monthlyplantoJsonv2()}" + "]";
+
     p = p + "}";
     p = json.encode(p);
     return p;
   }
-
 }
-
 
 class MonthlyPlan {
   String category;
-  List<int> amountInMonth;
-  List<int> hourInMonth;
+  List<PlanValue> amountInMonth;
+  List<PlanValue> hourInMonth;
 
-    String monthlyplantoJsonv2() {
+  String monthlyplantoJsonv2() {
     PlanningFormModel pfm = new PlanningFormModel();
     String s = "";
     for (String ce in pfm.costElements) {
       s = s + "{";
       s = s + "'" + ce + "':{";
       s = s + "'amountInMonth':[";
-      for (int i in amountInMonth) {
+      for (PlanValue i in amountInMonth) {
         s = s + "'" + i.toString() + "',";
       }
       s = s + "],";
 
       s = s + "'hourInMonth':[";
-      for (int i in hourInMonth) {
+      for (PlanValue i in hourInMonth) {
         s = s + "'" + i.toString() + "',";
       }
       s = s + "]}},";
@@ -144,7 +146,7 @@ class MonthlyPlan {
     return s;
   }
 
-  List<int> getMonthlyPlan(bool isHour) {
+  List<PlanValue> getMonthlyPlan(bool isHour) {
     if (isHour)
       return this.hourInMonth;
     else
@@ -178,5 +180,14 @@ class Storage {
     final file = await localFile;
     return file.writeAsString("$data");
   }
+}
 
+class PlanValue {
+  int value;
+  int index;
+
+  PlanValue(int amt, int idx) {
+    this.value = amt;
+    this.index = idx;
+  }
 }

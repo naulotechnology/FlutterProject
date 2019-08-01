@@ -22,6 +22,7 @@ class MyFormState extends State<MyForm> {
   TimeOfDay _time = new TimeOfDay.now();
 
   PlanningFormModel pmf;
+  Storage st;
   MonthlyPlan mp;
   bool showHour = false;
 
@@ -30,6 +31,7 @@ class MyFormState extends State<MyForm> {
     //attributes = Attribute.getAttributes();
     pmf = new PlanningFormModel();
     mp = new MonthlyPlan();
+    st = new Storage();
     super.initState();
   }
 
@@ -118,24 +120,70 @@ class MyFormState extends State<MyForm> {
               ),
               Row(
                 children: <Widget>[
+                  RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        pmf.savePfmToFile();
+                      });
+                    },
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Color(0xFF0D47A1),
+                            Color(0xFF1976D2),
+                            Color(0xFF42A5F5),
+                          ],
+                        ),
+                      ),
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 10),
+                      child: const Text('Save', style: TextStyle(fontSize: 20)),
+                    ),
+                  ),
+                  RaisedButton(
+                    onPressed: () async {
+                      String readData = await (st.readData());
+                      print(readData);
+                    },
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Color(0xFF0D47A1),
+                            Color(0xFF1976D2),
+                            Color(0xFF42A5F5),
+                          ],
+                        ),
+                      ),
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 10),
+                      child: const Text('Read', style: TextStyle(fontSize: 20)),
+                    ),
+                  ),
+
                   //  new Text('Date selected: ${_date.toString()}'),
-                  new RaisedButton(
-                    child: new Text("Select Date"),
-                    onPressed: () {
-                      _selectDate(context);
-                    },
-                  ),
-                  new Text(' '),
-                  //  new Text('Time selected: ${_time.toString()}'),
-                  new RaisedButton(
-                    child: new Text("Select Time"),
-                    onPressed: () {
-                      _selectTime(context);
-                    },
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
+                  // new RaisedButton(
+                  //   child: new Text("Select Date"),
+                  //   onPressed: () {
+                  //     _selectDate(context);
+                  //   },
+                  // ),
+                  // new Text(' '),
+                  // //  new Text('Time selected: ${_time.toString()}'),
+                  // new RaisedButton(
+                  //   child: new Text("Select Time"),
+                  //   onPressed: () {
+                  //     _selectTime(context);
+                  //   },
+                  // ),
+                  // SizedBox(
+                  //   width: 20,
+                  // ),
                   //Switch Button Start
                   Container(
                     height: 40,
@@ -164,12 +212,12 @@ class MyFormState extends State<MyForm> {
               ),
 
               //Show date and time
-              Column(
-                children: <Widget>[
-                  new Text('Date : ${_date.toString()}'),
-                  new Text('Time : ${_time.toString()}')
-                ],
-              )
+              // Column(
+              //   children: <Widget>[
+              //     new Text('Date : ${_date.toString()}'),
+              //     new Text('Time : ${_time.toString()}')
+              //   ],
+              // )
             ],
           )
         ],
@@ -264,11 +312,14 @@ class MyFormState extends State<MyForm> {
                             TextField(
                               decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: monthlyAmount.toString()),
-                                  // save the txt to amount in month
+                                  hintText: monthlyAmount.value.toString()),
+                              // save the txt to amount in month
                               onChanged: (txt) {
-                                 pmf.setAmount(showHour, attr, txt,0);
-                                
+                                pmf.setAmount(
+                                    showHour, attr, txt, monthlyAmount.index);
+                              },
+                              onTap: () {
+                                print("${monthlyAmount.index}");
                               },
                             ),
                           ),
