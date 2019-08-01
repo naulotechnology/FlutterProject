@@ -15,9 +15,7 @@ class MyAdminForm extends StatefulWidget {
 
 class AdminForm extends State {
   PlanningFormModel pfm = PlanningFormModel();
-  String body = "write";
-   String data;
-   
+
 
   Storage st;
   @override
@@ -141,16 +139,20 @@ class AdminForm extends State {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   RaisedButton(
-                    onPressed: () {
-                      st.writeData(pfm.toString());
+                    onPressed: ()async {
+                      String dat = await st.readData();
+                      print(dat);
+                      
+                      // st.writeData(pfm.toString());
                       // setState(() {
-                      //   print("Hellow Prakash");
+                      print("Hellow Prakash");
                       // //   this.displayResult = names();
                       // //  st.writeData(displayResult);
 
                       //   child: Text('Write to File');
                       // });
                     },
+                    
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
                     child: Container(
@@ -180,14 +182,11 @@ class AdminForm extends State {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   RaisedButton(
-                    onPressed: () {
-                      st.readData().then((contents) {
-                        setState(() {
-                          body = contents;
-                        });
-                      });
+                    onPressed: () async{
+                        String da = await st.readData();
+                      print(da);
+                      
                       print("Hellow Prakash");
-                      print(st.readData());
                     },
                     // setState(() {
                     //   print("Hellow Prakash");
@@ -225,10 +224,10 @@ class AdminForm extends State {
     );
   }
 
-  String names() {
-    String company = (companyController.text).toString();
-    String department = (departmentController.text).toString();
-    String result = "Company and DepartMent name is $company $department";
-    return result;
-  }
+  // String names() {
+  //   String company = (companyController.text).toString();
+  //   String department = (departmentController.text).toString();
+  //   String result = "Company and DepartMent name is $company $department";
+  //   return result;
+  // }
 }
