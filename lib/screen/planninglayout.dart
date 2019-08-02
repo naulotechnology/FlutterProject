@@ -226,38 +226,46 @@ class MyFormState extends State<MyForm> {
 
     Widget boardView = Container(
         //  color: Colors.blue,
-        child: ListView(
+        child: CustomScrollView(
       scrollDirection: Axis.horizontal,
-      children: <Widget>[
-        Column(
-          children: <Widget>[
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildListDelegate([
             costElementTable(),
-          ],
+            dataBody(),
+          ]),
         ),
-        Column(
-          children: <Widget>[
-            // costElementTable(),
-            Row(children: <Widget>[dataBody()]),
-          ],
-        ),
+        // SliverList(
+        //   delegate: SliverChildListDelegate([
+        //     // costElementTable(),
+        //     Row(children: <Widget>[dataBody()]),
+        //   ]),
+        // ),
       ],
     ));
 
     //  int _value=0;
     return Scaffold(
-        body: Container(
-      //color: Colors.amber,
-      child: new Column(
-        //  scrollDirection: Axis.vertical,
-        children: <Widget>[
-          tagList,
-          Expanded(
-            child: boardView,
-          )
-        ],
+      body: ListView.builder(
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return tagList;
+        },
       ),
-      margin: EdgeInsets.all(10.0),
-    ));
+      // Container(
+      //   //color: Colors.amber,
+      //   child: new Column(
+      //     //   scrollDirection: Axis.horizontal,
+      //     children: <Widget>[
+      //       tagList,
+      //       Expanded(
+      //         child: boardView,
+      //       )
+      //     ],
+      //   ),
+      //   margin: EdgeInsets.all(10.0),
+      // ),
+    );
   }
 
   dataBody() {
