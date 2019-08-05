@@ -14,8 +14,6 @@ class MyForm extends StatefulWidget {
 class MyFormState extends State<MyForm> {
   String dropdownValue = "Naulo Technology";
   String dropdownValue1 = "Nepali";
-  
-
 
   List<String> optionList = <String>['Month', 'Hour'];
 
@@ -25,7 +23,7 @@ class MyFormState extends State<MyForm> {
   TimeOfDay _time = new TimeOfDay.now();
 
   PlanningFormModel pmf;
-  
+
   Storage st;
   MonthlyPlan mp;
   bool showHour = false;
@@ -36,9 +34,8 @@ class MyFormState extends State<MyForm> {
     pmf = new PlanningFormModel();
     mp = new MonthlyPlan();
     st = new Storage();
-    
+
     super.initState();
-    
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -75,7 +72,8 @@ class MyFormState extends State<MyForm> {
   @override
   Widget build(BuildContext context) {
     Widget tagList = Container(
-      height: 239.0,
+      padding: EdgeInsets.only(top: 30),
+     // height: 239.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
@@ -231,11 +229,11 @@ class MyFormState extends State<MyForm> {
     );
 
     Widget boardView = Container(
-        //  color: Colors.blue,
+        padding: EdgeInsets.only(top:1),
         child: ListView.builder(
       scrollDirection: Axis.vertical,
       itemCount: 1,
-       itemExtent: 60*pmf.costElements.length.toDouble(),
+      itemExtent: 60 * pmf.costElements.length.toDouble(),
       itemBuilder: (BuildContext context, int index) {
         return ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -252,22 +250,27 @@ class MyFormState extends State<MyForm> {
       },
     ));
 
+
+    double selectItemExtent(){
+         return 280;
+    }
     //  int _value=0;
     return Scaffold(
-        body: Container(
-      //color: Colors.amber,
-      child: new Column(
-        //shrinkWrap: true,
-        //   scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          tagList,
-          Expanded(
-            child: boardView,
-          )
-        ],
-      ),
-      margin: EdgeInsets.all(10.0),
-    ));
+      body: Container(
+          //color: Colors.amber,
+          child: new ListView.builder(
+              itemCount: 2,
+              itemExtent: selectItemExtent(),
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return tagList;
+                 
+                } else if (index == 1) {
+                  return boardView;
+                }
+              }
+              )),
+    );
   }
 
   dataBody() {

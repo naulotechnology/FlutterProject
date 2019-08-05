@@ -26,6 +26,12 @@ class PlanningFormModel {
     this.costElements.add("Human Resources");
     this.costElements.add("Information Technology");
     this.costElements.add("Legal");
+    this.costElements.add("Transportation1");
+    this.costElements.add("Marketing2");
+    this.costElements.add("Human Resources3");
+    this.costElements.add("Information Technology4");
+    this.costElements.add("Legal5");
+    
     
     
     //   String result = utf8.decode(costElements);
