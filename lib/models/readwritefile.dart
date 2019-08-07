@@ -6,14 +6,15 @@ class PlanningFormModel {
   String Company;
   String Department;
   List<String> costElements;
-  Map<String, MonthlyPlan> ceToMpMap;
   Map<String, MonthlyPlan> monthLevelPlan;
   MonthlyPlan mPlan = new MonthlyPlan();
   String currentSavedState;
   String cost = "";
 
-  String savedStateFromFile = "This is default";
-  Storage st;
+String savedStateFromFile="This is default";
+  Storage st ;
+
+  
 
   PlanningFormModel() {
     this.Company = "N Tech";
@@ -26,14 +27,7 @@ class PlanningFormModel {
     this.costElements.add("Human Resources");
     this.costElements.add("Information Technology");
     this.costElements.add("Legal");
-    this.costElements.add("Transportation1");
-    this.costElements.add("Marketing2");
-    this.costElements.add("Human Resources3");
-    this.costElements.add("Information Technology4");
-    this.costElements.add("Legal5");
-    
-    
-    
+
     //   String result = utf8.decode(costElements);
 
     //  List<String> file() {
@@ -60,10 +54,9 @@ class PlanningFormModel {
       //creaete monthly plan for each cost element
       MonthlyPlan mPlan = new MonthlyPlan();
       mPlan.category = ce;
-      //List amtList = new List<int>();
       List amtList = new List<PlanValue>();
 
-      for (int i = 1; i < 13; i++) {
+      for (int i = 0; i < 12; i++) {
         //assign some amount to each of the 12 months
         PlanValue pa = new PlanValue(i * 125, i);
         amtList.add(pa);
@@ -72,7 +65,7 @@ class PlanningFormModel {
 
       List hrList = new List<PlanValue>();
 
-      for (int i = 1; i < 13; i++) {
+      for (int i = 0; i < 12; i++) {
         //assign some amount to each of the 12 months
         PlanValue pa = new PlanValue(i * 7, i);
         hrList.add(pa);
@@ -82,7 +75,7 @@ class PlanningFormModel {
       //add monthly plan for the is
       mp[ce] = mPlan;
     }
-    // assign month plan
+    //assign month plan
     this.monthLevelPlan = mp;
   }
 
@@ -92,35 +85,46 @@ class PlanningFormModel {
     return planningFormInString;
   }
 
-  setAmount(bool isHour, String costElement, String amount, int idx) {
+  setAmount(bool isHour, String costElement, String amount,int idx) {
     if (isHour) {
-      this.monthLevelPlan[costElement].hourInMonth[idx] =
-          (int.parse(amount)) as PlanValue;
+      this.monthLevelPlan[costElement].hourInMonth[idx].value=(int.parse(amount));
     } else {
-      this.monthLevelPlan[costElement].amountInMonth[idx] =
-          (int.parse(amount)) as PlanValue;
+      this.monthLevelPlan[costElement].amountInMonth[idx].value=(int.parse(amount));
     }
   }
 
-  savePfmToFile() {
-    this.st.writeData(this.PlanningFormModeltoJsonv2());
-  }
-
-  String PlanningFormModeltoJsonv2() {
+ savePfmToFile(){
+   this.st.writeData(this.PlanningFormModeltoJsonv2());
+ }
+   
+   String PlanningFormModeltoJsonv2() {
     String p = "";
     p = p + "{";
     p = p + "'Company':" + "'${this.Company}'" + ",";
     p = p + "'Department':" + "'${this.Department}'" + ",";
-    p = p + "'costElements':[";
-    for (String ce in this.costElements) {
-      p = p + "'" + ce + "',";
+     p = p + "'costElements':[";
+    for(String ce in this.costElements){
+      p = p + "'" + ce + "'," ;
     }
-    p = p + "],";
-    p = p + "{'ceToMpMap':[" + "${mPlan.monthlyplantoJsonv2()}" + "]";
-
+     p = p +"],";
+    p = p + "{'ceToMpMap':[" +  "${mPlan.monthlyplantoJsonv2()}"+"]";
+   
+  
     p = p + "}";
     p = json.encode(p);
     return p;
+  }
+
+}
+
+class PlanValue{
+  int value;
+  int index;
+
+  PlanValue(int amt, int idx){
+    this.value = amt;
+    this.index = idx;
+
   }
 }
 
@@ -129,7 +133,7 @@ class MonthlyPlan {
   List<PlanValue> amountInMonth;
   List<PlanValue> hourInMonth;
 
-  String monthlyplantoJsonv2() {
+    String monthlyplantoJsonv2() {
     PlanningFormModel pfm = new PlanningFormModel();
     String s = "";
     for (String ce in pfm.costElements) {
@@ -187,14 +191,5 @@ class Storage {
     final file = await localFile;
     return file.writeAsString("$data");
   }
-}
 
-class PlanValue {
-  int value;
-  int index;
-
-  PlanValue(int amt, int idx) {
-    this.value = amt;
-    this.index = idx;
-  }
 }
