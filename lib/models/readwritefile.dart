@@ -1,3 +1,7 @@
+
+
+
+
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
@@ -6,6 +10,8 @@ class PlanningFormModel {
   String Company;
   String Department;
   List<String> costElements;
+   Map<String, MonthlyPlan> ceToMpMap;
+   List<PlanValue> amtList;
   Map<String, MonthlyPlan> monthLevelPlan;
   MonthlyPlan mPlan = new MonthlyPlan();
   String currentSavedState;
@@ -13,13 +19,14 @@ class PlanningFormModel {
 
 String savedStateFromFile="This is default";
   Storage st ;
+  
 
   
 
-  PlanningFormModel() {
+   PlanningFormModel() {
     this.Company = "N Tech";
     this.Department = "Marketing";
-    this.st = new Storage();
+     this.st = new Storage();
     this.costElements = new List<String>();
 
     this.costElements.add("Transportation");
@@ -28,33 +35,20 @@ String savedStateFromFile="This is default";
     this.costElements.add("Information Technology");
     this.costElements.add("Legal");
 
-    //   String result = utf8.decode(costElements);
-
-    //  List<String> file() {
-    //   List<String> clist;
-    //      for (int i = 0; i < 5; i++) {
-    //          clist = costElements;
-
-    //          }
-
-    //   return clist;
-    // }
-
-    for (int i = 0; i < costElements.length; i++) {
-      cost += costElements[i];
-    }
-
     //instatiate the map to store monthly plan for each costEleemnts
-    Map mp = new Map<String, MonthlyPlan>();
+    ceToMpMap = new Map<String, MonthlyPlan>();
 
     //mp = mp.getbykey(legal)
     //  mp=mp.amountInMonth
 
     for (String ce in this.costElements) {
       //creaete monthly plan for each cost element
-      MonthlyPlan mPlan = new MonthlyPlan();
+
       mPlan.category = ce;
-      List amtList = new List<PlanValue>();
+    
+
+       amtList = new List<PlanValue>();
+
 
       for (int i = 0; i < 12; i++) {
         //assign some amount to each of the 12 months
@@ -73,15 +67,44 @@ String savedStateFromFile="This is default";
       mPlan.hourInMonth = hrList;
 
       //add monthly plan for the is
-      mp[ce] = mPlan;
+      this.ceToMpMap[ce] = mPlan;
     }
     //assign month plan
-    this.monthLevelPlan = mp;
+    // this.ceToMpMap = ceToMpM;
   }
 
-  String toString() {
-    String planningFormInString =
-        "" + this.Company + " " + this.Department + cost;
+ String toString() {
+    String planningFormInString = "Company = " +
+        this.Company +
+        "\n" +
+        "DepartMent = " +
+        this.Department +
+        "\n";
+
+    planningFormInString = planningFormInString + "Monthly Amount Plan\n";
+    for (String ce in this.costElements) {
+      planningFormInString = planningFormInString + ce + " ";
+
+      MonthlyPlan mp = this.ceToMpMap[ce];
+
+      for (PlanValue amount in mp.amountInMonth) {
+        planningFormInString = planningFormInString + amount.toString() + "||";
+      }
+
+      planningFormInString = planningFormInString + "\n";
+    }
+
+    planningFormInString = planningFormInString + "Monthly hour Plan\n";
+    for (String ce in this.costElements) {
+      planningFormInString = planningFormInString + ce + " ";
+
+      MonthlyPlan mp = this.ceToMpMap[ce];
+
+      for (PlanValue hour in mp.hourInMonth) {
+        planningFormInString = planningFormInString + hour.toString() + "||";
+      }
+      planningFormInString = planningFormInString + "\n";
+    }
     return planningFormInString;
   }
 
@@ -93,27 +116,30 @@ String savedStateFromFile="This is default";
     }
   }
 
- savePfmToFile(){
-   this.st.writeData(this.PlanningFormModeltoJsonv2());
- }
+
+ 
+
    
    String PlanningFormModeltoJsonv2() {
     String p = "";
     p = p + "{";
     p = p + "'Company':" + "'${this.Company}'" + ",";
     p = p + "'Department':" + "'${this.Department}'" + ",";
-     p = p + "'costElements':[";
-    for(String ce in this.costElements){
-      p = p + "'" + ce + "'," ;
+    p = p + "'costElements':[";
+    for (String ce in this.costElements) {
+      p = p + "'" + ce + "',";
     }
-     p = p +"],";
-    p = p + "{'ceToMpMap':[" +  "${mPlan.monthlyplantoJsonv2()}"+"]";
-   
-  
+    p = p + "],";
+    p = p + "${mPlan.monthlyplantoJsonv2()}" + "]";
+
     p = p + "}";
     p = json.encode(p);
     return p;
   }
+  savePfmToFile(){
+   
+   this.st.writeData(this.toString());
+ }
 
 }
 
@@ -173,7 +199,7 @@ class Storage {
 
   Future<File> get localFile async {
     final path = await localPath;
-    return File('$path/db.txt');
+    return File('$path/db.json');
   }
 
   Future<String> readData() async {

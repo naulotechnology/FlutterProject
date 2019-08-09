@@ -139,9 +139,9 @@ class AdminForm extends State {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   RaisedButton(
-                    onPressed: ()async {
-                      String dat = await st.readData();
-                      print(dat);
+                    onPressed: () {
+                      pfm.savePfmToFile();
+                      
                       
                       // st.writeData(pfm.toString());
                       // setState(() {
