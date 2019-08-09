@@ -139,17 +139,10 @@ class AdminForm extends State {
                 children: <Widget>[
                   RaisedButton(
                     onPressed: () {
-<<<<<<< HEAD
                       setState(() {
                         pfm.savePfmToFile();
                       });
-=======
                       pfm.savePfmToFile();
-                      
-                      
-                      // st.writeData(pfm.toString());
-                      // setState(() {
->>>>>>> d4a176f3b2fd321975cc718ad0a0d00b37e9f369
                       print("Hellow Prakash");
                     },
                     textColor: Colors.white,
