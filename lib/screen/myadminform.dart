@@ -16,11 +16,10 @@ class MyAdminForm extends StatefulWidget {
 class AdminForm extends State {
   PlanningFormModel pfm = PlanningFormModel();
 
-
   Storage st;
   @override
-   void initState() {
-    st = new Storage();     
+  void initState() {
+    st = new Storage();
     super.initState();
   }
 
@@ -139,20 +138,12 @@ class AdminForm extends State {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   RaisedButton(
-                    onPressed: ()async {
-                      String dat = await st.readData();
-                      print(dat);
-                      
-                      // st.writeData(pfm.toString());
-                      // setState(() {
+                    onPressed: () {
+                      setState(() {
+                        pfm.savePfmToFile();
+                      });
                       print("Hellow Prakash");
-                      // //   this.displayResult = names();
-                      // //  st.writeData(displayResult);
-
-                      //   child: Text('Write to File');
-                      // });
                     },
-                    
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
                     child: Container(
@@ -182,19 +173,12 @@ class AdminForm extends State {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   RaisedButton(
-                    onPressed: () async{
-                        String da = await st.readData();
+                    onPressed: () async {
+                      String da = await st.readData();
                       print(da);
-                      
+
                       print("Hellow Prakash");
                     },
-                    // setState(() {
-                    //   print("Hellow Prakash");
-                    //   // this.displayResult = (st.readData()).toString();
-                    //    print(st.readData());
-                    //   child:
-                    //   Text('Write to File');
-
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
                     child: Container(

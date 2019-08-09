@@ -19,6 +19,7 @@ class MyFormState extends State<MyForm> {
   List<String> optionList = <String>['Month', 'Hour'];
 
   String optionSelect = 'Month';
+  TextEditingController costElementController = TextEditingController();
 
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
@@ -76,76 +77,42 @@ class MyFormState extends State<MyForm> {
       color: Colors.lightBlueAccent,
       padding: EdgeInsets.only(top: 30),
       // height: 239.0,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
+      child: Column(
+        //scrollDirection: Axis.horizontal,
         children: <Widget>[
-          Center(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: 350),
+          myDropDownButtons(),
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 100),
+              ),
+              SizedBox(
+                height: 80,
+              ),
+              Container(
+                height: 40,
+                width: 180,
+                child: MaterialSwitch(
+                  padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
+                  options: optionList,
+                  selectedOption: optionSelect,
+                  selectedBackgroundColor: Colors.indigo,
+                  selectedTextColor: Colors.white,
+                  onSelect: (String optionList) {
+                    setState(() {
+                      optionSelect = optionList;
+                      if (optionSelect == "Month") {
+                        showHour = false;
+                        print("Month");
+                      } else {
+                        showHour = true;
+                        print("Hour");
+                      }
+                    });
+                  },
                 ),
-                // MyDateTime(),
-                myDropDownButtons(),
-                Row(
-                  children: <Widget>[
-                    //  new Text('Date selected: ${_date.toString()}'),
-                    // new RaisedButton(
-                    //   child: new Text("Select Date"),
-                    //   onPressed: () {
-                    //     _selectDate(context);
-                    //   },
-                    // ),
-                    // new Text(' '),
-                    // //  new Text('Time selected: ${_time.toString()}'),
-                    // new RaisedButton(
-                    //   child: new Text("Select Time"),
-                    //   onPressed: () {
-                    //     _selectTime(context);
-                    //   },
-                    // ),
-                    // SizedBox(
-                    //   width: 20,
-                    // ),
-                    //Switch Button Start
-                    SizedBox(
-                      height: 75,
-                    ),
-                    Container(
-                      height: 40,
-                      width: 180,
-                      child: MaterialSwitch(
-                        padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
-                        options: optionList,
-                        selectedOption: optionSelect,
-                        selectedBackgroundColor: Colors.indigo,
-                        selectedTextColor: Colors.white,
-                        onSelect: (String optionList) {
-                          setState(() {
-                            optionSelect = optionList;
-                            if (optionSelect == "Month") {
-                              showHour = false;
-                              print("Month");
-                            } else {
-                              showHour = true;
-                              print("Hour");
-                            }
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-
-                //Show date and time
-                // Column(
-                //   children: <Widget>[
-                //     new Text('Date : ${_date.toString()}'),
-                //     new Text('Time : ${_time.toString()}')
-                //   ],
-                // )
-              ],
-            ),
+              ),
+            ],
           )
         ],
       ),
@@ -207,42 +174,13 @@ class MyFormState extends State<MyForm> {
             }
           },
         ),
-        // child: new ListView.builder(
-        //   itemCount: 3,
-        //    itemExtent: selectItemExtent(),
-        //   itemBuilder: (BuildContext context, int index) {
-        //     if (index == 0) {
-        //       return ListView.builder(
-        //         itemCount: 1,
-        //         itemExtent: 250,
-        //         itemBuilder: (BuildContext context, int index) {
-        //           return tagList;
-        //         },
-        //       );
-        //     } else if (index == 1) {
-        //       return ListView.builder(
-        //         itemCount: 1,
-        //         itemExtent: 350,
-        //         itemBuilder: (BuildContext context, int index) {
-        //           return boardView;
-        //         },
-        //       );
-        //     } else if (index == 2) {
-        //       return ListView.builder(
-        //         itemCount: 1,
-        //         itemExtent: 50,
-        //         itemBuilder: (BuildContext context, int index) {
-        //           return saveRetriveButton();
-        //         },
-        //       );
-        //     }
-        //   },
-        // ),
       ),
     );
   }
 
   dataBody() {
+    TextStyle tStyle = new TextStyle(
+        fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
     return Container(
       decoration: BoxDecoration(
         color: Colors.lightBlue,
@@ -256,40 +194,43 @@ class MyFormState extends State<MyForm> {
       child: DataTable(
         columns: [
           DataColumn(
-            label: Text("Jan"),
+            label: Text(
+              "Jan",
+              style: tStyle,
+            ),
           ),
           DataColumn(
-            label: Text("feb"),
+            label: Text("feb", style: tStyle),
           ),
           DataColumn(
-            label: Text("mar"),
+            label: Text("mar", style: tStyle),
           ),
           DataColumn(
-            label: Text("Apr"),
+            label: Text("Apr", style: tStyle),
           ),
           DataColumn(
-            label: Text("may"),
+            label: Text("may", style: tStyle),
           ),
           DataColumn(
-            label: Text("jun"),
+            label: Text("jun", style: tStyle),
           ),
           DataColumn(
-            label: Text("july"),
+            label: Text("july", style: tStyle),
           ),
           DataColumn(
-            label: Text("Aug"),
+            label: Text("Aug", style: tStyle),
           ),
           DataColumn(
-            label: Text("Sep"),
+            label: Text("Sep", style: tStyle),
           ),
           DataColumn(
-            label: Text("Oct"),
+            label: Text("Oct", style: tStyle),
           ),
           DataColumn(
-            label: Text("Nov"),
+            label: Text("Nov", style: tStyle),
           ),
           DataColumn(
-            label: Text("Dec"),
+            label: Text("Dec", style: tStyle),
           ),
         ],
         rows: pmf.costElements
@@ -304,6 +245,7 @@ class MyFormState extends State<MyForm> {
                                     labelStyle: TextStyle(
                                         fontSize: 14, color: Colors.red),
                                     hintText: monthlyAmount.value.toString()),
+                                controller: costElementController,
                                 // save the txt to amount in month
                                 onChanged: (txt) {
                                   pmf.setAmount(
@@ -314,12 +256,6 @@ class MyFormState extends State<MyForm> {
                                 },
                               ),
                             ),
-                        // DataCell(
-                        //       Text(monthlyAmount.toString()),
-                        //       onTap: () {
-                        //         print('Selected $monthlyAmount');
-                        //       },
-                        //     ),
                       )
                       .toList(),
                 ))
@@ -327,6 +263,15 @@ class MyFormState extends State<MyForm> {
       ),
     );
   }
+
+  // returnCETextControllerValue() {
+  //   int ceController = int.parse(costElementController.text);
+  //   if (ceController == null) {
+  //     return 1;
+  //   } else {
+  //     return ceController;
+  //   }
+  // }
 
   costElementTable() {
     return Container(
@@ -356,8 +301,8 @@ class MyFormState extends State<MyForm> {
                             Text(
                               attr,
                               style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.red[50],
+                                  fontSize: 15,
+                                  color: Colors.black54,
                                   fontFamily: 'SourceSansPro'),
                             ), onTap: () {
                           print('Selected ${attr}');
@@ -378,9 +323,12 @@ class MyFormState extends State<MyForm> {
         children: <Widget>[
           RaisedButton(
             onPressed: () {
-              setState(() {
-                pmf.savePfmToFile();
-              });
+              // setState(() {
+              //   pmf.savePfmToFile();
+              // });
+              // st.writeData(pfm.toString());
+              // setState(() {
+              print("Hellow Prakash");
             },
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
@@ -401,8 +349,9 @@ class MyFormState extends State<MyForm> {
           ),
           RaisedButton(
             onPressed: () async {
-              String readData = await (st.readData());
-              print(readData);
+              String da = await st.readData();
+              print(da);
+              print("Hellow PrakashBidari");
             },
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
@@ -439,13 +388,9 @@ class MyFormState extends State<MyForm> {
 
   myDropDownButtons() {
     return Container(
-      width: 170,
-      height: 170,
-      decoration: new BoxDecoration(
-          border: Border.all(
-        color: Color.fromRGBO(220, 0, 100, 1),
-        width: 2.0,
-      )),
+      // width: 170,
+      // height: 170,
+      padding: EdgeInsets.only(right: 234),
       child: Column(
         children: <Widget>[
           Text(
@@ -453,6 +398,7 @@ class MyFormState extends State<MyForm> {
             style: TextStyle(fontSize: 12),
           ),
           Container(
+            width: 124,
             decoration: new BoxDecoration(
                 color: Colors.tealAccent,
                 border: Border.all(
@@ -465,25 +411,28 @@ class MyFormState extends State<MyForm> {
                   data: Theme.of(context).copyWith(
                     canvasColor: Colors.blue.shade200,
                   ),
-                  child: DropdownButton<String>(
-                    value: dropdownValue,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        dropdownValue = newValue;
-                      });
-                    },
-                    items: <String>[
-                      "Naulo Technology",
-                      "My Technology",
-                      "Your Technology"
-                    ].map<DropdownMenuItem<String>>(
-                      (String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value, style: TextStyle(fontSize: 12)),
-                        );
+                  child: ButtonTheme(
+                    //alignedDropdown: true,
+                    child: DropdownButton<String>(
+                      value: dropdownValue,
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                        });
                       },
-                    ).toList(),
+                      items: <String>[
+                        "Naulo Technology",
+                        "My Technology",
+                        "Your Technology"
+                      ].map<DropdownMenuItem<String>>(
+                        (String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value, style: TextStyle(fontSize: 12)),
+                          );
+                        },
+                      ).toList(),
+                    ),
                   ),
                 ),
               ],
@@ -509,22 +458,28 @@ class MyFormState extends State<MyForm> {
                   data: Theme.of(context).copyWith(
                     canvasColor: Colors.blue.shade200,
                   ),
-                  child: DropdownButton<String>(
-                    value: dropdownValue1,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        dropdownValue1 = newValue;
-                      });
-                    },
-                    items: <String>["Nepali", "Chemestry", "Physics"]
-                        .map<DropdownMenuItem<String>>(
-                      (String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value, style: TextStyle(fontSize: 12)),
-                        );
-                      },
-                    ).toList(),
+                  child: DropdownButtonHideUnderline(
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton<String>(
+                        value: dropdownValue1,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropdownValue1 = newValue;
+                          });
+                        },
+                        items: <String>["Nepali", "Chemestry", "Physics"]
+                            .map<DropdownMenuItem<String>>(
+                          (String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child:
+                                  Text(value, style: TextStyle(fontSize: 12)),
+                            );
+                          },
+                        ).toList(),
+                      ),
+                    ),
                   ),
                 ),
               ],
