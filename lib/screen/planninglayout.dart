@@ -172,7 +172,7 @@ class MyFormState extends State<MyForm> {
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               return tagList;
-            } else if (index == 1) {
+             } else if (index == 1) {
               return boardView;
             } else if (index == 2) {
               return saveRetriveButton();
@@ -331,7 +331,7 @@ class MyFormState extends State<MyForm> {
               setState(() {
                 pfm.savePfmToFile();
               });
-              print("Hellow Prakash");
+              print("data wrote to file = ${pfm.toString()}");
             },
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
@@ -353,8 +353,10 @@ class MyFormState extends State<MyForm> {
           RaisedButton(
             onPressed: () async {
               String da = await st.readData();
-              print(da);
-              print("Hellow PrakashBidari");
+              pfm.savedStateFromFile = da;
+
+              //print(da);
+              print("data read from file = $da");
             },
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),

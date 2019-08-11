@@ -49,6 +49,7 @@ class SaveStateFile extends State {
                 controller: saveStateFileController,
                 onSaved: (txt) {
                   setState(() {
+                    
                     saveStateFileController.text = pfm.savedStateFromFile;
                   });
                 },
@@ -72,20 +73,6 @@ class SaveStateFile extends State {
       ),
     );
   }
-
-  // String name() {
-  //   setState(() {
-  //     saveStateFileController.text = pfm.savedStateFromFile;
-  //   });
-  //   return saveStateFileController.toString();
-  // }
-
-  // void dispose() {
-  //   // other dispose methods
-  //   saveStateFileController.dispose();
-  //   super.dispose();
-  // }
-
   void handleText() {
     saveStateFileController.text = saveStateFileController1.text;
   }

@@ -2,8 +2,6 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
-import 'package:flutterproject/screen/planninglayout.dart';
-
 
 class PlanningFormModel {
   String Company;
@@ -13,7 +11,6 @@ class PlanningFormModel {
   
   List<PlanValue> amtList;
   Map<String, MonthlyPlan> monthLevelPlan;
-  PlanningFormModel pfm;
   MonthlyPlan mPlan;
   String currentSavedState;
   String cost = "";
@@ -43,6 +40,7 @@ class PlanningFormModel {
 
     for (String ce in this.costElements) {
       //creaete monthly plan for each cost element
+      MonthlyPlan mPlan = new MonthlyPlan(this);
       mPlan.category = ce;
     
 
@@ -69,7 +67,7 @@ class PlanningFormModel {
       this.ceToMpMap[ce] = mPlan;
     }
     //assign month plan
-    // this.ceToMpMap = ceToMpM;
+     this.monthLevelPlan = ceToMpMap;
   }
 
   String toString() {
@@ -135,7 +133,8 @@ class PlanningFormModel {
   
   savePfmToFile(){
    
-    this.st.writeData(this.planningFormModeltoJSON());
+    //this.st.writeData(this.planningFormModeltoJSON());
+    this.st.writeData(this.toString());
   }
 
   Future<String> readPfmFromFile(){
