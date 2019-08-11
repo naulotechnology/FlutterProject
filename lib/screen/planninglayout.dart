@@ -4,7 +4,6 @@ import 'package:flutterproject/models/readwritefile.dart';
 import 'package:material_switch/material_switch.dart';
 import 'dart:async';
 
-
 class MyForm extends StatefulWidget {
   PlanningFormModel pfm;
   MyForm(PlanningFormModel pfm) {
@@ -157,29 +156,96 @@ class MyFormState extends State<MyForm> {
 
     //  int _value=0;
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-            bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+      body: DefaultTabController(
+        length: 3,
+        child: SafeArea(
+          child: Scaffold(
+            body: TabBarView(
+              children: [
+                new Container(
+                  //color: Colors.white10,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                      top: BorderSide(
+                          width: 1.0, color: Colors.lightBlue.shade500),
+                      bottom: BorderSide(
+                          width: 1.0, color: Colors.lightBlue.shade900),
+                    ),
+                  ),
+                  child: new ListView.builder(
+                    itemCount: 3,
+                    itemExtent: selectItemExtent(),
+                    shrinkWrap: true,
+                    //reverse: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (index == 0) {
+                        return tagList;
+                      } else if (index == 1) {
+                        return boardView;
+                      } else if (index == 2) {
+                        return saveRetriveButton();
+                      }
+                    },
+                  ),
+                  //color: Colors.white,
+                ),
+                new Container(
+                  color: Colors.lightGreen,
+                ),
+                new Container(
+                  color: Colors.red,
+                ),
+              ],
+            ),
+            bottomNavigationBar: new TabBar(
+              tabs: [
+                Tab(
+                  //icon: new Icon(Icons.home),
+                  text: "plan",
+                ),
+                Tab(
+                  //icon: new Icon(Icons.account_balance),
+                  text: "actual",
+                ),
+                Tab(
+                  //icon: new Icon(Icons.vibration),
+                  text: "variance",
+                ),
+              ],
+              labelColor: Colors.yellow,
+              unselectedLabelColor: Colors.blue,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorPadding: EdgeInsets.all(5.0),
+              indicatorColor: Colors.red,
+            ),
+            backgroundColor: Colors.black,
           ),
         ),
-        child: new ListView.builder(
-          itemCount: 3,
-          itemExtent: selectItemExtent(),
-          shrinkWrap: true,
-          //reverse: true,
-          itemBuilder: (BuildContext context, int index) {
-            if (index == 0) {
-              return tagList;
-             } else if (index == 1) {
-              return boardView;
-            } else if (index == 2) {
-              return saveRetriveButton();
-            }
-          },
-        ),
       ),
+      // body: Container(
+      //   decoration: BoxDecoration(
+      //     border: Border(
+      //       top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+      //       bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+      //     ),
+      //   ),
+      //   child: new ListView.builder(
+      //     itemCount: 3,
+      //     itemExtent: selectItemExtent(),
+      //     shrinkWrap: true,
+      //     //reverse: true,
+      //     itemBuilder: (BuildContext context, int index) {
+      //       if (index == 0) {
+      //         return tagList;
+      //        } else if (index == 1) {
+      //         return boardView;
+      //       } else if (index == 2) {
+      //         return saveRetriveButton();
+      //       }
+      //     },
+      //   ),
+      // ),
     );
   }
 
