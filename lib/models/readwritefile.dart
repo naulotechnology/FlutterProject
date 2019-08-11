@@ -9,20 +9,19 @@ class PlanningFormModel {
   String Company;
   String Department;
   List<String> costElements;
-   Map<String, MonthlyPlan> ceToMpMap;
-   List<PlanValue> amtList;
+  Map<String, MonthlyPlan> ceToMpMap;
+  
+  List<PlanValue> amtList;
   Map<String, MonthlyPlan> monthLevelPlan;
   MonthlyPlan mPlan = new MonthlyPlan();
   String currentSavedState;
   String cost = "";
 
-String savedStateFromFile="This is default";
+  String savedStateFromFile="This is default";
   Storage st ;
   
 
-  
-
-   PlanningFormModel() {
+  PlanningFormModel() {
     this.Company = "N Tech";
     this.Department = "Marketing";
      this.st = new Storage();
@@ -72,7 +71,7 @@ String savedStateFromFile="This is default";
     // this.ceToMpMap = ceToMpM;
   }
 
- String toString() {
+  String toString() {
     String planningFormInString = "Company = " +
         this.Company +
         "\n" +
@@ -115,11 +114,8 @@ String savedStateFromFile="This is default";
     }
   }
 
-
- 
-
-   
-   String PlanningFormModeltoJsonv2() {
+  
+   String PlanningFormModeltoJsonv() {
     String p = "";
     p = p + "{";
     p = p + "'Company':" + "'${this.Company}'" + ",";
@@ -135,10 +131,18 @@ String savedStateFromFile="This is default";
     p = json.encode(p);
     return p;
   }
+  
   savePfmToFile(){
    
-   this.st.writeData(this.PlanningFormModeltoJsonv2());
- }
+    this.st.writeData(this.PlanningFormModeltoJsonv());
+  }
+
+  Future<String> readPfmFromFile(){
+   
+    return this.st.readData();
+  }
+
+
 
 }
 
