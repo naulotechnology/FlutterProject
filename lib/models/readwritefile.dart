@@ -115,7 +115,7 @@ class PlanningFormModel {
   }
 
   
-   String PlanningFormModeltoJsonv() {
+   String planningFormModeltoJSON() {
     String p = "";
     p = p + "{";
     p = p + "'Company':" + "'${this.Company}'" + ",";
@@ -134,7 +134,7 @@ class PlanningFormModel {
   
   savePfmToFile(){
    
-    this.st.writeData(this.PlanningFormModeltoJsonv());
+    this.st.writeData(this.planningFormModeltoJSON());
   }
 
   Future<String> readPfmFromFile(){
