@@ -6,9 +6,14 @@ import 'dart:async';
 
 
 class MyForm extends StatefulWidget {
+  PlanningFormModel pfm;
+  MyForm(PlanningFormModel pfm) {
+    this.pfm = pfm;
+  }
+
   @override
   MyFormState createState() {
-    return MyFormState();
+    return MyFormState(pfm);
   }
 }
 
@@ -25,19 +30,18 @@ class MyFormState extends State<MyForm> {
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
 
-  PlanningFormModel pmf;
+  PlanningFormModel pfm;
 
   Storage st;
   MonthlyPlan mp;
   bool showHour = false;
 
+  MyFormState(PlanningFormModel pfm) {
+    this.pfm = pfm;
+  }
   @override
   void initState() {
-    //attributes = Attribute.getAttributes();
-    pmf = new PlanningFormModel();
-    mp = new MonthlyPlan();
-    st = new Storage();
-
+    st = this.pfm.st;
     super.initState();
   }
 
@@ -130,7 +134,7 @@ class MyFormState extends State<MyForm> {
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: 1,
-          itemExtent: 60 * pmf.costElements.length.toDouble(),
+          itemExtent: 60 * pfm.costElements.length.toDouble(),
           itemBuilder: (BuildContext context, int index) {
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -234,9 +238,9 @@ class MyFormState extends State<MyForm> {
             label: Text("Dec", style: tStyle),
           ),
         ],
-        rows: pmf.costElements
+        rows: pfm.costElements
             .map((attr) => DataRow(
-                  cells: pmf.monthLevelPlan[attr]
+                  cells: pfm.monthLevelPlan[attr]
                       .getMonthlyPlan(showHour)
                       .map(
                         (monthlyAmount) => DataCell(
@@ -249,7 +253,7 @@ class MyFormState extends State<MyForm> {
                                 controller: costElementController,
                                 // save the txt to amount in month
                                 onChanged: (txt) {
-                                  pmf.setAmount(
+                                  pfm.setAmount(
                                       showHour, attr, txt, monthlyAmount.index);
                                 },
                                 onTap: () {
@@ -294,7 +298,7 @@ class MyFormState extends State<MyForm> {
               ),
             ),
           ],
-          rows: pmf.costElements
+          rows: pfm.costElements
               .map(
                 (attr) => DataRow(
                       cells: [
@@ -324,11 +328,9 @@ class MyFormState extends State<MyForm> {
         children: <Widget>[
           RaisedButton(
             onPressed: () {
-              // setState(() {
-              //   pmf.savePfmToFile();
-              // });
-              // st.writeData(pfm.toString());
-              // setState(() {
+              setState(() {
+                pfm.savePfmToFile();
+              });
               print("Hellow Prakash");
             },
             textColor: Colors.white,
@@ -491,63 +493,3 @@ class MyFormState extends State<MyForm> {
     );
   }
 }
-
-//  Container(
-//       decoration: new BoxDecoration(
-//           color: Colors.blueGrey,
-//           borderRadius: BorderRadius.circular(2),
-//           border: Border.all(
-//               color: Color.fromRGBO(112, 112, 112, 1.0), width: 1.0)),
-//       child: Column(
-//         children: <Widget>[
-//           Text(
-//             "Company",
-//             style: TextStyle(fontSize: 12),
-//           ),
-//           DropdownButton<String>(
-//             value: dropdownValue,
-//             onChanged: (String newValue) {
-//               setState(() {
-//                 dropdownValue = newValue;
-//               });
-//             },
-//             items: <String>[
-//               "Naulo Technology",
-//               "My Technology",
-//               "Your Technology"
-//             ].map<DropdownMenuItem<String>>(
-//               (String value) {
-//                 return DropdownMenuItem<String>(
-//                   value: value,
-//                   child: Text(value, style: TextStyle(fontSize: 12)),
-//                 );
-//               },
-//             ).toList(),
-//           ),
-//           SizedBox(
-//             height: 30,
-//           ),
-//           Text(
-//             "DepartMent",
-//             style: TextStyle(fontSize: 12),
-//           ),
-//           DropdownButton<String>(
-//             value: dropdownValue1,
-//             onChanged: (String newValue) {
-//               setState(() {
-//                 dropdownValue1 = newValue;
-//               });
-//             },
-//             items: <String>["Nepali", "Chemestry", "Physics"]
-//                 .map<DropdownMenuItem<String>>(
-//               (String value) {
-//                 return DropdownMenuItem<String>(
-//                   value: value,
-//                   child: Text(value, style: TextStyle(fontSize: 12)),
-//                 );
-//               },
-//             ).toList(),
-//           ),
-//         ],
-//       ),
-//     );

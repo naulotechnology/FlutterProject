@@ -4,19 +4,29 @@ import 'package:flutterproject/models/readwritefile.dart';
 
 
 class SavedStateFromFile extends StatefulWidget {
+  PlanningFormModel pfm;
+
+  SavedStateFromFile(PlanningFormModel pfm) {
+    this.pfm = pfm;
+  }
+
   @override
   State<StatefulWidget> createState() {
-    return SaveStateFile();
+    return SaveStateFile(pfm);
   }
 }
 
 class SaveStateFile extends State {
-  PlanningFormModel pfm = new PlanningFormModel();
+  PlanningFormModel pfm;
+
+  SaveStateFile(PlanningFormModel pfm) {
+    this.pfm = pfm;
+  }
+
   String saveState;
 
   TextEditingController saveStateFileController = TextEditingController();
-    TextEditingController saveStateFileController1 = TextEditingController();
-
+  TextEditingController saveStateFileController1 = TextEditingController();
 
   void initState() {
     super.initState();

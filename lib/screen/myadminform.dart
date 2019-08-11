@@ -1,20 +1,25 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterproject/models/readwritefile.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:convert';
 
 class MyAdminForm extends StatefulWidget {
+   PlanningFormModel pfm;
+
+  MyAdminForm(PlanningFormModel pfm){
+    this.pfm = pfm;
+  }
   @override
   State<StatefulWidget> createState() {
-    return AdminForm();
+    return AdminForm(pfm);
   }
 }
 
 class AdminForm extends State {
-  PlanningFormModel pfm = PlanningFormModel();
+  PlanningFormModel pfm;
+
+  AdminForm(PlanningFormModel pfm){
+    this.pfm = pfm;
+  }
 
   Storage st;
   @override
@@ -142,8 +147,8 @@ class AdminForm extends State {
                       setState(() {
                         pfm.savePfmToFile();
                       });
-                      pfm.savePfmToFile();
-                      print("Hellow Prakash");
+                      // pfm.savePfmToFile();
+                      // print("Hellow Prakash");
                     },
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
@@ -177,7 +182,6 @@ class AdminForm extends State {
                     onPressed: () async {
                       String da = await st.readData();
                       print(da);
-
                       print("Hellow Prakash");
                     },
                     textColor: Colors.white,
@@ -208,11 +212,4 @@ class AdminForm extends State {
       ),
     );
   }
-
-  // String names() {
-  //   String company = (companyController.text).toString();
-  //   String department = (departmentController.text).toString();
-  //   String result = "Company and DepartMent name is $company $department";
-  //   return result;
-  // }
 }

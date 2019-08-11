@@ -13,7 +13,8 @@ class PlanningFormModel {
   
   List<PlanValue> amtList;
   Map<String, MonthlyPlan> monthLevelPlan;
-  MonthlyPlan mPlan = new MonthlyPlan();
+  PlanningFormModel pfm;
+  MonthlyPlan mPlan;
   String currentSavedState;
   String cost = "";
 
@@ -26,6 +27,7 @@ class PlanningFormModel {
     this.Department = "Marketing";
      this.st = new Storage();
     this.costElements = new List<String>();
+    mPlan = new MonthlyPlan(this);
 
     this.costElements.add("Transportation");
     this.costElements.add("Marketing");
@@ -41,7 +43,6 @@ class PlanningFormModel {
 
     for (String ce in this.costElements) {
       //creaete monthly plan for each cost element
-
       mPlan.category = ce;
     
 
@@ -83,7 +84,7 @@ class PlanningFormModel {
     for (String ce in this.costElements) {
       planningFormInString = planningFormInString + ce + " ";
 
-      MonthlyPlan mp = this.ceToMpMap[ce];
+      MonthlyPlan mp = this.monthLevelPlan[ce];
 
       for (PlanValue amount in mp.amountInMonth) {
         planningFormInString = planningFormInString + amount.toString() + "||";
@@ -96,7 +97,7 @@ class PlanningFormModel {
     for (String ce in this.costElements) {
       planningFormInString = planningFormInString + ce + " ";
 
-      MonthlyPlan mp = this.ceToMpMap[ce];
+      MonthlyPlan mp = this.monthLevelPlan[ce];
 
       for (PlanValue hour in mp.hourInMonth) {
         planningFormInString = planningFormInString + hour.toString() + "||";
@@ -161,6 +162,12 @@ class MonthlyPlan {
   String category;
   List<PlanValue> amountInMonth;
   List<PlanValue> hourInMonth;
+  PlanningFormModel pfm;
+
+
+  MonthlyPlan(PlanningFormModel pfm){
+      this.pfm = pfm;
+  }
 
     String monthlyplantoJsonv2() {
     PlanningFormModel pfm = new PlanningFormModel();

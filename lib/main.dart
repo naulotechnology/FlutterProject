@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterproject/models/readwritefile.dart';
 import 'package:flutterproject/screen/myadminform.dart';
 import 'package:flutterproject/screen/planninglayout.dart';
 import 'package:flutterproject/screen/satting.dart';
@@ -42,16 +43,17 @@ class HomePage extends StatefulWidget {
 
 class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
   int _selectedDrawerIndex = 0;
+  PlanningFormModel pfm = new PlanningFormModel();
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return new MyForm();
+        return new MyForm(pfm);
       case 1:
-        return new MyAdminForm();
+        return new MyAdminForm(pfm);
 
       default:
-        return new SavedStateFromFile();
+        return new SavedStateFromFile(pfm);
     }
   }
 
