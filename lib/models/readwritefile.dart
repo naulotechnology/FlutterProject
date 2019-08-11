@@ -39,8 +39,7 @@ class PlanningFormModel {
     //  mp=mp.amountInMonth
 
     for (String ce in this.costElements) {
-      //creaete monthly plan for each cost element
-      MonthlyPlan mPlan = new MonthlyPlan(this);
+    
       mPlan.category = ce;
     
 
@@ -133,8 +132,8 @@ class PlanningFormModel {
   
   savePfmToFile(){
    
-    //this.st.writeData(this.planningFormModeltoJSON());
-    this.st.writeData(this.toString());
+    this.st.writeData(this.planningFormModeltoJSON());
+    // this.st.writeData(this.toString());
   }
 
   Future<String> readPfmFromFile(){
