@@ -306,7 +306,7 @@ class MyFormState extends State<MyForm> {
         ],
         rows: pfm.costElements
             .map((attr) => DataRow(
-                  cells: pfm.monthLevelPlan[attr]
+                  cells: pfm.ceToMpMap[attr]
                       .getMonthlyPlan(showHour)
                       .map(
                         (monthlyAmount) => DataCell(

@@ -7,15 +7,30 @@ class PlanningFormModel {
   String Company;
   String Department;
   List<String> costElements;
-  Map<String, MonthlyPlan> ceToMpMap;
-  
-  List<PlanValue> amtList;
-  Map<String, MonthlyPlan> monthLevelPlan;
-  MonthlyPlan mPlan;
-  String currentSavedState;
-  String cost = "";
 
+  /*
+  Cost Element to Monthly Plan map
+  */
+  Map<String, MonthlyPlan> ceToMpMap;
+
+  /*
+  Cost Element to Monthly Actuals map
+  */
+  Map<String, MonthlyActual> ceToMaMap;
+  
+  /*
+  Cost Element to Monthly Variance map
+  */
+  Map<String, MonthlyVariance> ceToMvMap;
+  
+  /*
+  *This string is to hold current state of the App read from Storage
+  */
   String savedStateFromFile="This is default";
+
+  /*
+  *Storge class does the file/cloudstore/db read/write
+  */
   Storage st ;
   
 
@@ -24,7 +39,7 @@ class PlanningFormModel {
     this.Department = "Marketing";
      this.st = new Storage();
     this.costElements = new List<String>();
-    mPlan = new MonthlyPlan(this);
+    //mPlan = new MonthlyPlan(this);
 
     this.costElements.add("Transportation");
     this.costElements.add("Marketing");
@@ -35,38 +50,63 @@ class PlanningFormModel {
     //instatiate the map to store monthly plan for each costEleemnts
     ceToMpMap = new Map<String, MonthlyPlan>();
 
-    //mp = mp.getbykey(legal)
-    //  mp=mp.amountInMonth
-
+ 
+    MonthlyPlan mPlan; MonthlyActual mActual; MonthlyVariance mVariance;
+    List<DataValue> monthlyActualAmts, montlyPlanAmts, monthlyVarianceAmts;
+    List<DataValue> monthlyActualHrs, montlyPlanHrs, monthlyVarianceHrs;
+    
     for (String ce in this.costElements) {
     
       mPlan.category = ce;
     
+      monthlyActualAmts = new List<ActualValue>();
+      montlyPlanAmts = new List<PlanValue>();
+      monthlyVarianceAmts = new List<VarianceValue>();
 
-       amtList = new List<PlanValue>();
-
-
-      for (int i = 0; i < 12; i++) {
-        //assign some amount to each of the 12 months
-        PlanValue pa = new PlanValue(i * 125, i);
-        amtList.add(pa);
-      }
-      mPlan.amountInMonth = amtList;
-
-      List hrList = new List<PlanValue>();
 
       for (int i = 0; i < 12; i++) {
-        //assign some amount to each of the 12 months
-        PlanValue pa = new PlanValue(i * 7, i);
-        hrList.add(pa);
+        //assign plan amounts to each of the 12 months
+        PlanValue pv = new PlanValue(i * 125, i);
+        //assign plan amounts to each of the 12 months
+        ActualValue av = new ActualValue(i * 135, i);
+        //Variance the difference between plan = actual
+        VarianceValue vv = new VarianceValue(pv.value - av.value, i);
+
+        //assign plan Hours to each of the 12 months
+        PlanValue ph = new PlanValue(i * 7, i);
+        //assign plan Hours to each of the 12 months
+        ActualValue ah = new ActualValue(i * 9, i);
+        //Variance the difference between plan = actual
+        VarianceValue vh = new VarianceValue(pv.value - av.value, i);
+
+        //add to amounts list for Plan, Actual, Variance
+        monthlyActualAmts.add(av);
+        montlyPlanAmts.add(pv);
+        monthlyVarianceAmts.add(vv);
+
+        //add to amounts list for Plan, Actual, Variance
+        monthlyActualHrs.add(ah);
+        montlyPlanHrs.add(ph);
+        monthlyVarianceHrs.add(vh);
       }
-      mPlan.hourInMonth = hrList;
+
+      //assign Monthly Plan Actual Vairance amounts to each plan
+      mActual.amountInMonth = monthlyActualAmts;
+      mPlan.amountInMonth = montlyPlanAmts;
+      mVariance.amountInMonth = monthlyVarianceAmts;
+
+      //assign Monthly Plan Actual Vairance amounts to each plan
+      mActual.hourInMonth = monthlyActualHrs;
+      mPlan.hourInMonth = montlyPlanHrs;
+      mVariance.hourInMonth = monthlyVarianceHrs;
 
       //add monthly plan for the is
       this.ceToMpMap[ce] = mPlan;
+      this.ceToMaMap[ce] = mActual;
+      this.ceToMvMap[ce] = mVariance;
     }
     //assign month plan
-     this.monthLevelPlan = ceToMpMap;
+    //this.monthLevelPlan = ceToMpMap;
   }
 
   String toString() {
@@ -81,7 +121,9 @@ class PlanningFormModel {
     for (String ce in this.costElements) {
       planningFormInString = planningFormInString + ce + " ";
 
-      MonthlyPlan mp = this.monthLevelPlan[ce];
+      MonthlyPlan mp = this.ceToMpMap[ce];
+      MonthlyActual ma = this.ceToMaMap[ce];
+      MonthlyVariance mv = this.ceToMvMap[ce];
 
       for (PlanValue amount in mp.amountInMonth) {
         planningFormInString = planningFormInString + amount.toString() + "||";
@@ -94,7 +136,7 @@ class PlanningFormModel {
     for (String ce in this.costElements) {
       planningFormInString = planningFormInString + ce + " ";
 
-      MonthlyPlan mp = this.monthLevelPlan[ce];
+      MonthlyPlan mp = this.ceToMpMap[ce];
 
       for (PlanValue hour in mp.hourInMonth) {
         planningFormInString = planningFormInString + hour.toString() + "||";
@@ -106,9 +148,9 @@ class PlanningFormModel {
 
   setAmount(bool isHour, String costElement, String amount,int idx) {
     if (isHour) {
-      this.monthLevelPlan[costElement].hourInMonth[idx].value=(int.parse(amount));
+      this.ceToMpMap[costElement].hourInMonth[idx].value=(int.parse(amount));
     } else {
-      this.monthLevelPlan[costElement].amountInMonth[idx].value=(int.parse(amount));
+      this.ceToMpMap[costElement].amountInMonth[idx].value=(int.parse(amount));
     }
   }
 
@@ -122,10 +164,13 @@ class PlanningFormModel {
     for (String ce in this.costElements) {
       p = p + "'" + ce + "',";
     }
-    p = p + "],";
-    p = p + "${mPlan.monthlyplantoJsonv2()}" + "]";
+    p = p + "],{'Plan':{[";
+    for (String ce in this.costElements) {
+      p = p + "${this.ceToMpMap[ce].monthlyplantoJsonv2()},";
+    }
+    p = p + "]}";
 
-    p = p + "}";
+    p = p + "]}";
     p = json.encode(p);
     return p;
   }
@@ -145,17 +190,45 @@ class PlanningFormModel {
 
 }
 
-class PlanValue{
-  int value;
+class DataValue{
   int index;
-
-  PlanValue(int amt, int idx){
-    this.value = amt;
+  int value;
+  
+  DataValue(int amt, int idx){
+    this.value= amt;
     this.index = idx;
-
   }
 }
 
+class PlanValue extends DataValue{
+  PlanValue(int amt, int idx): super(amt, idx);
+}
+
+class ActualValue extends DataValue{
+ 
+  ActualValue(int amt, int idx): super(amt, idx);
+  
+}
+
+class VarianceValue extends DataValue{
+ 
+  VarianceValue(int amt, int idx): super(amt, idx);
+  
+}
+
+class MonthlyValues{
+  String category;
+  List<DataValue> amountInMonth;
+  List<DataValue> hourInMonth;
+  //PlanningFormModel pfm;
+}
+class MonthlyActual extends MonthlyValues{
+
+}
+
+class MonthlyVariance extends MonthlyValues{
+
+}
 class MonthlyPlan {
   String category;
   List<PlanValue> amountInMonth;
@@ -163,9 +236,9 @@ class MonthlyPlan {
   PlanningFormModel pfm;
 
 
-  MonthlyPlan(PlanningFormModel pfm){
-      this.pfm = pfm;
-  }
+  //MonthlyPlan(PlanningFormModel pfm){
+  //    this.pfm = pfm;
+  //}
 
     String monthlyplantoJsonv2() {
     PlanningFormModel pfm = new PlanningFormModel();
