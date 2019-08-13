@@ -58,6 +58,7 @@ class PlanningFormModel {
     List<DataValue> monthlyActualHrs, montlyPlanHrs, monthlyVarianceHrs;
     
     for (String ce in this.costElements) {
+      
     
       mPlan.category = ce;
       mActual.category = ce;
