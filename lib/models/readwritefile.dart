@@ -49,6 +49,8 @@ class PlanningFormModel {
 
     //instatiate the map to store monthly plan for each costEleemnts
     ceToMpMap = new Map<String, MonthlyPlan>();
+    ceToMaMap = new Map<String, MonthlyActual>();
+    ceToMvMap = new Map<String, MonthlyVariance>();
 
  
     MonthlyPlan mPlan; MonthlyActual mActual; MonthlyVariance mVariance;
@@ -58,6 +60,8 @@ class PlanningFormModel {
     for (String ce in this.costElements) {
     
       mPlan.category = ce;
+      mActual.category = ce;
+      mVariance.category = ce;
     
       monthlyActualAmts = new List<ActualValue>();
       montlyPlanAmts = new List<PlanValue>();
