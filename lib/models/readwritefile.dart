@@ -134,8 +134,7 @@ class PlanningFormModel {
       planningFormInString = planningFormInString + ce + " ";
 
       MonthlyPlan mp = this.ceToMpMap[ce];
-      MonthlyActual ma = this.ceToMaMap[ce];
-      MonthlyVariance mv = this.ceToMvMap[ce];
+      
 
       for (PlanValue amount in mp.amountInMonth) {
         planningFormInString = planningFormInString + amount.toString() + "||";
