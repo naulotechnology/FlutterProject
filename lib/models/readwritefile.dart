@@ -121,7 +121,7 @@ class PlanningFormModel {
     //this.monthLevelPlan = ceToMpMap;
   }
 
-  String toString() {
+  String toStringMp() {
     String planningFormInString = "Company = " +
         this.Company +
         "\n" +
@@ -158,16 +158,86 @@ class PlanningFormModel {
     return planningFormInString;
   }
 
-  setAmount(bool isHour, String costElement, String amount,int idx) {
+  String toStringMa() {
+    String planningFormInString = "Company = " +
+        this.Company +
+        "\n" +
+        "DepartMent = " +
+        this.Department +
+        "\n";
+
+    planningFormInString = planningFormInString + "Monthly Amount Plan\n";
+    for (String ce in this.costElements) {
+      planningFormInString = planningFormInString + ce + " ";
+
+      MonthlyActual ma = this.ceToMaMap[ce];
+
+      for (ActualValue amount in ma.amountInMonth) {
+        planningFormInString = planningFormInString + amount.toString() + "||";
+      }
+
+      planningFormInString = planningFormInString + "\n";
+    }
+
+    planningFormInString = planningFormInString + "Monthly hour Plan\n";
+    for (String ce in this.costElements) {
+      planningFormInString = planningFormInString + ce + " ";
+
+      MonthlyActual ma = this.ceToMaMap[ce];
+
+      for (ActualValue hour in ma.hourInMonth) {
+        planningFormInString = planningFormInString + hour.toString() + "||";
+      }
+      planningFormInString = planningFormInString + "\n";
+    }
+    return planningFormInString;
+  }
+
+  String toStringMv() {
+    String planningFormInString = "Company = " +
+        this.Company +
+        "\n" +
+        "DepartMent = " +
+        this.Department +
+        "\n";
+
+    planningFormInString = planningFormInString + "Monthly Amount Plan\n";
+    for (String ce in this.costElements) {
+      planningFormInString = planningFormInString + ce + " ";
+
+      MonthlyVariance mv = this.ceToMvMap[ce];
+
+      for (VarianceValue amount in mv.amountInMonth) {
+        planningFormInString = planningFormInString + amount.toString() + "||";
+      }
+
+      planningFormInString = planningFormInString + "\n";
+    }
+
+    planningFormInString = planningFormInString + "Monthly hour Plan\n";
+    for (String ce in this.costElements) {
+      planningFormInString = planningFormInString + ce + " ";
+
+      MonthlyVariance mv = this.ceToMvMap[ce];
+
+      for (VarianceValue hour in mv.hourInMonth) {
+        planningFormInString = planningFormInString + hour.toString() + "||";
+      }
+      planningFormInString = planningFormInString + "\n";
+    }
+    return planningFormInString;
+  }
+
+  setAmount(bool isHour, String costElement, String amount, int idx) {
     if (isHour) {
-      this.ceToMpMap[costElement].hourInMonth[idx].value=(int.parse(amount));
+      this.ceToMpMap[costElement].hourInMonth[idx].value = (int.parse(amount));
     } else {
-      this.ceToMpMap[costElement].amountInMonth[idx].value=(int.parse(amount));
+      this.ceToMpMap[costElement].amountInMonth[idx].value =
+          (int.parse(amount));
     }
   }
 
-  
-   String planningFormModeltoJSON() {
+  String planningFormModelMptoJSON() {
     String p = "";
     p = p + "{";
     p = p + "'Company':" + "'${this.Company}'" + ",";
@@ -178,7 +248,7 @@ class PlanningFormModel {
     }
     p = p + "],{'Plan':{[";
     for (String ce in this.costElements) {
-      p = p + "${this.ceToMpMap[ce].monthlyplantoJsonv2()},";
+      p = p + "${this.ceToMpMap[ce].monthlyPlanToJson()},";
     }
     p = p + "]}";
 
@@ -186,84 +256,163 @@ class PlanningFormModel {
     p = json.encode(p);
     return p;
   }
-  
-  savePfmToFile(){
-   
-    this.st.writeData(this.planningFormModeltoJSON());
+
+  String planningFormModelMatoJSON() {
+    String p = "";
+    p = p + "{";
+    p = p + "'Company':" + "'${this.Company}'" + ",";
+    p = p + "'Department':" + "'${this.Department}'" + ",";
+    p = p + "'costElements':[";
+    for (String ce in this.costElements) {
+      p = p + "'" + ce + "',";
+    }
+    p = p + "],{'Plan':{[";
+    for (String ce in this.costElements) {
+      p = p + "${this.ceToMaMap[ce].monthlyActualToJson()},";
+    }
+    p = p + "]}";
+
+    p = p + "]}";
+    p = json.encode(p);
+    return p;
+  }
+
+  String planningFormModelMvtoJSON() {
+    String p = "";
+    p = p + "{";
+    p = p + "'Company':" + "'${this.Company}'" + ",";
+    p = p + "'Department':" + "'${this.Department}'" + ",";
+    p = p + "'costElements':[";
+    for (String ce in this.costElements) {
+      p = p + "'" + ce + "',";
+    }
+    p = p + "],{'Plan':{[";
+    for (String ce in this.costElements) {
+      p = p + "${this.ceToMvMap[ce].monthlyVarianceToJson()},";
+    }
+    p = p + "]}";
+
+    p = p + "]}";
+    p = json.encode(p);
+    return p;
+  }
+
+  savePfmToFile() {
+    this.st.writeData(this.planningFormModelMvtoJSON());
     // this.st.writeData(this.toString());
   }
 
-  Future<String> readPfmFromFile(){
-   
+  Future<String> readPfmFromFile() {
     return this.st.readData();
   }
-
-
-
 }
 
-class DataValue{
+class DataValue {
   int index;
   int value;
-  
-  DataValue(int amt, int idx){
-    this.value= amt;
+
+  DataValue(int amt, int idx) {
+    this.value = amt;
     this.index = idx;
   }
 }
 
-class PlanValue extends DataValue{
-  PlanValue(int amt, int idx): super(amt, idx);
+class PlanValue extends DataValue {
+  PlanValue(int amt, int idx) : super(amt, idx);
 }
 
-class ActualValue extends DataValue{
- 
-  ActualValue(int amt, int idx): super(amt, idx);
-  
+class ActualValue extends DataValue {
+  ActualValue(int amt, int idx) : super(amt, idx);
 }
 
-class VarianceValue extends DataValue{
- 
-  VarianceValue(int amt, int idx): super(amt, idx);
-  
+class VarianceValue extends DataValue {
+  VarianceValue(int amt, int idx) : super(amt, idx);
 }
 
-class MonthlyValues{
+class MonthlyValues {
   String category;
   List<DataValue> amountInMonth;
   List<DataValue> hourInMonth;
   //PlanningFormModel pfm;
 }
-class MonthlyActual extends MonthlyValues{
+
+class MonthlyActual extends MonthlyValues {
+  String monthlyActualToJson() {
+    PlanningFormModel pfm = new PlanningFormModel();
+    String s = "";
+    for (String ce in pfm.costElements) {
+      s = s + "{";
+      s = s + "'" + ce + "':{";
+      s = s + "'amountInMonth':[";
+      for (ActualValue i in amountInMonth) {
+        s = s + "'" + i.toString() + "',";
+      }
+      s = s + "],";
+
+      s = s + "'hourInMonth':[";
+      for (ActualValue i in hourInMonth) {
+        s = s + "'" + i.toString() + "',";
+      }
+      s = s + "]}},";
+
+      // s = json.encode(s);
+    }
+
+    return s;
+  }
+
   List<ActualValue> getMonthlyActual(bool isHour) {
     if (isHour)
       return this.hourInMonth;
     else
       return this.amountInMonth;
   }
-
 }
 
-class MonthlyVariance extends MonthlyValues{
-   List<VarianceValue> getMonthlyVariance(bool isHour) {
+class MonthlyVariance extends MonthlyValues {
+  String monthlyVarianceToJson() {
+    PlanningFormModel pfm = new PlanningFormModel();
+    String s = "";
+    for (String ce in pfm.costElements) {
+      s = s + "{";
+      s = s + "'" + ce + "':{";
+      s = s + "'amountInMonth':[";
+      for (VarianceValue i in amountInMonth) {
+        s = s + "'" + i.toString() + "',";
+      }
+      s = s + "],";
+
+      s = s + "'hourInMonth':[";
+      for (VarianceValue i in hourInMonth) {
+        s = s + "'" + i.toString() + "',";
+      }
+      s = s + "]}},";
+
+      // s = json.encode(s);
+    }
+
+    return s;
+  }
+
+  List<VarianceValue> getMonthlyVariance(bool isHour) {
     if (isHour)
       return this.hourInMonth;
     else
       return this.amountInMonth;
   }
 }
-class MonthlyPlan {
-  String category;
-  List<PlanValue> amountInMonth;
-  List<PlanValue> hourInMonth;
-  PlanningFormModel pfm;
 
+class MonthlyPlan extends MonthlyValues {
+  // String category;
+  // List<PlanValue> amountInMonth;
+  // List<PlanValue> hourInMonth;
+  // PlanningFormModel pfm;
 
   //MonthlyPlan(PlanningFormModel pfm){
   //    this.pfm = pfm;
   //}
 
-    String monthlyplantoJsonv2() {
+  String monthlyPlanToJson() {
     PlanningFormModel pfm = new PlanningFormModel();
     String s = "";
     for (String ce in pfm.costElements) {
@@ -321,5 +470,4 @@ class Storage {
     final file = await localFile;
     return file.writeAsString("$data");
   }
-
 }

@@ -616,7 +616,7 @@ class MyFormState extends State<MyForm> {
               setState(() {
                 pfm.savePfmToFile();
               });
-              print("data wrote to file = ${pfm.toString()}");
+              print("data wrote to file = ${pfm.toStringMa()}");
             },
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
