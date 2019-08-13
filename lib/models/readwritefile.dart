@@ -58,6 +58,10 @@ class PlanningFormModel {
     List<DataValue> monthlyActualHrs, montlyPlanHrs, monthlyVarianceHrs;
     
     for (String ce in this.costElements) {
+
+      mPlan = new MonthlyPlan();
+      mActual = new MonthlyActual();
+      mVariance = new MonthlyVariance();
     
       mPlan.category = ce;
       mActual.category = ce;
@@ -66,6 +70,10 @@ class PlanningFormModel {
       monthlyActualAmts = new List<ActualValue>();
       montlyPlanAmts = new List<PlanValue>();
       monthlyVarianceAmts = new List<VarianceValue>();
+
+      monthlyActualHrs = new List<ActualValue>();
+      montlyPlanHrs = new List<PlanValue>();
+      monthlyVarianceHrs = new List<VarianceValue>();
 
 
       for (int i = 0; i < 12; i++) {
