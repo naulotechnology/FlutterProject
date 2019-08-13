@@ -58,7 +58,10 @@ class PlanningFormModel {
     List<DataValue> monthlyActualHrs, montlyPlanHrs, monthlyVarianceHrs;
     
     for (String ce in this.costElements) {
-      
+
+      mPlan = new MonthlyPlan();
+      mActual = new MonthlyActual();
+      mVariance = new MonthlyVariance();
     
       mPlan.category = ce;
       mActual.category = ce;
@@ -67,6 +70,10 @@ class PlanningFormModel {
       monthlyActualAmts = new List<ActualValue>();
       montlyPlanAmts = new List<PlanValue>();
       monthlyVarianceAmts = new List<VarianceValue>();
+
+      monthlyActualHrs = new List<ActualValue>();
+      montlyPlanHrs = new List<PlanValue>();
+      monthlyVarianceHrs = new List<VarianceValue>();
 
 
       for (int i = 0; i < 12; i++) {
@@ -82,7 +89,7 @@ class PlanningFormModel {
         //assign plan Hours to each of the 12 months
         ActualValue ah = new ActualValue(i * 9, i);
         //Variance the difference between plan = actual
-        VarianceValue vh = new VarianceValue(pv.value - av.value, i);
+        VarianceValue vh = new VarianceValue(ph.value - ah.value, i);
 
         //add to amounts list for Plan, Actual, Variance
         monthlyActualAmts.add(av);
@@ -228,11 +235,22 @@ class MonthlyValues{
   //PlanningFormModel pfm;
 }
 class MonthlyActual extends MonthlyValues{
+  List<ActualValue> getMonthlyActual(bool isHour) {
+    if (isHour)
+      return this.hourInMonth;
+    else
+      return this.amountInMonth;
+  }
 
 }
 
 class MonthlyVariance extends MonthlyValues{
-
+   List<VarianceValue> getMonthlyVariance(bool isHour) {
+    if (isHour)
+      return this.hourInMonth;
+    else
+      return this.amountInMonth;
+  }
 }
 class MonthlyPlan {
   String category;

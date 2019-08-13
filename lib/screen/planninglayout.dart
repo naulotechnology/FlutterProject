@@ -122,7 +122,8 @@ class MyFormState extends State<MyForm> {
       ),
     );
 
-    Widget boardView = Container(
+    boardView(int i){
+    return Container(
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
@@ -144,108 +145,156 @@ class MyFormState extends State<MyForm> {
                   if (index == 0) {
                     return costElementTable();
                   } else if (index == 1) {
+                    if(i==1){
                     return dataBody();
+                    }else if(i==2){
+                      return dataBodyActual();
+                    }else{
+                      return dataBodyVariance();
+                    }
                   }
                 });
           },
         ));
+    }
 
     double selectItemExtent() {
       return 280;
+    }
+
+   planPage(){
+      return Container(
+        //color: Colors.white10,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    top: BorderSide(
+                        width: 1.0, color: Colors.lightBlue.shade500),
+                    bottom: BorderSide(
+                        width: 1.0, color: Colors.lightBlue.shade900),
+                  ),
+                ),
+                child: new ListView.builder(
+                  itemCount: 3,
+                  itemExtent: selectItemExtent(),
+                  shrinkWrap: true,
+                  //reverse: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      return tagList;
+                    } else if (index == 1) {
+                      return boardView(1);
+                    } else if (index == 2) {
+                      return saveRetriveButton();
+                    }
+                  },
+                ),
+      );
+    }
+
+    
+   actualPage(){
+      return Container(
+        //color: Colors.white10,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    top: BorderSide(
+                        width: 1.0, color: Colors.lightBlue.shade500),
+                    bottom: BorderSide(
+                        width: 1.0, color: Colors.lightBlue.shade900),
+                  ),
+                ),
+                child: new ListView.builder(
+                  itemCount: 3,
+                  itemExtent: selectItemExtent(),
+                  shrinkWrap: true,
+                  //reverse: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      return tagList;
+                    } else if (index == 1) {
+                      return boardView(2);
+                    } else if (index == 2) {
+                      return saveRetriveButton();
+                    }
+                  },
+                ),
+      );
+    }
+
+     variancePage(){
+      return Container(
+        //color: Colors.white10,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    top: BorderSide(
+                        width: 1.0, color: Colors.lightBlue.shade500),
+                    bottom: BorderSide(
+                        width: 1.0, color: Colors.lightBlue.shade900),
+                  ),
+                ),
+                child: new ListView.builder(
+                  itemCount: 3,
+                  itemExtent: selectItemExtent(),
+                  shrinkWrap: true,
+                  //reverse: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      return tagList;
+                    } else if (index == 1) {
+                      return boardView(3);
+                    } else if (index == 2) {
+                      return saveRetriveButton();
+                    }
+                  },
+                ),
+      );
     }
 
     //  int _value=0;
     return Scaffold(
       body: DefaultTabController(
         length: 3,
-        child: SafeArea(
-          child: Scaffold(
-            body: TabBarView(
-              children: [
-                new Container(
-                  //color: Colors.white10,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(
-                          width: 1.0, color: Colors.lightBlue.shade500),
-                      bottom: BorderSide(
-                          width: 1.0, color: Colors.lightBlue.shade900),
-                    ),
-                  ),
-                  child: new ListView.builder(
-                    itemCount: 3,
-                    itemExtent: selectItemExtent(),
-                    shrinkWrap: true,
-                    //reverse: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      if (index == 0) {
-                        return tagList;
-                      } else if (index == 1) {
-                        return boardView;
-                      } else if (index == 2) {
-                        return saveRetriveButton();
-                      }
-                    },
-                  ),
-                  //color: Colors.white,
-                ),
-                new Container(
-                  color: Colors.lightGreen,
-                ),
-                new Container(
-                  color: Colors.red,
-                ),
-              ],
-            ),
-            bottomNavigationBar: new TabBar(
-              tabs: [
-                Tab(
-                  //icon: new Icon(Icons.home),
-                  text: "plan",
-                ),
-                Tab(
-                  //icon: new Icon(Icons.account_balance),
-                  text: "actual",
-                ),
-                Tab(
-                  //icon: new Icon(Icons.vibration),
-                  text: "variance",
-                ),
-              ],
-              labelColor: Colors.yellow,
-              unselectedLabelColor: Colors.blue,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorPadding: EdgeInsets.all(5.0),
-              indicatorColor: Colors.red,
-            ),
-            backgroundColor: Colors.black,
+        child: Scaffold(
+          body: TabBarView(
+            children: [
+              new Container(
+                child: planPage(),
+              ),
+              new Container(
+                child:  actualPage(),
+              ),
+              new Container(
+                child:  variancePage(),
+              ),
+            ],
           ),
+          bottomNavigationBar: new TabBar(
+            tabs: [
+              Tab(
+                icon: new Icon(Icons.home),
+                text: "plan",
+              ),
+              Tab(
+                icon: new Icon(Icons.account_balance),
+                text: "actual",
+              ),
+              Tab(
+                icon: new Icon(Icons.vibration),
+                text: "variance",
+              ),
+            ],
+            labelColor: Colors.yellow,
+            unselectedLabelColor: Colors.blue,
+            indicatorSize: TabBarIndicatorSize.label,
+            indicatorPadding: EdgeInsets.all(5.0),
+            indicatorColor: Colors.red,
+          ),
+          backgroundColor: Colors.black,
         ),
       ),
-      // body: Container(
-      //   decoration: BoxDecoration(
-      //     border: Border(
-      //       top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-      //       bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-      //     ),
-      //   ),
-      //   child: new ListView.builder(
-      //     itemCount: 3,
-      //     itemExtent: selectItemExtent(),
-      //     shrinkWrap: true,
-      //     //reverse: true,
-      //     itemBuilder: (BuildContext context, int index) {
-      //       if (index == 0) {
-      //         return tagList;
-      //        } else if (index == 1) {
-      //         return boardView;
-      //       } else if (index == 2) {
-      //         return saveRetriveButton();
-      //       }
-      //     },
-      //   ),
-      // ),
     );
   }
 
@@ -308,6 +357,176 @@ class MyFormState extends State<MyForm> {
             .map((attr) => DataRow(
                   cells: pfm.ceToMpMap[attr]
                       .getMonthlyPlan(showHour)
+                      .map(
+                        (monthlyAmount) => DataCell(
+                              TextField(
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    labelStyle: TextStyle(
+                                        fontSize: 14, color: Colors.red),
+                                    hintText: monthlyAmount.value.toString()),
+                                controller: costElementController,
+                                // save the txt to amount in month
+                                onChanged: (txt) {
+                                  pfm.setAmount(
+                                      showHour, attr, txt, monthlyAmount.index);
+                                },
+                                onTap: () {
+                                  print("${monthlyAmount.index}");
+                                },
+                              ),
+                            ),
+                      )
+                      .toList(),
+                ))
+            .toList(),
+      ),
+    );
+  }
+  dataBodyActual() {
+    TextStyle tStyle = new TextStyle(
+        fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.lightBlue,
+        border: Border(
+          top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+          bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+          left: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+          right: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+        ),
+      ),
+      child: DataTable(
+        columns: [
+          DataColumn(
+            label: Text(
+              "Jan",
+              style: tStyle,
+            ),
+          ),
+          DataColumn(
+            label: Text("feb", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("mar", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Apr", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("may", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("jun", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("july", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Aug", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Sep", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Oct", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Nov", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Dec", style: tStyle),
+          ),
+        ],
+        rows: pfm.costElements
+            .map((attr) => DataRow(
+                  cells: pfm.ceToMaMap[attr]
+                      .getMonthlyActual(showHour)
+                      .map(
+                        (monthlyAmount) => DataCell(
+                              TextField(
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    labelStyle: TextStyle(
+                                        fontSize: 14, color: Colors.red),
+                                    hintText: monthlyAmount.value.toString()),
+                                controller: costElementController,
+                                // save the txt to amount in month
+                                onChanged: (txt) {
+                                  pfm.setAmount(
+                                      showHour, attr, txt, monthlyAmount.index);
+                                },
+                                onTap: () {
+                                  print("${monthlyAmount.index}");
+                                },
+                              ),
+                            ),
+                      )
+                      .toList(),
+                ))
+            .toList(),
+      ),
+    );
+  }
+  dataBodyVariance() {
+    TextStyle tStyle = new TextStyle(
+        fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.lightBlue,
+        border: Border(
+          top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+          bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+          left: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+          right: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+        ),
+      ),
+      child: DataTable(
+        columns: [
+          DataColumn(
+            label: Text(
+              "Jan",
+              style: tStyle,
+            ),
+          ),
+          DataColumn(
+            label: Text("feb", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("mar", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Apr", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("may", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("jun", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("july", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Aug", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Sep", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Oct", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Nov", style: tStyle),
+          ),
+          DataColumn(
+            label: Text("Dec", style: tStyle),
+          ),
+        ],
+        rows: pfm.costElements
+            .map((attr) => DataRow(
+                  cells: pfm.ceToMvMap[attr]
+                      .getMonthlyVariance(showHour)
                       .map(
                         (monthlyAmount) => DataCell(
                               TextField(
