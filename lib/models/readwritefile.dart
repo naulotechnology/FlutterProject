@@ -137,7 +137,7 @@ class PlanningFormModel {
       
 
       for (PlanValue amount in mp.amountInMonth) {
-        planningFormInString = planningFormInString + amount.toString() + "||";
+        planningFormInString = planningFormInString + amount.value.toString() + "||";
       }
 
       planningFormInString = planningFormInString + "\n";
@@ -150,7 +150,7 @@ class PlanningFormModel {
       MonthlyPlan mp = this.ceToMpMap[ce];
 
       for (PlanValue hour in mp.hourInMonth) {
-        planningFormInString = planningFormInString + hour.toString() + "||";
+        planningFormInString = planningFormInString + hour.value.toString() + "||";
       }
       planningFormInString = planningFormInString + "\n";
     }
@@ -172,7 +172,7 @@ class PlanningFormModel {
       MonthlyActual ma = this.ceToMaMap[ce];
 
       for (ActualValue amount in ma.amountInMonth) {
-        planningFormInString = planningFormInString + amount.toString() + "||";
+        planningFormInString = planningFormInString + amount.value.toString() + "||";
       }
 
       planningFormInString = planningFormInString + "\n";
@@ -185,7 +185,7 @@ class PlanningFormModel {
       MonthlyActual ma = this.ceToMaMap[ce];
 
       for (ActualValue hour in ma.hourInMonth) {
-        planningFormInString = planningFormInString + hour.toString() + "||";
+        planningFormInString = planningFormInString + hour.value.toString() + "||";
       }
       planningFormInString = planningFormInString + "\n";
     }
@@ -207,7 +207,7 @@ class PlanningFormModel {
       MonthlyVariance mv = this.ceToMvMap[ce];
 
       for (VarianceValue amount in mv.amountInMonth) {
-        planningFormInString = planningFormInString + amount.toString() + "||";
+        planningFormInString = planningFormInString + amount.value.toString() + "||";
       }
 
       planningFormInString = planningFormInString + "\n";
@@ -220,7 +220,7 @@ class PlanningFormModel {
       MonthlyVariance mv = this.ceToMvMap[ce];
 
       for (VarianceValue hour in mv.hourInMonth) {
-        planningFormInString = planningFormInString + hour.toString() + "||";
+        planningFormInString = planningFormInString + hour.value.toString() + "||";
       }
       planningFormInString = planningFormInString + "\n";
     }
@@ -344,13 +344,13 @@ class MonthlyActual extends MonthlyValues {
       s = s + "'" + ce + "':{";
       s = s + "'amountInMonth':[";
       for (ActualValue i in amountInMonth) {
-        s = s + "'" + i.toString() + "',";
+        s = s + "'" + i.value.toString() + "',";
       }
       s = s + "],";
 
       s = s + "'hourInMonth':[";
       for (ActualValue i in hourInMonth) {
-        s = s + "'" + i.toString() + "',";
+        s = s + "'" + i.value.toString() + "',";
       }
       s = s + "]}},";
 
@@ -377,13 +377,13 @@ class MonthlyVariance extends MonthlyValues {
       s = s + "'" + ce + "':{";
       s = s + "'amountInMonth':[";
       for (VarianceValue i in amountInMonth) {
-        s = s + "'" + i.toString() + "',";
+        s = s + "'" + i.value.toString() + "',";
       }
       s = s + "],";
 
       s = s + "'hourInMonth':[";
       for (VarianceValue i in hourInMonth) {
-        s = s + "'" + i.toString() + "',";
+        s = s + "'" + i.value.toString() + "',";
       }
       s = s + "]}},";
 
@@ -419,13 +419,13 @@ class MonthlyPlan extends MonthlyValues {
       s = s + "'" + ce + "':{";
       s = s + "'amountInMonth':[";
       for (PlanValue i in amountInMonth) {
-        s = s + "'" + i.toString() + "',";
+        s = s + "'" + i.value.toString() + "',";
       }
       s = s + "],";
 
       s = s + "'hourInMonth':[";
       for (PlanValue i in hourInMonth) {
-        s = s + "'" + i.toString() + "',";
+        s = s + "'" + i.value.toString() + "',";
       }
       s = s + "]}},";
 
