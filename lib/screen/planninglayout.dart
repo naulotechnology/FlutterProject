@@ -16,7 +16,8 @@ class MyForm extends StatefulWidget {
   }
 }
 
-class MyFormState extends State<MyForm> {
+class MyFormState extends State<MyForm>
+    with SingleTickerProviderStateMixin<MyForm> {
   String dropdownValue = "Naulo Technology";
   String dropdownValue1 = "Nepali";
 
@@ -33,17 +34,27 @@ class MyFormState extends State<MyForm> {
 
   PlanningFormModel pfm;
 
+  TabController controller;
+
   Storage st;
   MonthlyPlan mp;
   bool showHour = false;
 
+
+  //  @override
+  // bool get wantKeepAlive => true;
+
+  @override
+  void dispose(){
+     controller.dispose();
+     super.dispose();
+  }
+
+
   MyFormState(PlanningFormModel pfm) {
     this.pfm = pfm;
-  }
-  @override
-  void initState() {
     st = this.pfm.st;
-    super.initState();
+    controller = new TabController(vsync: this,length:3);
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -248,83 +259,124 @@ class MyFormState extends State<MyForm> {
       );
     }
 
-    return Scaffold(
-      body: Container(
-         height: 40,
-         width: 180,
-        child: MaterialSwitch(
-           padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
+    // return Scaffold(
+    //   body: Container(
+    //      height: 40,
+    //      width: 180,
+    //     child: MaterialSwitch(
+    //        padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
 
-          options: optionList1,
-          selectedOption: optionSelect1,
-          selectedBackgroundColor: Colors.indigo,
-          selectedTextColor: Colors.white,
-          onSelect: (String optionList) {
-            setState(() {
-              optionSelect1 = optionList;
-              if (optionSelect1 == "Plan") {
-                new Center(
-                  child: Text("Hello Prakash",style:TextStyle(fontSize: 100)),
-                );
-                
-                print("Hellow");
-               
-              } else if (optionSelect1 == "Actual") {
-                actualPage();
-              } else {
-                variancePage();
-              }
-            });
-          },
+    //       options: optionList1,
+    //       selectedOption: optionSelect1,
+    //       selectedBackgroundColor: Colors.indigo,
+    //       selectedTextColor: Colors.white,
+    //       onSelect: (String optionList) {
+    //         setState(() {
+    //           optionSelect1 = optionList;
+    //           if (optionSelect1 == "Plan") {
+    //             new Center(
+    //               child: Text("Hello Prakash",style:TextStyle(fontSize: 100)),
+    //             );
+
+    //             print("Hellow");
+
+    //           } else if (optionSelect1 == "Actual") {
+    //             actualPage();
+    //           } else {
+    //             variancePage();
+    //           }
+    //         });
+    //       },
+    //     ),
+    //   ),
+    // );
+
+    //int _value = 0;
+    // return Scaffold(
+    //   body: DefaultTabController(
+    //     length: 3,
+    //     child: Scaffold(
+    //       body: TabBarView(
+    //         // physics: NeverScrollableScrollPhysics(),
+    //         children: [
+    //           new Container(
+    //             child: planPage(),
+    //           ),
+    //           new Container(
+    //             //child: actualPage(),
+    //             color: Colors.amber,
+    //           ),
+    //           new Container(
+    //             child: variancePage(),
+    //           ),
+    //         ],
+    //       ),
+    //       bottomNavigationBar: new TabBar(
+    //         tabs: [
+    //           Tab(
+    //             icon: new Icon(Icons.home),
+    //             text: "plan",
+    //           ),
+    //           Tab(
+    //             icon: new Icon(Icons.account_balance),
+    //             text: "actual",
+    //           ),
+    //           Tab(
+    //             icon: new Icon(Icons.vibration),
+    //             text: "variance",
+    //           ),
+    //         ],
+    //         labelColor: Colors.yellow,
+    //         unselectedLabelColor: Colors.blue,
+    //         indicatorSize: TabBarIndicatorSize.label,
+    //         indicatorPadding: EdgeInsets.all(5.0),
+    //         indicatorColor: Colors.red,
+    //       ),
+    //       backgroundColor: Colors.black,
+    //     ),
+    //   ),
+    // );
+
+    List<Widget> container = [
+      Container(
+        
+      )
+
+    ];
+
+
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("MyTable"),
+        backgroundColor: Colors.blueAccent,
+        bottom: TabBar(
+          controller: controller,
+          tabs: [
+            Tab(text: "Plan",),
+            Tab(text: "Actual",),
+            Tab(text: "Variance",),
+          ],
         ),
       ),
+      body: TabBarView(
+        controller: controller,
+        children: [
+          new Container(
+             child: planPage(),
+          ),
+          new Container(
+             child: actualPage(),
+          ),
+          new Container(
+             child: variancePage(),
+          ),
+        ],
+      ),
     );
-
-    //    int _value=0;
-    //   return Scaffold(
-    //     body: DefaultTabController(
-    //       length: 3,
-    //       child: Scaffold(
-    //         body: TabBarView(
-    //           children: [
-    //             new Container(
-    //               child: planPage(),
-    //             ),
-    //             new Container(
-    //               child:  actualPage(),
-    //             ),
-    //             new Container(
-    //               child:  variancePage(),
-    //             ),
-    //           ],
-    //         ),
-    //         bottomNavigationBar: new TabBar(
-    //           tabs: [
-    //             Tab(
-    //               icon: new Icon(Icons.home),
-    //               text: "plan",
-    //             ),
-    //             Tab(
-    //               icon: new Icon(Icons.account_balance),
-    //               text: "actual",
-    //             ),
-    //             Tab(
-    //               icon: new Icon(Icons.vibration),
-    //               text: "variance",
-    //             ),
-    //           ],
-    //           labelColor: Colors.yellow,
-    //           unselectedLabelColor: Colors.blue,
-    //           indicatorSize: TabBarIndicatorSize.label,
-    //           indicatorPadding: EdgeInsets.all(5.0),
-    //           indicatorColor: Colors.red,
-    //         ),
-    //         backgroundColor: Colors.black,
-    //       ),
-    //     ),
-    //   );
   }
 
+  
   dataBody() {
     TextStyle tStyle = new TextStyle(
         fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
