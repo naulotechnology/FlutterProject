@@ -22,8 +22,10 @@ class MyFormState extends State<MyForm> {
 
   int itemExtend;
   List<String> optionList = <String>['Month', 'Hour'];
+  List<String> optionList1 = <String>['Plan', 'Actual'];
 
   String optionSelect = 'Month';
+  String optionSelect1 = 'Plan';
   TextEditingController costElementController = TextEditingController();
 
   DateTime _date = new DateTime.now();
@@ -122,180 +124,205 @@ class MyFormState extends State<MyForm> {
       ),
     );
 
-    boardView(int i){
-    return Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-            bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+    boardView(int i) {
+      return Container(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+              bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+            ),
           ),
-        ),
-        padding: EdgeInsets.only(top: 1),
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: 1,
-          itemExtent: 60 * pfm.costElements.length.toDouble(),
-          itemBuilder: (BuildContext context, int index) {
-            return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: 12,
-                // itemExtent: 2000,
-                itemBuilder: (BuildContext context, int index) {
-                  if (index == 0) {
-                    return costElementTable();
-                  } else if (index == 1) {
-                    if(i==1){
-                    return dataBody();
-                    }else if(i==2){
-                      return dataBodyActual();
-                    }else{
-                      return dataBodyVariance();
+          padding: EdgeInsets.only(top: 1),
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: 1,
+            itemExtent: 60 * pfm.costElements.length.toDouble(),
+            itemBuilder: (BuildContext context, int index) {
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: 12,
+                  // itemExtent: 2000,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      return costElementTable();
+                    } else if (index == 1) {
+                      if (i == 1) {
+                        return dataBody();
+                      } else if (i == 2) {
+                        return dataBodyActual();
+                      } else {
+                        return dataBodyVariance();
+                      }
                     }
-                  }
-                });
-          },
-        ));
+                  });
+            },
+          ));
     }
 
     double selectItemExtent() {
       return 280;
     }
 
-   planPage(){
+    planPage() {
       return Container(
         //color: Colors.white10,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    top: BorderSide(
-                        width: 1.0, color: Colors.lightBlue.shade500),
-                    bottom: BorderSide(
-                        width: 1.0, color: Colors.lightBlue.shade900),
-                  ),
-                ),
-                child: new ListView.builder(
-                  itemCount: 3,
-                  itemExtent: selectItemExtent(),
-                  shrinkWrap: true,
-                  //reverse: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == 0) {
-                      return tagList;
-                    } else if (index == 1) {
-                      return boardView(1);
-                    } else if (index == 2) {
-                      return saveRetriveButton();
-                    }
-                  },
-                ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+            bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+          ),
+        ),
+        child: new ListView.builder(
+          itemCount: 3,
+          itemExtent: selectItemExtent(),
+          shrinkWrap: true,
+          //reverse: true,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) {
+              return tagList;
+            } else if (index == 1) {
+              return boardView(1);
+            } else if (index == 2) {
+              return saveRetriveButton();
+            }
+          },
+        ),
       );
     }
 
-    
-   actualPage(){
+    actualPage() {
       return Container(
         //color: Colors.white10,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    top: BorderSide(
-                        width: 1.0, color: Colors.lightBlue.shade500),
-                    bottom: BorderSide(
-                        width: 1.0, color: Colors.lightBlue.shade900),
-                  ),
-                ),
-                child: new ListView.builder(
-                  itemCount: 3,
-                  itemExtent: selectItemExtent(),
-                  shrinkWrap: true,
-                  //reverse: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == 0) {
-                      return tagList;
-                    } else if (index == 1) {
-                      return boardView(2);
-                    } else if (index == 2) {
-                      return saveRetriveButton();
-                    }
-                  },
-                ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+            bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+          ),
+        ),
+        child: new ListView.builder(
+          itemCount: 3,
+          itemExtent: selectItemExtent(),
+          shrinkWrap: true,
+          //reverse: true,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) {
+              return tagList;
+            } else if (index == 1) {
+              return boardView(2);
+            } else if (index == 2) {
+              return saveRetriveButton();
+            }
+          },
+        ),
       );
     }
 
-     variancePage(){
+    variancePage() {
       return Container(
         //color: Colors.white10,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    top: BorderSide(
-                        width: 1.0, color: Colors.lightBlue.shade500),
-                    bottom: BorderSide(
-                        width: 1.0, color: Colors.lightBlue.shade900),
-                  ),
-                ),
-                child: new ListView.builder(
-                  itemCount: 3,
-                  itemExtent: selectItemExtent(),
-                  shrinkWrap: true,
-                  //reverse: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == 0) {
-                      return tagList;
-                    } else if (index == 1) {
-                      return boardView(3);
-                    } else if (index == 2) {
-                      return saveRetriveButton();
-                    }
-                  },
-                ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+            bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+          ),
+        ),
+        child: new ListView.builder(
+          itemCount: 3,
+          itemExtent: selectItemExtent(),
+          shrinkWrap: true,
+          //reverse: true,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) {
+              return tagList;
+            } else if (index == 1) {
+              return boardView(3);
+            } else if (index == 2) {
+              return saveRetriveButton();
+            }
+          },
+        ),
       );
     }
 
-    //  int _value=0;
     return Scaffold(
-      body: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          body: TabBarView(
-            children: [
-              new Container(
-                child: planPage(),
-              ),
-              new Container(
-                child:  actualPage(),
-              ),
-              new Container(
-                child:  variancePage(),
-              ),
-            ],
-          ),
-          bottomNavigationBar: new TabBar(
-            tabs: [
-              Tab(
-                icon: new Icon(Icons.home),
-                text: "plan",
-              ),
-              Tab(
-                icon: new Icon(Icons.account_balance),
-                text: "actual",
-              ),
-              Tab(
-                icon: new Icon(Icons.vibration),
-                text: "variance",
-              ),
-            ],
-            labelColor: Colors.yellow,
-            unselectedLabelColor: Colors.blue,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorPadding: EdgeInsets.all(5.0),
-            indicatorColor: Colors.red,
-          ),
-          backgroundColor: Colors.black,
+      body: Container(
+         height: 40,
+         width: 180,
+        child: MaterialSwitch(
+           padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
+
+          options: optionList1,
+          selectedOption: optionSelect1,
+          selectedBackgroundColor: Colors.indigo,
+          selectedTextColor: Colors.white,
+          onSelect: (String optionList) {
+            setState(() {
+              optionSelect1 = optionList;
+              if (optionSelect1 == "Plan") {
+                new Center(
+                  child: Text("Hello Prakash",style:TextStyle(fontSize: 100)),
+                );
+                
+                print("Hellow");
+               
+              } else if (optionSelect1 == "Actual") {
+                actualPage();
+              } else {
+                variancePage();
+              }
+            });
+          },
         ),
       ),
     );
+
+    //    int _value=0;
+    //   return Scaffold(
+    //     body: DefaultTabController(
+    //       length: 3,
+    //       child: Scaffold(
+    //         body: TabBarView(
+    //           children: [
+    //             new Container(
+    //               child: planPage(),
+    //             ),
+    //             new Container(
+    //               child:  actualPage(),
+    //             ),
+    //             new Container(
+    //               child:  variancePage(),
+    //             ),
+    //           ],
+    //         ),
+    //         bottomNavigationBar: new TabBar(
+    //           tabs: [
+    //             Tab(
+    //               icon: new Icon(Icons.home),
+    //               text: "plan",
+    //             ),
+    //             Tab(
+    //               icon: new Icon(Icons.account_balance),
+    //               text: "actual",
+    //             ),
+    //             Tab(
+    //               icon: new Icon(Icons.vibration),
+    //               text: "variance",
+    //             ),
+    //           ],
+    //           labelColor: Colors.yellow,
+    //           unselectedLabelColor: Colors.blue,
+    //           indicatorSize: TabBarIndicatorSize.label,
+    //           indicatorPadding: EdgeInsets.all(5.0),
+    //           indicatorColor: Colors.red,
+    //         ),
+    //         backgroundColor: Colors.black,
+    //       ),
+    //     ),
+    //   );
   }
 
   dataBody() {
@@ -383,6 +410,7 @@ class MyFormState extends State<MyForm> {
       ),
     );
   }
+
   dataBodyActual() {
     TextStyle tStyle = new TextStyle(
         fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
@@ -468,6 +496,7 @@ class MyFormState extends State<MyForm> {
       ),
     );
   }
+
   dataBodyVariance() {
     TextStyle tStyle = new TextStyle(
         fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
