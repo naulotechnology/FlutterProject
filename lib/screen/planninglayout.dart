@@ -17,7 +17,7 @@ class MyForm extends StatefulWidget {
 }
 
 class MyFormState extends State<MyForm>
-    with SingleTickerProviderStateMixin<MyForm> {
+    with AutomaticKeepAliveClientMixin<MyForm> {
   String dropdownValue = "Naulo Technology";
   String dropdownValue1 = "Nepali";
 
@@ -40,21 +40,21 @@ class MyFormState extends State<MyForm>
   MonthlyPlan mp;
   bool showHour = false;
 
-
-  //  @override
-  // bool get wantKeepAlive => true;
+  @override
+  bool get wantKeepAlive => true;
 
   @override
-  void dispose(){
-     controller.dispose();
-     super.dispose();
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
-
 
   MyFormState(PlanningFormModel pfm) {
     this.pfm = pfm;
     st = this.pfm.st;
-    controller = new TabController(vsync: this,length:3);
+
+    // with SingleTickerProviderStateMixin
+    // controller = new TabController(vsync: this, length: 3);
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -261,11 +261,10 @@ class MyFormState extends State<MyForm>
 
     // return Scaffold(
     //   body: Container(
-    //      height: 40,
-    //      width: 180,
+    //     height: 40,
+    //     width: 180,
     //     child: MaterialSwitch(
-    //        padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
-
+    //       padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
     //       options: optionList1,
     //       selectedOption: optionSelect1,
     //       selectedBackgroundColor: Colors.indigo,
@@ -274,16 +273,17 @@ class MyFormState extends State<MyForm>
     //         setState(() {
     //           optionSelect1 = optionList;
     //           if (optionSelect1 == "Plan") {
-    //             new Center(
-    //               child: Text("Hello Prakash",style:TextStyle(fontSize: 100)),
+    //             Container(
+    //               child: planPage(),
     //             );
-
-    //             print("Hellow");
-
     //           } else if (optionSelect1 == "Actual") {
-    //             actualPage();
+    //             Container(
+    //               child: actualPage(),
+    //             );
     //           } else {
-    //             variancePage();
+    //             Container(
+    //               child: variancePage(),
+    //             );
     //           }
     //         });
     //       },
@@ -291,92 +291,83 @@ class MyFormState extends State<MyForm>
     //   ),
     // );
 
-    //int _value = 0;
-    // return Scaffold(
-    //   body: DefaultTabController(
-    //     length: 3,
-    //     child: Scaffold(
-    //       body: TabBarView(
-    //         // physics: NeverScrollableScrollPhysics(),
-    //         children: [
-    //           new Container(
-    //             child: planPage(),
-    //           ),
-    //           new Container(
-    //             //child: actualPage(),
-    //             color: Colors.amber,
-    //           ),
-    //           new Container(
-    //             child: variancePage(),
-    //           ),
-    //         ],
-    //       ),
-    //       bottomNavigationBar: new TabBar(
-    //         tabs: [
-    //           Tab(
-    //             icon: new Icon(Icons.home),
-    //             text: "plan",
-    //           ),
-    //           Tab(
-    //             icon: new Icon(Icons.account_balance),
-    //             text: "actual",
-    //           ),
-    //           Tab(
-    //             icon: new Icon(Icons.vibration),
-    //             text: "variance",
-    //           ),
-    //         ],
-    //         labelColor: Colors.yellow,
-    //         unselectedLabelColor: Colors.blue,
-    //         indicatorSize: TabBarIndicatorSize.label,
-    //         indicatorPadding: EdgeInsets.all(5.0),
-    //         indicatorColor: Colors.red,
-    //       ),
-    //       backgroundColor: Colors.black,
-    //     ),
-    //   ),
-    // );
+    int _currentIndex = 0;
 
+    void onTabTapped(int index) {
+      setState(() {
+        _currentIndex = index;
+        if(index==1){
+          Container(
+             child: planPage(),
+          );
+        }
+         if(index==2){
+          Container(
+             child: actualPage(),
+          );
+        }
+         if(index==1){
+          Container(
+             child: variancePage(),
+          );
+        }
+      });
+    }
+   List<Widget> screens;
     List<Widget> container = [
-      Container(
-        
-      )
-
+      new Container(
+        child: planPage(),
+      ),
     ];
 
-
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text("MyTable"),
-        backgroundColor: Colors.blueAccent,
-        bottom: TabBar(
-          controller: controller,
-          tabs: [
-            Tab(text: "Plan",),
-            Tab(text: "Actual",),
-            Tab(text: "Variance",),
-          ],
-        ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: container,
       ),
-      body: TabBarView(
-        controller: controller,
-        children: [
-          new Container(
-             child: planPage(),
+      bottomNavigationBar: new BottomNavigationBar(
+        fixedColor: Colors.black,
+       // type: BottomNavigationBarType.fixed,
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.format_list_bulleted),
+             title: Text("data2")
           ),
-          new Container(
-             child: actualPage(),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.settings),
+             title: Text("data1")
           ),
-          new Container(
-             child: variancePage(),
-          ),
+           BottomNavigationBarItem(
+            icon: new Icon(Icons.hot_tub),
+            title: Text("data")
+          )
         ],
       ),
+      backgroundColor: Colors.black,
     );
+
+    //   return Scaffold(
+    //     appBar: AppBar(
+    //       title: Text("MyTable"),
+    //       backgroundColor: Colors.black87,
+    //       bottom: TabBar(
+    //         controller: controller,
+    //         tabs: [
+    //           Tab(text: "Plan",),
+    //           Tab(text: "Actual",),
+    //           Tab(text: "Variance",),
+    //         ],
+    //       ),
+    //     ),
+    //     body: TabBarView(
+    //       controller: controller,
+    //       children: container,
+    //     ),
+    //   );
   }
 
-  
   dataBody() {
     TextStyle tStyle = new TextStyle(
         fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
