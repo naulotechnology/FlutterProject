@@ -291,81 +291,110 @@ class MyFormState extends State<MyForm>
     //   ),
     // );
 
-    int _currentIndex = 0;
+    // int _currentIndex = 0;
 
-    void onTabTapped(int index) {
-      setState(() {
-        _currentIndex = index;
-        if(index==1){
-          Container(
-             child: planPage(),
-          );
-        }
-         if(index==2){
-          Container(
-             child: actualPage(),
-          );
-        }
-         if(index==1){
-          Container(
-             child: variancePage(),
-          );
-        }
-      });
-    }
-   List<Widget> screens;
+    // void onTabTapped(int index) {
+    //   setState(() {
+    //     _currentIndex = index;
+    //     if(index==1){
+    //       Container(
+    //          child: planPage(),
+    //       );
+    //     }
+    //      if(index==2){
+    //       Container(
+    //          child: actualPage(),
+    //       );
+    //     }
+    //      if(index==1){
+    //       Container(
+    //          child: variancePage(),
+    //       );
+    //     }
+    //   });
+    // }
     List<Widget> container = [
       new Container(
         child: planPage(),
       ),
     ];
 
-    return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: container,
-      ),
-      bottomNavigationBar: new BottomNavigationBar(
-        fixedColor: Colors.black,
-       // type: BottomNavigationBarType.fixed,
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.format_list_bulleted),
-             title: Text("data2")
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.settings),
-             title: Text("data1")
-          ),
-           BottomNavigationBarItem(
-            icon: new Icon(Icons.hot_tub),
-            title: Text("data")
-          )
-        ],
-      ),
-      backgroundColor: Colors.black,
-    );
-
-    //   return Scaffold(
-    //     appBar: AppBar(
-    //       title: Text("MyTable"),
-    //       backgroundColor: Colors.black87,
-    //       bottom: TabBar(
-    //         controller: controller,
-    //         tabs: [
-    //           Tab(text: "Plan",),
-    //           Tab(text: "Actual",),
-    //           Tab(text: "Variance",),
-    //         ],
+    // return Scaffold(
+    //   body: IndexedStack(
+    //     index: _currentIndex,
+    //     children: container,
+    //   ),
+    //   bottomNavigationBar: new BottomNavigationBar(
+    //     fixedColor: Colors.black,
+    //    // type: BottomNavigationBarType.fixed,
+    //     onTap: onTabTapped,
+    //     currentIndex: _currentIndex,
+    //     items: [
+    //       BottomNavigationBarItem(
+    //         icon: new Icon(Icons.format_list_bulleted),
+    //          title: Text("data2")
     //       ),
-    //     ),
-    //     body: TabBarView(
-    //       controller: controller,
-    //       children: container,
-    //     ),
-    //   );
+    //       BottomNavigationBarItem(
+    //         icon: new Icon(Icons.settings),
+    //          title: Text("data1")
+    //       ),
+    //        BottomNavigationBarItem(
+    //         icon: new Icon(Icons.hot_tub),
+    //         title: Text("data")
+    //       )
+    //     ],
+    //   ),
+    //   backgroundColor: Colors.black,
+    // );
+    //String showValue = "plan";
+
+    return Scaffold(
+      body: DefaultTabController(
+        length: 3,
+        child: SafeArea(
+          child: Scaffold(
+            body: TabBarView(
+              children: [
+                new Container(
+                  child: planPage(),
+                  //color: Colors.white,
+                ),
+                new Container(
+                  child: actualPage(),
+                  // color: Colors.lightGreen,
+                ),
+                new Container(
+                  child: variancePage(),
+                  // color: Colors.red,
+                ),
+              ],
+            ),
+            bottomNavigationBar: new TabBar(
+              tabs: [
+                Tab(
+                  //icon: new Icon(Icons.home),
+                  text: "plan",
+                ),
+                Tab(
+                  //icon: new Icon(Icons.account_balance),
+                  text: "actual",
+                ),
+                Tab(
+                  //icon: new Icon(Icons.vibration),
+                  text: "variance",
+                ),
+              ],
+              labelColor: Colors.yellow,
+              unselectedLabelColor: Colors.blue,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorPadding: EdgeInsets.all(5.0),
+              indicatorColor: Colors.red,
+            ),
+            backgroundColor: Colors.black,
+          ),
+        ),
+      ),
+    );
   }
 
   dataBody() {
