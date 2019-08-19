@@ -4,7 +4,6 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class PlanningFormModel {
   String Company;
   String Department;
@@ -306,6 +305,63 @@ class PlanningFormModel {
   Future<String> readPfmFromFile() {
     return this.st.readData();
   }
+
+
+
+savepfmToFirebasePlan(){
+   for (String ce in this.costElements) {
+          String a = ce;
+          final DocumentReference $a =
+          Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMpMap/ceToMpMap/$a/$a");
+          List montlyPlanHrs = new List<int>();
+          List monthlyPlanAmts= new List<int>();
+      for (int i = 1; i < 13; i++) {
+        PlanValue pm = new PlanValue(i * 125, i);
+        PlanValue ph = new PlanValue(i * 7, i);
+        monthlyPlanAmts.add(pm.value);
+        montlyPlanHrs.add(ph.value);
+      }
+      Map<String, List> data = <String,List>{
+       
+      "amountInMonth":monthlyPlanAmts,
+      "hrInMonth":montlyPlanHrs,
+       
+    };
+      
+    $a.setData(data).whenComplete(() {
+      print("Document Added");
+    }).catchError((e) => print(e));
+      }
+}
+
+savepfmToFirebaseActual(){
+  List montlyActualHrs = new List<int>();
+          List monthlyActualAmts= new List<int>();
+   for (String ce in this.costElements) {
+          String a = ce;
+          final DocumentReference $a =
+          Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMaMap/ceToMaMap/$a/$a");
+          
+      for (int i = 1; i < 13; i++) {
+        ActualValue am = new ActualValue(i * 135, i);
+        ActualValue ah = new ActualValue(i * 9, i);
+        monthlyActualAmts.add(am.value);
+        montlyActualHrs.add(ah.value);
+      }
+      Map<String, List> data = <String,List>{
+       
+      "amountInMonth":monthlyActualAmts,
+      "hrInMonth":montlyActualHrs,
+       
+    };
+      
+    $a.setData(data).whenComplete(() {
+      print("Document Added");
+    }).catchError((e) => print(e));
+      }
+}
+
+
 }
 
 class DataValue {
