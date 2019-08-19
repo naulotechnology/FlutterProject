@@ -109,7 +109,7 @@ class MyFormState extends State<MyForm>
                 height: 36,
                 width: 122,
                 child: MaterialSwitch(
-                  padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
+                  padding: EdgeInsets.only(bottom: 10.0, left: 12.0),
                   options: optionList,
                   selectedOption: optionSelect,
                   selectedBackgroundColor: Colors.indigo,
@@ -797,7 +797,7 @@ class MyFormState extends State<MyForm>
             style: TextStyle(fontSize: 12),
           ),
           Container(
-            width: 115,
+            width: 120,
             // padding: EdgeInsets.symmetric(horizontal: 10.0),
             decoration: new BoxDecoration(
                 color: Colors.blueAccent,
