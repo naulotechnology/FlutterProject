@@ -797,7 +797,7 @@ class MyFormState extends State<MyForm>
             style: TextStyle(fontSize: 12),
           ),
           Container(
-           // width: 125,
+            width: 115,
             // padding: EdgeInsets.symmetric(horizontal: 10.0),
             decoration: new BoxDecoration(
                 color: Colors.blueAccent,
