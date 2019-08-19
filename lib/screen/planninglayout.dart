@@ -18,8 +18,8 @@ class MyForm extends StatefulWidget {
 
 class MyFormState extends State<MyForm>
     with AutomaticKeepAliveClientMixin<MyForm> {
-  String dropdownValue = "Naulo Technology";
-  String dropdownValue1 = "Nepali";
+  String dropdownValue = "NauloTechnology";
+  String dropdownValue1 = "Chemestry";
 
   int itemExtend;
   List<String> optionList = <String>['Month', 'Hour'];
@@ -95,7 +95,6 @@ class MyFormState extends State<MyForm>
       padding: EdgeInsets.only(top: 30),
       // height: 239.0,
       child: Column(
-        //scrollDirection: Axis.horizontal,
         children: <Widget>[
           myDropDownButtons(),
           Row(
@@ -107,8 +106,8 @@ class MyFormState extends State<MyForm>
                 height: 80,
               ),
               Container(
-                height: 40,
-                width: 180,
+                height: 36,
+                width: 122,
                 child: MaterialSwitch(
                   padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
                   options: optionList,
@@ -666,6 +665,7 @@ class MyFormState extends State<MyForm>
 
   costElementTable() {
     return Container(
+      width: 162,
       decoration: BoxDecoration(
         color: Colors.lightBlue,
         border: Border(
@@ -692,7 +692,7 @@ class MyFormState extends State<MyForm>
                             Text(
                               attr,
                               style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 14,
                                   color: Colors.black54,
                                   fontFamily: 'SourceSansPro'),
                             ), onTap: () {
@@ -721,6 +721,9 @@ class MyFormState extends State<MyForm>
             },
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
+            shape: BeveledRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(7.0)),
+            ),
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -744,8 +747,12 @@ class MyFormState extends State<MyForm>
               //print(da);
               print("data read from file = $da");
             },
+            shape: BeveledRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(7.0)),
+            ),
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
+            
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -779,9 +786,9 @@ class MyFormState extends State<MyForm>
 
   myDropDownButtons() {
     return Container(
-      // width: 170,
+      width: 160,
       // height: 170,
-      padding: EdgeInsets.only(right: 234),
+      padding: EdgeInsets.only(right: 30),
       child: Column(
         children: <Widget>[
           Text(
@@ -789,22 +796,26 @@ class MyFormState extends State<MyForm>
             style: TextStyle(fontSize: 12),
           ),
           Container(
-            width: 124,
+           // width: 125,
+            // padding: EdgeInsets.symmetric(horizontal: 10.0),
             decoration: new BoxDecoration(
-                color: Colors.tealAccent,
+                color: Colors.blueAccent,
+                borderRadius: BorderRadius.circular(10.0),
                 border: Border.all(
-                  color: Color.fromRGBO(220, 0, 100, 1),
+                  color: Color.fromRGBO(0, 0, 300, 0),
                   width: 1.0,
                 )),
             child: Column(
+               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Theme(
                   data: Theme.of(context).copyWith(
                     canvasColor: Colors.blue.shade200,
                   ),
                   child: ButtonTheme(
-                    //alignedDropdown: true,
+                    alignedDropdown: false,
                     child: DropdownButton<String>(
+                      isExpanded: true,
                       value: dropdownValue,
                       onChanged: (String newValue) {
                         setState(() {
@@ -812,9 +823,9 @@ class MyFormState extends State<MyForm>
                         });
                       },
                       items: <String>[
-                        "Naulo Technology",
-                        "My Technology",
-                        "Your Technology"
+                        "NauloTechnology",
+                        "MyTechnology",
+                        "YourTechnology"
                       ].map<DropdownMenuItem<String>>(
                         (String value) {
                           return DropdownMenuItem<String>(
@@ -830,46 +841,51 @@ class MyFormState extends State<MyForm>
             ),
           ),
           SizedBox(
-            height: 30,
+            height: 10,
           ),
           Text(
             "DepartMent",
             style: TextStyle(fontSize: 12),
           ),
           Container(
+            width: 90,
+            // padding: EdgeInsets.symmetric(horizontal: 10.0),
             decoration: new BoxDecoration(
-                color: Colors.tealAccent,
+                color: Colors.blueAccent,
+                borderRadius: BorderRadius.circular(10.0),
                 border: Border.all(
-                  color: Color.fromRGBO(220, 0, 100, 1),
+                  color: Color.fromRGBO(0, 0, 300, 0),
                   width: 1.0,
                 )),
             child: Column(
+               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Theme(
                   data: Theme.of(context).copyWith(
                     canvasColor: Colors.blue.shade200,
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: ButtonTheme(
-                      alignedDropdown: true,
-                      child: DropdownButton<String>(
-                        value: dropdownValue1,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            dropdownValue1 = newValue;
-                          });
+                  child: ButtonTheme(
+                    alignedDropdown: false,
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      value: dropdownValue1,
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue1 = newValue;
+                        });
+                      },
+                      items: <String>[
+                        "Chemestry",
+                        "Nepali",
+                        "Physics"
+                      ].map<DropdownMenuItem<String>>(
+                        (String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value, style: TextStyle(fontSize: 12)),
+                          );
                         },
-                        items: <String>["Nepali", "Chemestry", "Physics"]
-                            .map<DropdownMenuItem<String>>(
-                          (String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child:
-                                  Text(value, style: TextStyle(fontSize: 12)),
-                            );
-                          },
-                        ).toList(),
-                      ),
+                      ).toList(),
                     ),
                   ),
                 ),
