@@ -702,9 +702,9 @@ class MyFormState extends State<MyForm>
             onPressed: () {
               setState(() {
                 pfm.savePfmToFile();
-                pfm.savepfmToFirebasePlan();
+                pfm.savepfmToFirebaseActual();
               });
-              print("data wrote to file = ${pfm.toStringMa()}");
+              // print("data wrote to file = ${pfm.toStringMa()}");
             },
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
