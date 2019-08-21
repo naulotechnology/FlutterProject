@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterproject/models/readwritefile.dart';
 
-class MyAdminForm extends StatefulWidget {
-   PlanningFormModel pfm;
 
-  MyAdminForm(PlanningFormModel pfm){
+class MyAdminForm extends StatefulWidget {
+  PlanningFormModel pfm;
+
+  MyAdminForm(PlanningFormModel pfm) {
     this.pfm = pfm;
   }
   @override
@@ -17,7 +18,7 @@ class MyAdminForm extends StatefulWidget {
 class AdminForm extends State {
   PlanningFormModel pfm;
 
-  AdminForm(PlanningFormModel pfm){
+  AdminForm(PlanningFormModel pfm) {
     this.pfm = pfm;
   }
 
@@ -92,6 +93,9 @@ class AdminForm extends State {
             ),
             Container(child: Text("Company: ", style: textStyle)),
             Container(
+              decoration: new BoxDecoration(
+                
+              ),
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 style: textStyle,
