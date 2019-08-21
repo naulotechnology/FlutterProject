@@ -18,8 +18,10 @@ class MyForm extends StatefulWidget {
 
 class MyFormState extends State<MyForm>
     with AutomaticKeepAliveClientMixin<MyForm> {
-  String dropdownValue = "NauloTechnology";
+  String dropdownValue = "Plan";
   String dropdownValue1 = "Chemestry";
+  String dropdowndate = "2018";
+  String dropdownMonth = "Jan";
 
   int itemExtend;
   List<String> optionList = <String>['Month', 'Hour'];
@@ -150,7 +152,7 @@ class MyFormState extends State<MyForm>
             itemBuilder: (BuildContext context, int index) {
               return ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
+                  // shrinkWrap: true,
                   itemCount: 12,
                   // itemExtent: 2000,
                   itemBuilder: (BuildContext context, int index) {
@@ -187,15 +189,11 @@ class MyFormState extends State<MyForm>
         child: new ListView.builder(
           itemCount: 3,
           itemExtent: selectItemExtent(),
-          shrinkWrap: true,
+          //shrinkWrap: true,
           //reverse: true,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
-              return tagList;
-            } else if (index == 1) {
               return boardView(1);
-            } else if (index == 2) {
-              return saveRetriveButton();
             }
           },
         ),
@@ -215,15 +213,11 @@ class MyFormState extends State<MyForm>
         child: new ListView.builder(
           itemCount: 3,
           itemExtent: selectItemExtent(),
-          shrinkWrap: true,
+          //shrinkWrap: true,
           //reverse: true,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
-              return tagList;
-            } else if (index == 1) {
               return boardView(2);
-            } else if (index == 2) {
-              return saveRetriveButton();
             }
           },
         ),
@@ -243,109 +237,101 @@ class MyFormState extends State<MyForm>
         child: new ListView.builder(
           itemCount: 3,
           itemExtent: selectItemExtent(),
-          shrinkWrap: true,
+          //shrinkWrap: true,
           //reverse: true,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
-              return tagList;
-            } else if (index == 1) {
               return boardView(3);
-            } else if (index == 2) {
-              return saveRetriveButton();
             }
           },
         ),
       );
     }
 
-    // return Scaffold(
-    //   body: Container(
-    //     height: 40,
-    //     width: 180,
-    //     child: MaterialSwitch(
-    //       padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
-    //       options: optionList1,
-    //       selectedOption: optionSelect1,
-    //       selectedBackgroundColor: Colors.indigo,
-    //       selectedTextColor: Colors.white,
-    //       onSelect: (String optionList) {
-    //         setState(() {
-    //           optionSelect1 = optionList;
-    //           if (optionSelect1 == "Plan") {
-    //             Container(
-    //               child: planPage(),
-    //             );
-    //           } else if (optionSelect1 == "Actual") {
-    //             Container(
-    //               child: actualPage(),
-    //             );
-    //           } else {
-    //             Container(
-    //               child: variancePage(),
-    //             );
-    //           }
-    //         });
-    //       },
-    //     ),
-    //   ),
-    // );
+    return Scaffold(
+        body: Container(
+      //color: Colors.white10,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+          bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+        ),
+      ),
+      child: new ListView.builder(
+        itemCount: 3,
+        itemExtent: selectItemExtent(),
+        //shrinkWrap: true,
+        //reverse: true,
+        itemBuilder: (BuildContext context, int index) {
+          if (index == 0) {
+            return tagList;
+          }if(index==1){
+            return boardView(1);
+          }if(index==2){
+            return saveRetriveButton();
+          }
+        },
+      ),
+    ));
 
-    // int _currentIndex = 0;
+    int _currentIndex = 0;
 
-    // void onTabTapped(int index) {
-    //   setState(() {
-    //     _currentIndex = index;
-    //     if(index==1){
-    //       Container(
-    //          child: planPage(),
-    //       );
-    //     }
-    //      if(index==2){
-    //       Container(
-    //          child: actualPage(),
-    //       );
-    //     }
-    //      if(index==1){
-    //       Container(
-    //          child: variancePage(),
-    //       );
-    //     }
-    //   });
-    // }
+    void onTabTapped(int index) {
+      setState(() {
+        _currentIndex = index;
+        if(index==1){
+          Container(
+             child: planPage(),
+          );
+        }
+         if(index==2){
+          Container(
+             child: actualPage(),
+          );
+        }
+         if(index==1){
+          Container(
+             child: variancePage(),
+          );
+        }
+      });
+    }
+
     List<Widget> container = [
       new Container(
         child: planPage(),
       ),
     ];
 
-    // return Scaffold(
-    //   body: IndexedStack(
-    //     index: _currentIndex,
-    //     children: container,
-    //   ),
-    //   bottomNavigationBar: new BottomNavigationBar(
-    //     fixedColor: Colors.black,
-    //    // type: BottomNavigationBarType.fixed,
-    //     onTap: onTabTapped,
-    //     currentIndex: _currentIndex,
-    //     items: [
-    //       BottomNavigationBarItem(
-    //         icon: new Icon(Icons.format_list_bulleted),
-    //          title: Text("data2")
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: new Icon(Icons.settings),
-    //          title: Text("data1")
-    //       ),
-    //        BottomNavigationBarItem(
-    //         icon: new Icon(Icons.hot_tub),
-    //         title: Text("data")
-    //       )
-    //     ],
-    //   ),
-    //   backgroundColor: Colors.black,
-    // );
-    //String showValue = "plan";
+    return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: container,
+      ),
+      bottomNavigationBar: new BottomNavigationBar(
+        fixedColor: Colors.black,
+       // type: BottomNavigationBarType.fixed,
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.format_list_bulleted),
+             title: Text("data2")
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.settings),
+             title: Text("data1")
+          ),
+           BottomNavigationBarItem(
+            icon: new Icon(Icons.hot_tub),
+            title: Text("data")
+          )
+        ],
+      ),
+      backgroundColor: Colors.black,
+    );
+    String showValue = "plan";
 
     return Scaffold(
       body: DefaultTabController(
@@ -753,7 +739,6 @@ class MyFormState extends State<MyForm>
             ),
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
-            
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -787,9 +772,9 @@ class MyFormState extends State<MyForm>
 
   myDropDownButtons() {
     return Container(
-      width: 160,
+      width: 400,
       // height: 170,
-      padding: EdgeInsets.only(right: 30),
+      padding: EdgeInsets.only(right: 60),
       child: Column(
         children: <Widget>[
           Text(
@@ -807,7 +792,7 @@ class MyFormState extends State<MyForm>
                   width: 1.0,
                 )),
             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Theme(
                   data: Theme.of(context).copyWith(
@@ -824,9 +809,9 @@ class MyFormState extends State<MyForm>
                         });
                       },
                       items: <String>[
-                        "NauloTechnology",
-                        "MyTechnology",
-                        "YourTechnology"
+                        "Plan",
+                        "Actual",
+                        "Variance"
                       ].map<DropdownMenuItem<String>>(
                         (String value) {
                           return DropdownMenuItem<String>(
@@ -844,55 +829,185 @@ class MyFormState extends State<MyForm>
           SizedBox(
             height: 10,
           ),
-          Text(
-            "DepartMent",
-            style: TextStyle(fontSize: 12),
-          ),
-          Container(
-            width: 90,
-            // padding: EdgeInsets.symmetric(horizontal: 10.0),
-            decoration: new BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(
-                  color: Color.fromRGBO(0, 0, 300, 0),
-                  width: 1.0,
-                )),
-            child: Column(
-               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: Colors.blue.shade200,
+          Row(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Text(
+                    "DepartMent",
+                    style: TextStyle(fontSize: 12),
                   ),
-                  child: ButtonTheme(
-                    alignedDropdown: false,
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      value: dropdownValue1,
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dropdownValue1 = newValue;
-                        });
-                      },
-                      items: <String>[
-                        "Chemestry",
-                        "Nepali",
-                        "Physics"
-                      ].map<DropdownMenuItem<String>>(
-                        (String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value, style: TextStyle(fontSize: 12)),
-                          );
-                        },
-                      ).toList(),
+                  Container(
+                    width: 90,
+                    // padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: new BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          color: Color.fromRGBO(0, 0, 300, 0),
+                          width: 1.0,
+                        )),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: ButtonTheme(
+                            alignedDropdown: false,
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: dropdownValue1,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  dropdownValue1 = newValue;
+                                });
+                              },
+                              items: <String>["Chemestry", "Nepali", "Physics"]
+                                  .map<DropdownMenuItem<String>>(
+                                (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value,
+                                        style: TextStyle(fontSize: 12)),
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                ],
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Date",
+                    style: TextStyle(fontSize: 12),
+                  ),
+                  Container(
+                    width: 90,
+                    // padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: new BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          color: Color.fromRGBO(0, 0, 300, 0),
+                          width: 1.0,
+                        )),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: ButtonTheme(
+                            //alignedDropdown: false,
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: dropdowndate,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  dropdowndate = newValue;
+                                });
+                              },
+                              items: <String>[
+                                "2018",
+                                "2019",
+                                "2022",
+                                "2022",
+                                "2023"
+                              ].map<DropdownMenuItem<String>>(
+                                (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value,
+                                        style: TextStyle(fontSize: 12)),
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Month",
+                    style: TextStyle(fontSize: 12),
+                  ),
+                  Container(
+                    width: 50,
+                    // padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: new BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          color: Color.fromRGBO(0, 0, 300, 0),
+                          width: 1.0,
+                        )),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: ButtonTheme(
+                            //alignedDropdown: false,
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: dropdownMonth,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  dropdownMonth = newValue;
+                                });
+                              },
+                              items: <String>[
+                                "Jan",
+                                "Feb",
+                                "Mar",
+                                "Apr",
+                                "jun",
+                                "jul",
+                                "Aug",
+                                "Sep",
+                                "Oct",
+                                "Nov",
+                                "Dec"
+                              ].map<DropdownMenuItem<String>>(
+                                (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value,
+                                        style: TextStyle(fontSize: 12)),
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          )
         ],
       ),
     );
