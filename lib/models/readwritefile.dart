@@ -340,16 +340,20 @@ savepfmToFirebasePlan(){
 
 savepfmToFirebaseActual(){
 
-  int pm ;
-  int ph;
+  int pm , am, vm , ph , ah , vh;
+  
   String path = "";
   String company = "company"; // this.Company;
   String department =  "department"  ; //this.Department;
   String year =  "2019" ; //this.year;
   String month =  "janaury" ; //this.month;
   path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
-  List montlyActualHrs = new List<int>();
-          List monthlyActualAmts= new List<int>();
+    List mPHrs = new List<int>();
+    List mPAmts= new List<int>();
+    List mAHrs = new List<int>();
+    List mAAmts= new List<int>();
+    List mVHrs = new List<int>();
+    List mVAmts= new List<int>();
    for (String ce in this.costElements) {
           String a = ce;
           // final DocumentReference $a =
@@ -357,9 +361,9 @@ savepfmToFirebaseActual(){
           // Firestore.instance.document("path/$a/actual");
           // Firestore.instance.document("path/$a/varience");
         // Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMaMap/ceToMaMap/$a/$a");
-           final DocumentReference planDocRef= Firestore.instance.document("$path/$a/$a");
-            final DocumentReference actualDocRef = Firestore.instance.document("path/$a/actual");
-             final DocumentReference varienceDocRef = Firestore.instance.document("path/$a/varience");
+           final DocumentReference planDocRef= Firestore.instance.document("$path/$a/plan");
+            final DocumentReference actualDocRef = Firestore.instance.document("$path/$a/actual");
+             final DocumentReference varienceDocRef = Firestore.instance.document("$path/$a/varience");
 
             // final DocumentReference planDocRef = Firestore.instance.document("path/$a/plan");
             // final DocumentReference actualDocRef = Firestore.instance.document("path/$a/actual");
@@ -380,54 +384,81 @@ savepfmToFirebaseActual(){
 
            for (PlanValue amount in mp.amountInMonth) {
         pm = amount.value;
-        monthlyActualAmts.add(pm);
+        mPAmts.add(pm);
       }
 
         
            for (PlanValue hour in mp.amountInMonth) {
         ph = hour.value;
-        montlyActualHrs.add(ph);
+        mPHrs.add(ph);
       }
+
+          for (ActualValue amount in ma.amountInMonth) {
+        am = amount.value;
+        mAAmts.add(am);
+      }
+
+        
+           for (ActualValue hour in ma.amountInMonth) {
+        ah = hour.value;
+        mAHrs.add(ah);
+      }
+
+    for (VarianceValue amount in mv.amountInMonth) {
+        vm = amount.value;
+        mVAmts.add(vm);
+      }
+
+        
+           for (VarianceValue hour in mv.amountInMonth) {
+        vh = hour.value;
+        mVHrs.add(vh);
+      }
+
 
       Map<String, List> planData = <String,List>{
        
-     "amountInMonth":monthlyActualAmts,
-     "hrInMonth": montlyActualHrs,
+     "amountInMonth":mPAmts,
+     "hrInMonth": mPHrs,
       // "amountInMonth":mp.amountInMonth,
       // "hrInMonth":mp.hourInMonth,
        
     };
 
-    // Map<String, List> actualData = <String,List>{
+    Map<String, List> actualData = <String,List>{
        
-    //  // "amountInMonth":monthlyActualAmts,
-    //   "amountInMonth":ma.amountInMonth,
-    //   "hrInMonth":ma.hourInMonth,
-       
-    // };
+     // "amountInMonth":monthlyActualAmts,
+      // "amountInMonth":ma.amountInMonth,
+      // "hrInMonth":ma.hourInMonth,
+       "amountInMonth":mAAmts,
+        "hrInMonth": mAHrs,
+    };
 
-    //   Map<String, List> varienceData = <String,List>{
+      Map<String, List> varienceData = <String,List>{
        
-    //  // "amountInMonth":monthlyActualAmts,
-    //   "amountInMonth":mv.amountInMonth,
-    //   "hrInMonth":mv.hourInMonth,
+       "amountInMonth":mVAmts,
+        "hrInMonth": mVHrs,
+    };
+     // "amountInMonth":monthlyActualAmts,
+      // "amountInMonth":mv.amountInMonth,
+      // "hrInMonth":mv.hourInMonth,
        
-    // };
+    
 
       //below codes saves planValue to firebase
     planDocRef.setData(planData).whenComplete(() {
       print("Document Added");
     }).catchError((e) => print(e));
 
-     //below codes saves actualValue to firebase
-    // actualDocRef.setData(actualData).whenComplete(() {
-    //   print("Document Added");
-    // }).catchError((e) => print(e));
+    // below codes saves actualValue to firebase
+    actualDocRef.setData(actualData).whenComplete(() {
+      print("Document Added");
+    }).catchError((e) => print(e));
 
  //below codes saves varienceValue to firebase
-    // varienceDocRef.setData(varienceData).whenComplete(() {
-    //   print("Document Added");
-    // }).catchError((e) => print(e));
+    varienceDocRef.setData(varienceData).whenComplete(() {
+      print("Document Added");
+    }).catchError((e) => print(e));
 
   }
 }
