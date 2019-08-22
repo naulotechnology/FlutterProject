@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
 
 class PlanningFormModel {
   String Company;
@@ -312,33 +313,33 @@ class PlanningFormModel {
 
 
 
-savepfmToFirebasePlan(){
-   for (String ce in this.costElements) {
-          String a = ce;
-          final DocumentReference $a =
-          Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMpMap/ceToMpMap/$a/$a");
-          List montlyPlanHrs = new List<int>();
-          List monthlyPlanAmts= new List<int>();
-      for (int i = 1; i < 13; i++) {
-        PlanValue pm = new PlanValue(i * 125, i);
-        PlanValue ph = new PlanValue(i * 7, i);
-        monthlyPlanAmts.add(pm.value);
-        montlyPlanHrs.add(ph.value);
-      }
-      Map<String, List> data = <String,List>{
+// savepfmToFirebasePlan(){
+//    for (String ce in this.costElements) {
+//           String a = ce;
+//           final DocumentReference $a =
+//           Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMpMap/ceToMpMap/$a/$a");
+//           List montlyPlanHrs = new List<int>();
+//           List monthlyPlanAmts= new List<int>();
+//       for (int i = 1; i < 13; i++) {
+//         PlanValue pm = new PlanValue(i * 125, i);
+//         PlanValue ph = new PlanValue(i * 7, i);
+//         monthlyPlanAmts.add(pm.value);
+//         montlyPlanHrs.add(ph.value);
+//       }
+//       Map<String, List> data = <String,List>{
        
-      "amountInMonth":monthlyPlanAmts,
-      "hrInMonth":montlyPlanHrs,
+//       "amountInMonth":monthlyPlanAmts,
+//       "hrInMonth":montlyPlanHrs,
        
-    };
+//     };
       
-    $a.setData(data).whenComplete(() {
-      print("Document Added");
-    }).catchError((e) => print(e));
-      }
-}
+//     $a.setData(data).whenComplete(() {
+//       print("Document Added");
+//     }).catchError((e) => print(e));
+//       }
+// }
 
-savepfmToFirebaseActual(){
+savepfmToFirebase(){
 
   int pm , am, vm , ph , ah , vh;
   
@@ -347,7 +348,8 @@ savepfmToFirebaseActual(){
   String department =  "department"  ; //this.Department;
   String year =  "2019" ; //this.year;
   String month =  "janaury" ; //this.month;
-  path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
+  // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
+  path = "/" + company +  "/" + department +"/" + year +  "/"  + month ;
     List mPHrs = new List<int>();
     List mPAmts= new List<int>();
     List mAHrs = new List<int>();
@@ -356,30 +358,18 @@ savepfmToFirebaseActual(){
     List mVAmts= new List<int>();
    for (String ce in this.costElements) {
           String a = ce;
-          // final DocumentReference $a =
-          // Firestore.instance.document("path/$a/plan");
-          // Firestore.instance.document("path/$a/actual");
-          // Firestore.instance.document("path/$a/varience");
+        
         // Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMaMap/ceToMaMap/$a/$a");
            final DocumentReference planDocRef= Firestore.instance.document("$path/$a/plan");
             final DocumentReference actualDocRef = Firestore.instance.document("$path/$a/actual");
              final DocumentReference varienceDocRef = Firestore.instance.document("$path/$a/varience");
 
-            // final DocumentReference planDocRef = Firestore.instance.document("path/$a/plan");
-            // final DocumentReference actualDocRef = Firestore.instance.document("path/$a/actual");
-            //  final DocumentReference varienceDocRef = Firestore.instance.document("path/$a/varience");
+          
 
          MonthlyPlan mp  = this.ceToMpMap[ce];
             MonthlyActual ma = this.ceToMaMap[ce];
            MonthlyVariance mv = this.ceToMvMap[ce];
-      // for (int i = 1; i < 13; i++) {
-      // //  PlanValue pm = mp.amountInMonth[i];
-         
-      //   ActualValue am = new ActualValue(i * 135, i);
-      //   ActualValue ah = new ActualValue(i * 9, i);
-      //   monthlyActualAmts.add(am.value);
-      //   montlyActualHrs.add(ah.value);
-      // }
+      
 
 
            for (PlanValue amount in mp.amountInMonth) {
@@ -473,7 +463,21 @@ call savePfmTOfirebase
 
 */
 
-
+ checkInternetConnectivity() async {
+    PlanningFormModel pfm =   PlanningFormModel();
+    var result = await Connectivity().checkConnectivity();
+    if (result == ConnectivityResult.wifi || result == ConnectivityResult.mobile) {
+     pfm.savepfmToFirebase();
+    }
+    pfm.savePfmToFile();
+    print("no internet access");
+     //pfm.savePfmToFile();
+    //  else if (result == ConnectivityResult.none) {
+    //   print(
+    //   "  ' No Internet access',You're not connected "
+    //   );
+    // } 
+  }
 
 }
 

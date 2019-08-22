@@ -22,6 +22,7 @@ dependencies:
   material_switch: ^0.0.5
   shared_preferences: ^0.4.3
   cloud_firestore: ^0.8.2+3
+  connectivity: 0.4.3+7
 
 
   # The following adds the Cupertino Icons font to your application.
