@@ -138,38 +138,40 @@ class MyFormState extends State<MyForm>
 
     boardView(int i) {
       return Container(
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-              bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-            ),
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+            bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
           ),
-          padding: EdgeInsets.only(top: 1),
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: 1,
-            itemExtent: 60 * pfm.costElements.length.toDouble(),
-            itemBuilder: (BuildContext context, int index) {
-              return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  // shrinkWrap: true,
-                  itemCount: 12,
-                  // itemExtent: 2000,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == 0) {
-                      return costElementTable();
-                    } else if (index == 1) {
-                      if (i == 1) {
-                        return dataBody();
-                      } else if (i == 2) {
-                        return dataBodyActual();
-                      } else {
-                        return dataBodyVariance();
-                      }
-                    }
-                  });
-            },
-          ));
+        ),
+        padding: EdgeInsets.only(top: 1),
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: 1,
+          itemExtent: 60 * pfm.costElements.length.toDouble(),
+          itemBuilder: (BuildContext context, int index) {
+            return ListView.builder(
+              scrollDirection: Axis.vertical,
+              // shrinkWrap: true,
+              itemCount: 12,
+              // itemExtent: 2000,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return costElementTable();
+                } else if (index == 1) {
+                  if (i == 1) {
+                    return dataBody();
+                  } else if (i == 2) {
+                    return dataBodyActual();
+                  } else {
+                    return dataBodyVariance();
+                  }
+                }
+              },
+            );
+          },
+        ),
+      );
     }
 
     double selectItemExtent() {
@@ -248,138 +250,202 @@ class MyFormState extends State<MyForm>
       );
     }
 
-    return Scaffold(
-        body: Container(
-      //color: Colors.white10,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-          bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-        ),
-      ),
-      child: new ListView.builder(
-        itemCount: 3,
-        itemExtent: selectItemExtent(),
-        //shrinkWrap: true,
-        //reverse: true,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return tagList;
-          }if(index==1){
-            return boardView(1);
-          }if(index==2){
-            return saveRetriveButton();
-          }
-        },
-      ),
-    ));
-
-    int _currentIndex = 0;
-
-    void onTabTapped(int index) {
-      setState(() {
-        _currentIndex = index;
-        if(index==1){
-          Container(
-             child: planPage(),
-          );
-        }
-         if(index==2){
-          Container(
-             child: actualPage(),
-          );
-        }
-         if(index==1){
-          Container(
-             child: variancePage(),
-          );
-        }
-      });
+    Widget _makeElement(int index) {
+      if (index >= 3) {
+        return null;
+      } else if (index == 0) {
+        return Container(
+          height: 270,
+          width: 90,
+          // padding: EdgeInsets.all(0),
+          child: Padding(
+            padding: EdgeInsets.only(top: 0),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 1,
+              itemBuilder: (BuildContext content, int index) {
+                return tagList;
+              },
+            ),
+          ),
+        );
+      } else if (index == 1) {
+        return Container(
+          height: 270,
+          width: 9000,
+          // padding: EdgeInsets.all(0),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 1,
+              itemBuilder: (BuildContext content, int index) {
+                return dataBody();
+              },
+            ),
+          ),
+        );
+      } else if (index == 2) {
+        return Container(
+          height: 270,
+          width: 90,
+          // padding: EdgeInsets.all(0),
+          child: Padding(
+            padding: EdgeInsets.only(top: 0),
+            child: ListView.builder(
+              //scrollDirection: Axis.horizontal,
+              itemCount: 1,
+              itemBuilder: (BuildContext content, int index) {
+                return saveRetriveButton();
+              },
+            ),
+          ),
+        );
+      }
     }
 
-    List<Widget> container = [
-      new Container(
-        child: planPage(),
-      ),
-    ];
-
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: container,
-      ),
-      bottomNavigationBar: new BottomNavigationBar(
-        fixedColor: Colors.black,
-       // type: BottomNavigationBarType.fixed,
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.format_list_bulleted),
-             title: Text("data2")
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.settings),
-             title: Text("data1")
-          ),
-           BottomNavigationBarItem(
-            icon: new Icon(Icons.hot_tub),
-            title: Text("data")
-          )
-        ],
-      ),
-      backgroundColor: Colors.black,
-    );
-    String showValue = "plan";
-
-    return Scaffold(
-      body: DefaultTabController(
-        length: 3,
-        child: SafeArea(
-          child: Scaffold(
-            body: TabBarView(
-              children: [
-                new Container(
-                  child: planPage(),
-                  //color: Colors.white,
-                ),
-                new Container(
-                  child: actualPage(),
-                  // color: Colors.lightGreen,
-                ),
-                new Container(
-                  child: variancePage(),
-                  // color: Colors.red,
-                ),
-              ],
-            ),
-            bottomNavigationBar: new TabBar(
-              tabs: [
-                Tab(
-                  //icon: new Icon(Icons.home),
-                  text: "plan",
-                ),
-                Tab(
-                  //icon: new Icon(Icons.account_balance),
-                  text: "actual",
-                ),
-                Tab(
-                  //icon: new Icon(Icons.vibration),
-                  text: "variance",
-                ),
-              ],
-              labelColor: Colors.yellow,
-              unselectedLabelColor: Colors.blue,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorPadding: EdgeInsets.all(5.0),
-              indicatorColor: Colors.red,
-            ),
-            backgroundColor: Colors.black,
-          ),
-        ),
+      body: Center(
+        child: ListView.builder(
+            // scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+          return _makeElement(index);
+        }),
       ),
     );
+
+    // return Scaffold(
+    //     body: Container(
+    //   //color: Colors.white10,
+    //   decoration: BoxDecoration(
+    //     color: Colors.white,
+    //     border: Border(
+    //       top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+    //       bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+    //     ),
+    //   ),
+    //   child: new ListView.builder(
+    //     itemCount: 3,
+    //     itemExtent: selectItemExtent(),
+    //     //shrinkWrap: true,
+    //     //reverse: true,
+    //     itemBuilder: (BuildContext context, int index) {
+    //       if (index == 0) {
+    //         return tagList;
+    //       }if(index==1){
+    //         return boardView(1);
+    //       }if(index==2){
+    //         return saveRetriveButton();
+    //       }
+    //     },
+    //   ),
+    // ));
+
+    // int _currentIndex = 0;
+
+    // void onTabTapped(int index) {
+    //   setState(() {
+    //     _currentIndex = index;
+    //     if(index==1){
+    //       Container(
+    //          child: planPage(),
+    //       );
+    //     }
+    //      if(index==2){
+    //       Container(
+    //          child: actualPage(),
+    //       );
+    //     }
+    //      if(index==1){
+    //       Container(
+    //          child: variancePage(),
+    //       );
+    //     }
+    //   });
+    // }
+
+    // List<Widget> container = [
+    //   new Container(
+    //     child: planPage(),
+    //   ),
+    // ];
+
+    // return Scaffold(
+    //   body: IndexedStack(
+    //     index: _currentIndex,
+    //     children: container,
+    //   ),
+    //   bottomNavigationBar: new BottomNavigationBar(
+    //     fixedColor: Colors.black,
+    //    // type: BottomNavigationBarType.fixed,
+    //     onTap: onTabTapped,
+    //     currentIndex: _currentIndex,
+    //     items: [
+    //       BottomNavigationBarItem(
+    //         icon: new Icon(Icons.format_list_bulleted),
+    //          title: Text("data2")
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: new Icon(Icons.settings),
+    //          title: Text("data1")
+    //       ),
+    //        BottomNavigationBarItem(
+    //         icon: new Icon(Icons.hot_tub),
+    //         title: Text("data")
+    //       )
+    //     ],
+    //   ),
+    //   backgroundColor: Colors.black,
+    // );
+    // String showValue = "plan";
+
+    // return Scaffold(
+    //   body: DefaultTabController(
+    //     length: 3,
+    //     child: SafeArea(
+    //       child: Scaffold(
+    //         body: TabBarView(
+    //           children: [
+    //             new Container(
+    //               child: planPage(),
+    //               //color: Colors.white,
+    //             ),
+    //             new Container(
+    //               child: actualPage(),
+    //               // color: Colors.lightGreen,
+    //             ),
+    //             new Container(
+    //               child: variancePage(),
+    //               // color: Colors.red,
+    //             ),
+    //           ],
+    //         ),
+    //         bottomNavigationBar: new TabBar(
+    //           tabs: [
+    //             Tab(
+    //               //icon: new Icon(Icons.home),
+    //               text: "plan",
+    //             ),
+    //             Tab(
+    //               //icon: new Icon(Icons.account_balance),
+    //               text: "actual",
+    //             ),
+    //             Tab(
+    //               //icon: new Icon(Icons.vibration),
+    //               text: "variance",
+    //             ),
+    //           ],
+    //           labelColor: Colors.yellow,
+    //           unselectedLabelColor: Colors.blue,
+    //           indicatorSize: TabBarIndicatorSize.label,
+    //           indicatorPadding: EdgeInsets.all(5.0),
+    //           indicatorColor: Colors.red,
+    //         ),
+    //         backgroundColor: Colors.black,
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   dataBody() {
@@ -782,7 +848,7 @@ class MyFormState extends State<MyForm>
             style: TextStyle(fontSize: 12),
           ),
           Container(
-            width: 120,
+            width: 60,
             // padding: EdgeInsets.symmetric(horizontal: 10.0),
             decoration: new BoxDecoration(
                 color: Colors.blueAccent,
@@ -808,11 +874,8 @@ class MyFormState extends State<MyForm>
                           dropdownValue = newValue;
                         });
                       },
-                      items: <String>[
-                        "Plan",
-                        "Actual",
-                        "Variance"
-                      ].map<DropdownMenuItem<String>>(
+                      items: <String>["Plan", "Actual", "Variance"]
+                          .map<DropdownMenuItem<String>>(
                         (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
