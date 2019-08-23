@@ -791,7 +791,11 @@ class MyFormState extends State<MyForm>
           RaisedButton(
             onPressed: () {
               setState(() {
+<<<<<<< HEAD
                 pfm.checkInternetConnectivity();
+=======
+               pfm.saveData();
+>>>>>>> 67a598964a6b61aa71d24919ff3c2f976af0af27
               });
               // print("data wrote to file = ${pfm.toStringMa()}");
             },

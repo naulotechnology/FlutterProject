@@ -6,8 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 
 class PlanningFormModel {
-  String Company;
-  String Department;
+  String company;
+  String department;
   List<String> costElements;
   String year;
  String month;
@@ -38,8 +38,8 @@ class PlanningFormModel {
   
 
   PlanningFormModel() {
-    this.Company = "N Tech";
-    this.Department = "Marketing";
+    this.company = "N Tech";
+    this.department = "Marketing";
      this.st = new Storage();
      this.year = "2019";
     this.costElements = new List<String>();
@@ -128,10 +128,10 @@ class PlanningFormModel {
 
   String toStringMp() {
     String planningFormInString = "Company = " +
-        this.Company +
+        this.company +
         "\n" +
-        "DepartMent = " +
-        this.Department +
+        "department = " +
+        this.department +
         "\n";
 
     planningFormInString = planningFormInString + "Monthly Amount Plan\n";
@@ -164,10 +164,10 @@ class PlanningFormModel {
 
   String toStringMa() {
     String planningFormInString = "Company = " +
-        this.Company +
+        this.company +
         "\n" +
-        "DepartMent = " +
-        this.Department +
+        "department = " +
+        this.department +
         "\n";
 
     planningFormInString = planningFormInString + "Monthly Amount Plan\n";
@@ -199,10 +199,10 @@ class PlanningFormModel {
 
   String toStringMv() {
     String planningFormInString = "Company = " +
-        this.Company +
+        this.company +
         "\n" +
-        "DepartMent = " +
-        this.Department +
+        "department = " +
+        this.department +
         "\n";
 
     planningFormInString = planningFormInString + "Monthly Amount Plan\n";
@@ -244,8 +244,8 @@ class PlanningFormModel {
   String planningFormModelMptoJSON() {
     String p = "";
     p = p + "{";
-    p = p + "'Company':" + "'${this.Company}'" + ",";
-    p = p + "'Department':" + "'${this.Department}'" + ",";
+    p = p + "'Company':" + "'${this.company}'" + ",";
+    p = p + "'department':" + "'${this.department}'" + ",";
     p = p + "'costElements':[";
     for (String ce in this.costElements) {
       p = p + "'" + ce + "',";
@@ -264,8 +264,8 @@ class PlanningFormModel {
   String planningFormModelMatoJSON() {
     String p = "";
     p = p + "{";
-    p = p + "'Company':" + "'${this.Company}'" + ",";
-    p = p + "'Department':" + "'${this.Department}'" + ",";
+    p = p + "'Company':" + "'${this.company}'" + ",";
+    p = p + "'department':" + "'${this.department}'" + ",";
     p = p + "'costElements':[";
     for (String ce in this.costElements) {
       p = p + "'" + ce + "',";
@@ -284,8 +284,8 @@ class PlanningFormModel {
   String planningFormModelMvtoJSON() {
     String p = "";
     p = p + "{";
-    p = p + "'Company':" + "'${this.Company}'" + ",";
-    p = p + "'Department':" + "'${this.Department}'" + ",";
+    p = p + "'Company':" + "'${this.company}'" + ",";
+    p = p + "'department':" + "'${this.department}'" + ",";
     p = p + "'costElements':[";
     for (String ce in this.costElements) {
       p = p + "'" + ce + "',";
@@ -312,13 +312,17 @@ class PlanningFormModel {
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 67a598964a6b61aa71d24919ff3c2f976af0af27
 savepfmToFirebase(){
 
   int pm , am, vm , ph , ah , vh;
   
   String path = "";
   String company = "company"; // this.Company;
-  String department =  "department"  ; //this.Department;
+  String department =  "department"  ; //this.department;
   String year =  "2019" ; //this.year;
   String month =  "janaury" ; //this.month;
   // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
@@ -436,12 +440,13 @@ call savePfmTOfirebase
 
 */
 
- checkInternetConnectivity() async {
-    PlanningFormModel pfm =   PlanningFormModel();
+ saveData() async {
+   
     var result = await Connectivity().checkConnectivity();
     if (result == ConnectivityResult.wifi || result == ConnectivityResult.mobile) {
-     pfm.savepfmToFirebase();
+     this.savepfmToFirebase();
     }
+<<<<<<< HEAD
     pfm.savePfmToFile();
     print("no internet access");
     //  pfm.savePfmToFile();
@@ -450,6 +455,12 @@ call savePfmTOfirebase
     //   "  ' No Internet access',You're not connected "
     //   );
     // } 
+=======
+    else {
+      print("no internet access");
+    }
+    this.savePfmToFile();
+>>>>>>> 67a598964a6b61aa71d24919ff3c2f976af0af27
   }
 
 }
@@ -595,7 +606,7 @@ class MonthlyPlan extends MonthlyValues {
       return this.amountInMonth;
   }
 }
-
+// change storage class to fileStorage , save connecticity check 
 class Storage {
   Future<String> get localPath async {
     final dir = await getApplicationDocumentsDirectory();
