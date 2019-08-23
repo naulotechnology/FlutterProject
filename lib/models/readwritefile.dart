@@ -50,6 +50,9 @@ class PlanningFormModel {
     this.costElements.add("Human Resources");
     this.costElements.add("Information Technology");
     this.costElements.add("Legal");
+    this.costElements.add("Transportation");
+    this.costElements.add("Marketing");
+    this.costElements.add("Human Resources");
 
 
     //instatiate the map to store monthly plan for each costEleemnts
@@ -312,10 +315,6 @@ class PlanningFormModel {
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 67a598964a6b61aa71d24919ff3c2f976af0af27
 savepfmToFirebase(){
 
   int pm , am, vm , ph , ah , vh;
@@ -446,21 +445,10 @@ call savePfmTOfirebase
     if (result == ConnectivityResult.wifi || result == ConnectivityResult.mobile) {
      this.savepfmToFirebase();
     }
-<<<<<<< HEAD
-    pfm.savePfmToFile();
-    print("no internet access");
-    //  pfm.savePfmToFile();
-    //  else if (result == ConnectivityResult.none) {
-    //   print(
-    //   "  ' No Internet access',You're not connected "
-    //   );
-    // } 
-=======
     else {
       print("no internet access");
     }
     this.savePfmToFile();
->>>>>>> 67a598964a6b61aa71d24919ff3c2f976af0af27
   }
 
 }
