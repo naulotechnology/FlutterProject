@@ -90,87 +90,79 @@ class MyFormState extends State<MyForm>
     this.showHour = showHours;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Widget tagList = Container(
-      color: Colors.lightBlueAccent,
-      padding: EdgeInsets.only(top: 30),
-      // height: 239.0,
-      child: Column(
-        children: <Widget>[
-          myDropDownButtons(),
-          Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 100),
-              ),
-              SizedBox(
-                height: 80,
-              ),
-              Container(
-                height: 36,
-                width: 122,
-                child: MaterialSwitch(
-                  padding: EdgeInsets.only(bottom: 10.0, left: 12.0),
-                  options: optionList,
-                  selectedOption: optionSelect,
-                  selectedBackgroundColor: Colors.indigo,
-                  selectedTextColor: Colors.white,
-                  onSelect: (String optionList) {
-                    setState(() {
-                      optionSelect = optionList;
-                      if (optionSelect == "Month") {
-                        showHour = false;
-                        print("Month");
-                      } else {
-                        showHour = true;
-                        print("Hour");
-                      }
-                    });
-                  },
-                ),
-              ),
-            ],
-          )
-        ],
+  myDecoration() {
+    return BoxDecoration(
+      color: Colors.white,
+      border: Border(
+        top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+        bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Widget tagList = Container(
+    //   color: Colors.lightBlueAccent,
+    //   padding: EdgeInsets.only(top: 30),
+    //   // height: 239.0,
+    //   child: Column(
+    //     children: <Widget>[
+    //       myDropDownButtons(),
+    //       Row(
+    //         children: <Widget>[
+    //           Padding(
+    //             padding: EdgeInsets.only(left: 100),
+    //           ),
+    //           SizedBox(
+    //             height: 80,
+    //           ),
+    //           Container(
+    //             height: 36,
+    //             width: 122,
+    //             child: MaterialSwitch(
+    //               padding: EdgeInsets.only(bottom: 10.0, left: 12.0),
+    //               options: optionList,
+    //               selectedOption: optionSelect,
+    //               selectedBackgroundColor: Colors.indigo,
+    //               selectedTextColor: Colors.white,
+    //               onSelect: (String optionList) {
+    //                 setState(() {
+    //                   optionSelect = optionList;
+    //                   if (optionSelect == "Month") {
+    //                     showHour = false;
+    //                     print("Month");
+    //                   } else {
+    //                     showHour = true;
+    //                     print("Hour");
+    //                   }
+    //                 });
+    //               },
+    //             ),
+    //           ),
+    //         ],
+    //       )
+    //     ],
+    //   ),
+    // );
 
     boardView(int i) {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-            bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-          ),
-        ),
-        padding: EdgeInsets.only(top: 1),
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: 1,
-          itemExtent: 60 * pfm.costElements.length.toDouble(),
-          itemBuilder: (BuildContext context, int index) {
-            return ListView.builder(
-              scrollDirection: Axis.vertical,
-              // shrinkWrap: true,
-              itemCount: 12,
-              // itemExtent: 2000,
-              itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
-                  return costElementTable();
-                } else if (index == 1) {
-                  if (i == 1) {
-                    return dataBody();
-                  } else if (i == 2) {
-                    return dataBodyActual();
-                  } else {
-                    return dataBodyVariance();
-                  }
-                }
-              },
-            );
-          },
-        ),
+      return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 2,
+        itemBuilder: (BuildContext content, int index) {
+          if (index == 0) {
+            return costElementTable();
+          } else if (index == 1) {
+            if (i == 1) {
+              return dataBody();
+            } else if (i == 2) {
+              return dataBodyActual();
+            } else {
+              return dataBodyVariance();
+            }
+          }
+        },
       );
     }
 
@@ -251,43 +243,75 @@ class MyFormState extends State<MyForm>
     }
 
     Widget _makeElement(int index) {
-      if (index >= 3) {
+      if (index >= 6) {
         return null;
       } else if (index == 0) {
         return Container(
-          height: 270,
-          width: 90,
-          // padding: EdgeInsets.all(0),
+          height: 70,
+          width: 100,
+          padding: EdgeInsets.only(left: 80),
+          decoration: myDecoration(),
           child: Padding(
             padding: EdgeInsets.only(top: 0),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: 1,
               itemBuilder: (BuildContext content, int index) {
-                return tagList;
+                return myHeader();
               },
             ),
           ),
         );
       } else if (index == 1) {
         return Container(
-          height: 270,
-          width: 9000,
-          // padding: EdgeInsets.all(0),
+          height: 80,
+          width: 80,
+          padding: EdgeInsets.only(left: 50),
+          decoration: myDecoration(),
           child: Padding(
-            padding: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.only(top: 0),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: 1,
               itemBuilder: (BuildContext content, int index) {
-                return dataBody();
+                return myDropDownButtons();
               },
             ),
           ),
         );
       } else if (index == 2) {
         return Container(
-          height: 270,
+          height: 60,
+          width: 200,
+          decoration: myDecoration(),
+          // padding: EdgeInsets.all(10),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: actualVariancePlanButton(),
+          ),
+        );
+      } else if (index == 3) {
+        return Container(
+          height: 54,
+          // padding: EdgeInsets.all(10),
+          child: Padding(
+            padding: EdgeInsets.only(top:10,bottom: 10, left: 115, right: 115),
+            child: hourMonthToogleButton(),
+          ),
+        );
+      } else if (index == 4) {
+        return Container(
+          height: (60 * pfm.costElements.length).toDouble(),
+          width: 9000,
+          // padding: EdgeInsets.all(0),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: boardView(1),
+          ),
+        );
+      } else if (index == 5) {
+        return Container(
+          height: 50,
           width: 90,
           // padding: EdgeInsets.all(0),
           child: Padding(
@@ -767,7 +791,7 @@ class MyFormState extends State<MyForm>
           RaisedButton(
             onPressed: () {
               setState(() {
-               pfm.checkInternetConnectivity();
+                pfm.checkInternetConnectivity();
               });
               // print("data wrote to file = ${pfm.toStringMa()}");
             },
@@ -824,16 +848,51 @@ class MyFormState extends State<MyForm>
     );
   }
 
-  // Widget genderDropdownContainer() {
-  //   return new Container(
-  //     decoration: new BoxDecoration(
-  //         color: Colors.blueGrey,
-  //         borderRadius: BorderRadius.circular(2),
-  //         border: Border.all(
-  //             color: Color.fromRGBO(112, 112, 112, 1.0), width: 1.0)),
-  //     child: myDropDownButtons(), //DropDownButton
-  //   );
-  // }
+  hourMonthToogleButton() {
+    return Container(
+      child: MaterialSwitch(
+        padding: EdgeInsets.only(bottom: 10.0, left: 12.0),
+        options: optionList,
+        selectedOption: optionSelect,
+        selectedBackgroundColor: Colors.indigo,
+        selectedTextColor: Colors.white,
+        onSelect: (String optionList) {
+          setState(() {
+            optionSelect = optionList;
+            if (optionSelect == "Month") {
+              showHour = false;
+              print("Month");
+            } else {
+              showHour = true;
+              print("Hour");
+            }
+          });
+        },
+      ),
+    );
+  }
+
+  actualVariancePlanButton() {
+    return Container(
+      child: Center(
+        child: Text(
+          "Actual  Planl Variance",
+          style: TextStyle(fontSize: 30, fontFamily: "SourceSansPro"),
+        ),
+      ),
+    );
+  }
+
+  myHeader() {
+    return Container(
+      child: Center(
+        child: Text(
+          "My Technology",
+          style: TextStyle(fontSize: 30, fontFamily: "SourceSansPro"),
+        ),
+      ),
+    );
+  }
 
   myDropDownButtons() {
     return Container(
@@ -842,55 +901,6 @@ class MyFormState extends State<MyForm>
       padding: EdgeInsets.only(right: 60),
       child: Column(
         children: <Widget>[
-          Text(
-            "Company",
-            style: TextStyle(fontSize: 12),
-          ),
-          Container(
-            width: 60,
-            // padding: EdgeInsets.symmetric(horizontal: 10.0),
-            decoration: new BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(
-                  color: Color.fromRGBO(0, 0, 300, 0),
-                  width: 1.0,
-                )),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: Colors.blue.shade200,
-                  ),
-                  child: ButtonTheme(
-                    alignedDropdown: false,
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      value: dropdownValue,
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dropdownValue = newValue;
-                        });
-                      },
-                      items: <String>["Plan", "Actual", "Variance"]
-                          .map<DropdownMenuItem<String>>(
-                        (String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value, style: TextStyle(fontSize: 12)),
-                          );
-                        },
-                      ).toList(),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
           Row(
             children: <Widget>[
               Column(

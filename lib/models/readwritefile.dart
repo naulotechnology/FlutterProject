@@ -52,7 +52,6 @@ class PlanningFormModel {
     this.costElements.add("Legal");
 
 
-
     //instatiate the map to store monthly plan for each costEleemnts
     ceToMpMap = new Map<String, MonthlyPlan>();
     ceToMaMap = new Map<String, MonthlyActual>();
@@ -66,7 +65,7 @@ class PlanningFormModel {
     for (String ce in this.costElements) {
 
       mPlan = new MonthlyPlan();
-      mActual = new MonthlyActual();
+      mActual = new MonthlyActual(this);
       mVariance = new MonthlyVariance();
     
       mPlan.category = ce;
@@ -313,32 +312,6 @@ class PlanningFormModel {
 
 
 
-// savepfmToFirebasePlan(){
-//    for (String ce in this.costElements) {
-//           String a = ce;
-//           final DocumentReference $a =
-//           Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMpMap/ceToMpMap/$a/$a");
-//           List montlyPlanHrs = new List<int>();
-//           List monthlyPlanAmts= new List<int>();
-//       for (int i = 1; i < 13; i++) {
-//         PlanValue pm = new PlanValue(i * 125, i);
-//         PlanValue ph = new PlanValue(i * 7, i);
-//         monthlyPlanAmts.add(pm.value);
-//         montlyPlanHrs.add(ph.value);
-//       }
-//       Map<String, List> data = <String,List>{
-       
-//       "amountInMonth":monthlyPlanAmts,
-//       "hrInMonth":montlyPlanHrs,
-       
-//     };
-      
-//     $a.setData(data).whenComplete(() {
-//       print("Document Added");
-//     }).catchError((e) => print(e));
-//       }
-// }
-
 savepfmToFirebase(){
 
   int pm , am, vm , ph , ah , vh;
@@ -471,7 +444,7 @@ call savePfmTOfirebase
     }
     pfm.savePfmToFile();
     print("no internet access");
-     //pfm.savePfmToFile();
+    //  pfm.savePfmToFile();
     //  else if (result == ConnectivityResult.none) {
     //   print(
     //   "  ' No Internet access',You're not connected "
@@ -511,8 +484,13 @@ class MonthlyValues {
 }
 
 class MonthlyActual extends MonthlyValues {
+ 
+ PlanningFormModel pfm;
+ MonthlyActual(PlanningFormModel pfm){
+    this.pfm = pfm;
+ }
+
   String monthlyActualToJson() {
-    PlanningFormModel pfm = new PlanningFormModel();
     String s = "";
     for (String ce in pfm.costElements) {
       s = s + "{";
