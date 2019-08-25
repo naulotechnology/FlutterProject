@@ -23,6 +23,7 @@ class MyFormState extends State<MyForm>
   String dropdowndate = "2018";
   String dropdownMonth = "Jan";
   int bordview=1;
+  String myheader="Plan Page";
 
   int itemExtend;
   List<String> optionList = <String>['Month', 'Hour'];
@@ -641,9 +642,13 @@ class MyFormState extends State<MyForm>
             onPressed: () {
               setState(() {
                 bordview=1;
+                myheader="Plan Page";
                 print("this is Number ${pfm.costElements.length}");
               });
             },
+          ),
+          SizedBox(
+            width: 5,
           ),
           MaterialButton(
             child: Text("Actual"),
@@ -660,8 +665,12 @@ class MyFormState extends State<MyForm>
             onPressed: () {
               setState(() {
                 bordview = 2;
+                myheader="Actual Page";
               });
             },
+          ),
+           SizedBox(
+            width: 5,
           ),
           MaterialButton(
             child: Text("Variance"),
@@ -678,6 +687,7 @@ class MyFormState extends State<MyForm>
             onPressed: () {
               setState(() {
                 bordview = 3;
+                myheader="Variance Page";
               });
             },
           ),
@@ -690,7 +700,7 @@ class MyFormState extends State<MyForm>
     return Container(
       child: Center(
         child: Text(
-          "My Technology",
+          myheader,
           style: TextStyle(fontSize: 30, fontFamily: "SourceSansPro"),
         ),
       ),
