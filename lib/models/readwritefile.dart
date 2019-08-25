@@ -68,7 +68,9 @@ class PlanningFormModel {
     this.costElements.add("Human Resources");
     this.costElements.add("Information Technology");
     this.costElements.add("Legal");
-
+    this.costElements.add("Transportation");
+    this.costElements.add("Marketing");
+    this.costElements.add("Human Resources");
 
 
  //instatiate the map to store monthly plan for each costEleemnts
@@ -85,7 +87,7 @@ class PlanningFormModel {
     for (String ce in this.costElements) {
 
       mPlan = new MonthlyPlan();
-      mActual = new MonthlyActual();
+      mActual = new MonthlyActual(this);
       mVariance = new MonthlyVariance();
     
       mPlan.category = ce;
@@ -368,7 +370,6 @@ class PlanningFormModel {
 
 
 
-
 savepfmToFirebase(){
 
   int pm , am, vm , ph , ah , vh;
@@ -537,8 +538,13 @@ class MonthlyValues {
 }
 
 class MonthlyActual extends MonthlyValues {
+ 
+ PlanningFormModel pfm;
+ MonthlyActual(PlanningFormModel pfm){
+    this.pfm = pfm;
+ }
+
   String monthlyActualToJson() {
-    PlanningFormModel pfm = new PlanningFormModel();
     String s = "";
     for (String ce in pfm.costElements) {
       s = s + "{";
