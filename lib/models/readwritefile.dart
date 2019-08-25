@@ -38,9 +38,27 @@ class PlanningFormModel {
   
 
   PlanningFormModel() {
-    this.company = "N Tech";
+    //check if data files already exists 
+
+    this.initializeData();
+    this.st = new Storage();
+
+    // if(st.readData().toString()==""){
+    //    this.initializeData();
+     
+    // }
+    // else {
+    //   print("data in local file system is available , reading json and populating  data... "); 
+    //   //read json from file 
+    //   //populate data 
+    //   this.planningFormModelJSONtoMp();
+    // }
+  }
+
+    initializeData(){
+      this.company = "N Tech";
     this.department = "Marketing";
-     this.st = new Storage();
+     
      this.year = "2019";
     this.costElements = new List<String>();
     //mPlan = new MonthlyPlan(this);
@@ -53,15 +71,16 @@ class PlanningFormModel {
 
 
 
-    //instatiate the map to store monthly plan for each costEleemnts
+ //instatiate the map to store monthly plan for each costEleemnts
     ceToMpMap = new Map<String, MonthlyPlan>();
     ceToMaMap = new Map<String, MonthlyActual>();
     ceToMvMap = new Map<String, MonthlyVariance>();
 
- 
+    
     MonthlyPlan mPlan; MonthlyActual mActual; MonthlyVariance mVariance;
     List<DataValue> monthlyActualAmts, montlyPlanAmts, monthlyVarianceAmts;
     List<DataValue> monthlyActualHrs, montlyPlanHrs, monthlyVarianceHrs;
+
     
     for (String ce in this.costElements) {
 
@@ -84,16 +103,16 @@ class PlanningFormModel {
 
       for (int i = 0; i < 12; i++) {
         //assign plan amounts to each of the 12 months
-        PlanValue pv = new PlanValue(i * 125, i);
+        PlanValue pv = new PlanValue(i * 0, i);
         //assign plan amounts to each of the 12 months
-        ActualValue av = new ActualValue(i * 135, i);
+        ActualValue av = new ActualValue(i * 0, i);
         //Variance the difference between plan = actual
         VarianceValue vv = new VarianceValue(pv.value - av.value, i);
 
         //assign plan Hours to each of the 12 months
-        PlanValue ph = new PlanValue(i * 7, i);
+        PlanValue ph = new PlanValue(i * 0, i);
         //assign plan Hours to each of the 12 months
-        ActualValue ah = new ActualValue(i * 9, i);
+        ActualValue ah = new ActualValue(i * 0, i);
         //Variance the difference between plan = actual
         VarianceValue vh = new VarianceValue(ph.value - ah.value, i);
 
@@ -127,6 +146,12 @@ class PlanningFormModel {
     //this.monthLevelPlan = ceToMpMap;
   }
 
+    
+
+   
+
+ 
+    
   String toStringMp() {
     String planningFormInString = "Company = " +
         this.company +
@@ -241,6 +266,36 @@ class PlanningFormModel {
           (int.parse(amount));
     }
   }
+
+  MonthlyPlan  planningFormModelJSONtoMp(){
+
+      MonthlyPlan mp = new MonthlyPlan();
+      //readJsonString and build monthlyPlan object mp
+      //
+      return mp ;
+
+  }
+
+ MonthlyActual  planningFormModelJSONtoMa(){
+
+      MonthlyActual ma = new MonthlyActual();
+      //readJsonString and build monthlyActual object ma
+      //
+      return ma ;
+
+  }
+
+
+
+ MonthlyVariance  planningFormModelJSONtoMv(){
+
+      MonthlyVariance mv = new MonthlyVariance();
+      //readJsonString and build monthlyVarience object mv
+      //
+      return mv ;
+
+  }
+
 
   String planningFormModelMptoJSON() {
     String p = "";
@@ -607,7 +662,9 @@ class Storage {
 
       return body;
     } catch (e) {
-      return e.toString();
+      print(e.toString()) ;
+       return "";
+     
     }
   }
 
