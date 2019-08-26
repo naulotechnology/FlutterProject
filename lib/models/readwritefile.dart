@@ -239,8 +239,7 @@ class PlanningFormModel {
     if (isHour) {
       this.ceToMpMap[costElement].hourInMonth[idx].value = (int.parse(amount));
     } else {
-      this.ceToMpMap[costElement].amountInMonth[idx].value =
-          (int.parse(amount));
+      this.ceToMpMap[costElement].amountInMonth[idx].value = (int.parse(amount));
     }
   }
 

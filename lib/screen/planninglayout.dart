@@ -195,7 +195,7 @@ class MyFormState extends State<MyForm>
         );
       } else if (index == 5) {
         return Container(
-          height: 50,
+          height: 30,
           width: 90,
           // padding: EdgeInsets.all(0),
           child: Padding(
@@ -284,17 +284,16 @@ class MyFormState extends State<MyForm>
                       .getMonthlyPlan(showHour)
                       .map(
                         (monthlyAmount) => DataCell(
+                              
                               TextField(
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     labelStyle: TextStyle(
                                         fontSize: 14, color: Colors.red),
                                     hintText: monthlyAmount.value.toString()),
-                                controller: costElementController,
-                                // save the txt to amount in month
                                 onChanged: (txt) {
                                   pfm.setAmount(
-                                      showHour, attr, txt, monthlyAmount.index);
+                                      showHour, attr, txt, monthlyAmount.index);                                     
                                 },
                                 onTap: () {
                                   print("${monthlyAmount.index}");
@@ -370,22 +369,24 @@ class MyFormState extends State<MyForm>
                       .getMonthlyActual(showHour)
                       .map(
                         (monthlyAmount) => DataCell(
-                              TextField(
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    labelStyle: TextStyle(
-                                        fontSize: 14, color: Colors.red),
-                                    hintText: monthlyAmount.value.toString()),
-                                controller: costElementController,
-                                // save the txt to amount in month
-                                onChanged: (txt) {
-                                  pfm.setAmount(
-                                      showHour, attr, txt, monthlyAmount.index);
-                                },
-                                onTap: () {
-                                  print("${monthlyAmount.index}");
-                                },
-                              ),
+                          
+                              // TextField(
+                              //   decoration: InputDecoration(
+                              //       border: InputBorder.none,
+                              //       labelStyle: TextStyle(
+                              //           fontSize: 14, color: Colors.red),
+                              //       hintText: monthlyAmount.value.toString()),
+                              //   controller: costElementController,
+                              // //  save the txt to amount in month
+                              //   onChanged: (txt) {
+                              //     pfm.setAmount(
+                              //         showHour, attr, txt, monthlyAmount.index);
+                              //   },
+                              //   onTap: () {
+                              //     print("${monthlyAmount.index}");
+                              //   },
+                              // ),
+                              Text(monthlyAmount.value.toString())
                             ),
                       )
                       .toList(),
@@ -456,22 +457,23 @@ class MyFormState extends State<MyForm>
                       .getMonthlyVariance(showHour)
                       .map(
                         (monthlyAmount) => DataCell(
-                              TextField(
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    labelStyle: TextStyle(
-                                        fontSize: 14, color: Colors.red),
-                                    hintText: monthlyAmount.value.toString()),
-                                controller: costElementController,
-                                // save the txt to amount in month
-                                onChanged: (txt) {
-                                  pfm.setAmount(
-                                      showHour, attr, txt, monthlyAmount.index);
-                                },
-                                onTap: () {
-                                  print("${monthlyAmount.index}");
-                                },
-                              ),
+                              // TextField(
+                              //   decoration: InputDecoration(
+                              //       border: InputBorder.none,
+                              //       labelStyle: TextStyle(
+                              //           fontSize: 14, color: Colors.red),
+                              //       hintText: monthlyAmount.value.toString()),
+                              //   controller: costElementController,
+                              //   //save the txt to amount in month
+                              //   onChanged: (txt) {
+                              //     pfm.setAmount(
+                              //         showHour, attr, txt, monthlyAmount.index);
+                              //   },
+                              //   onTap: () {
+                              //     print("${monthlyAmount.index}");
+                              //   },
+                              // ),
+                               Text(monthlyAmount.value.toString())
                             ),
                       )
                       .toList(),
@@ -806,7 +808,6 @@ class MyFormState extends State<MyForm>
                               items: <String>[
                                 "2018",
                                 "2019",
-                                "2022",
                                 "2022",
                                 "2023"
                               ].map<DropdownMenuItem<String>>(
