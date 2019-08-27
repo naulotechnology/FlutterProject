@@ -22,8 +22,8 @@ class MyFormState extends State<MyForm>
   String dropdownValue1 = "Chemestry";
   String dropdowndate = "2018";
   String dropdownMonth = "Jan";
-  int bordview=1;
-  String myheader="Plan Page";
+  int bordview = 1;
+  String myheader = "Plan Page";
 
   int itemExtend;
   List<String> optionList = <String>['Month', 'Hour'];
@@ -104,7 +104,6 @@ class MyFormState extends State<MyForm>
 
   @override
   Widget build(BuildContext context) {
-
     boardView(int i) {
       return ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -129,19 +128,19 @@ class MyFormState extends State<MyForm>
       if (index >= 6) {
         return null;
       } else if (index == 0) {
-        return Container(
-          height: 70,
-          width: 100,
-          padding: EdgeInsets.only(left: 80),
-          decoration: myDecoration(),
-          child: Padding(
-            padding: EdgeInsets.only(top: 0),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 1,
-              itemBuilder: (BuildContext content, int index) {
-                return myHeader();
-              },
+        return Center(
+          child: Container(
+            decoration: myDecoration(),
+            height: 50,
+            child: Padding(
+              padding: EdgeInsets.only(top: 0),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 1,
+                itemBuilder: (BuildContext content, int index) {
+                  return myHeader();
+                },
+              ),
             ),
           ),
         );
@@ -150,7 +149,7 @@ class MyFormState extends State<MyForm>
           height: 80,
           width: 80,
           padding: EdgeInsets.only(left: 49),
-          decoration: myDecoration(),
+          //decoration: myDecoration(),
           child: Padding(
             padding: EdgeInsets.only(top: 0),
             child: ListView.builder(
@@ -166,7 +165,6 @@ class MyFormState extends State<MyForm>
         return Container(
           height: 70,
           width: 200,
-          decoration: myDecoration(),
           padding: EdgeInsets.only(left: 50),
           child: Padding(
             padding: EdgeInsets.only(bottom: 10),
@@ -175,8 +173,8 @@ class MyFormState extends State<MyForm>
         );
       } else if (index == 3) {
         return Container(
-          height: 54,
-          // padding: EdgeInsets.all(10),
+          height: 60,
+          //  decoration: myDecoration(),
           child: Padding(
             padding:
                 EdgeInsets.only(top: 10, bottom: 10, left: 115, right: 115),
@@ -185,8 +183,8 @@ class MyFormState extends State<MyForm>
         );
       } else if (index == 4) {
         return Container(
-          height: 58.5*8,
-          width: 9000,
+          height: 58.5 * 8,
+          // width: 9000,
           // padding: EdgeInsets.all(0),
           child: Padding(
             padding: EdgeInsets.only(bottom: 10),
@@ -195,7 +193,7 @@ class MyFormState extends State<MyForm>
         );
       } else if (index == 5) {
         return Container(
-          height: 30,
+          height: 50,
           width: 90,
           // padding: EdgeInsets.all(0),
           child: Padding(
@@ -227,15 +225,7 @@ class MyFormState extends State<MyForm>
     TextStyle tStyle = new TextStyle(
         fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.lightBlue,
-        border: Border(
-          top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-          bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-          left: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-          right: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-        ),
-      ),
+      color: Color.fromARGB(100, 209, 209, 209),
       child: DataTable(
         columns: [
           DataColumn(
@@ -284,7 +274,6 @@ class MyFormState extends State<MyForm>
                       .getMonthlyPlan(showHour)
                       .map(
                         (monthlyAmount) => DataCell(
-                              
                               TextField(
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
@@ -293,7 +282,7 @@ class MyFormState extends State<MyForm>
                                     hintText: monthlyAmount.value.toString()),
                                 onChanged: (txt) {
                                   pfm.setAmount(
-                                      showHour, attr, txt, monthlyAmount.index);                                     
+                                      showHour, attr, txt, monthlyAmount.index);
                                 },
                                 onTap: () {
                                   print("${monthlyAmount.index}");
@@ -312,15 +301,7 @@ class MyFormState extends State<MyForm>
     TextStyle tStyle = new TextStyle(
         fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.lightBlue,
-        border: Border(
-          top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-          bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-          left: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-          right: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-        ),
-      ),
+      color: Color.fromARGB(100, 209, 209, 209),
       child: DataTable(
         columns: [
           DataColumn(
@@ -369,25 +350,24 @@ class MyFormState extends State<MyForm>
                       .getMonthlyActual(showHour)
                       .map(
                         (monthlyAmount) => DataCell(
-                          
-                              // TextField(
-                              //   decoration: InputDecoration(
-                              //       border: InputBorder.none,
-                              //       labelStyle: TextStyle(
-                              //           fontSize: 14, color: Colors.red),
-                              //       hintText: monthlyAmount.value.toString()),
-                              //   controller: costElementController,
-                              // //  save the txt to amount in month
-                              //   onChanged: (txt) {
-                              //     pfm.setAmount(
-                              //         showHour, attr, txt, monthlyAmount.index);
-                              //   },
-                              //   onTap: () {
-                              //     print("${monthlyAmount.index}");
-                              //   },
-                              // ),
-                              Text(monthlyAmount.value.toString())
-                            ),
+
+                            // TextField(
+                            //   decoration: InputDecoration(
+                            //       border: InputBorder.none,
+                            //       labelStyle: TextStyle(
+                            //           fontSize: 14, color: Colors.red),
+                            //       hintText: monthlyAmount.value.toString()),
+                            //   controller: costElementController,
+                            // //  save the txt to amount in month
+                            //   onChanged: (txt) {
+                            //     pfm.setAmount(
+                            //         showHour, attr, txt, monthlyAmount.index);
+                            //   },
+                            //   onTap: () {
+                            //     print("${monthlyAmount.index}");
+                            //   },
+                            // ),
+                            Text(monthlyAmount.value.toString())),
                       )
                       .toList(),
                 ))
@@ -400,15 +380,7 @@ class MyFormState extends State<MyForm>
     TextStyle tStyle = new TextStyle(
         fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.lightBlue,
-        border: Border(
-          top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-          bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-          left: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-          right: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-        ),
-      ),
+      color: Color.fromARGB(100, 209, 209, 209),
       child: DataTable(
         columns: [
           DataColumn(
@@ -457,24 +429,23 @@ class MyFormState extends State<MyForm>
                       .getMonthlyVariance(showHour)
                       .map(
                         (monthlyAmount) => DataCell(
-                              // TextField(
-                              //   decoration: InputDecoration(
-                              //       border: InputBorder.none,
-                              //       labelStyle: TextStyle(
-                              //           fontSize: 14, color: Colors.red),
-                              //       hintText: monthlyAmount.value.toString()),
-                              //   controller: costElementController,
-                              //   //save the txt to amount in month
-                              //   onChanged: (txt) {
-                              //     pfm.setAmount(
-                              //         showHour, attr, txt, monthlyAmount.index);
-                              //   },
-                              //   onTap: () {
-                              //     print("${monthlyAmount.index}");
-                              //   },
-                              // ),
-                               Text(monthlyAmount.value.toString())
-                            ),
+                            // TextField(
+                            //   decoration: InputDecoration(
+                            //       border: InputBorder.none,
+                            //       labelStyle: TextStyle(
+                            //           fontSize: 14, color: Colors.red),
+                            //       hintText: monthlyAmount.value.toString()),
+                            //   controller: costElementController,
+                            //   //save the txt to amount in month
+                            //   onChanged: (txt) {
+                            //     pfm.setAmount(
+                            //         showHour, attr, txt, monthlyAmount.index);
+                            //   },
+                            //   onTap: () {
+                            //     print("${monthlyAmount.index}");
+                            //   },
+                            // ),
+                            Text(monthlyAmount.value.toString())),
                       )
                       .toList(),
                 ))
@@ -483,25 +454,22 @@ class MyFormState extends State<MyForm>
     );
   }
 
-  // returnCETextControllerValue() {
-  //   int ceController = int.parse(costElementController.text);
-  //   if (ceController == null) {
-  //     return 1;
-  //   } else {
-  //     return ceController;
-  //   }
-  // }
-
   costElementTable() {
     return Container(
       width: 162,
       decoration: BoxDecoration(
-        color: Colors.lightBlue,
+        color: Color.fromARGB(100, 179, 179, 179),
         border: Border(
-          top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-          bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
-          left: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-          right: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+          // top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+          // bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+          left: BorderSide(
+            width: 1.0,
+            color: Color.fromARGB(100, 120, 120, 120),
+          ),
+          right: BorderSide(
+            width: 1.0,
+            color: Color.fromARGB(100, 120, 120, 120),
+          ),
         ),
       ),
       child: DataTable(
@@ -534,11 +502,8 @@ class MyFormState extends State<MyForm>
     );
   }
 
-  dateTable() {}
-
   saveRetriveButton() {
     return Container(
-      padding: EdgeInsets.only(bottom: 200),
       child: Row(
         children: <Widget>[
           RaisedButton(
@@ -603,11 +568,12 @@ class MyFormState extends State<MyForm>
 
   hourMonthToogleButton() {
     return Container(
+      height: 100,
       child: MaterialSwitch(
-        padding: EdgeInsets.only(bottom: 10.0, left: 12.0),
+        padding: EdgeInsets.only(bottom: 12.0, left: 12.0),
         options: optionList,
         selectedOption: optionSelect,
-        selectedBackgroundColor: Colors.indigo,
+        selectedBackgroundColor: Colors.blue,
         selectedTextColor: Colors.white,
         onSelect: (String optionList) {
           setState(() {
@@ -631,8 +597,8 @@ class MyFormState extends State<MyForm>
         children: <Widget>[
           MaterialButton(
             child: Text("Plan"),
-            color: Colors.redAccent,
-            textColor: Colors.black,
+            color: Colors.blue,
+            textColor: Colors.white,
             textTheme: ButtonTextTheme.accent,
             elevation: 2,
             height: 40,
@@ -643,8 +609,8 @@ class MyFormState extends State<MyForm>
             animationDuration: Duration(microseconds: 1000),
             onPressed: () {
               setState(() {
-                bordview=1;
-                myheader="Plan Page";
+                bordview = 1;
+                myheader = "Plan Page";
                 print("this is Number ${pfm.costElements.length}");
               });
             },
@@ -654,8 +620,8 @@ class MyFormState extends State<MyForm>
           ),
           MaterialButton(
             child: Text("Actual"),
-            color: Colors.redAccent,
-            textColor: Colors.black,
+            color: Colors.blue,
+            textColor: Colors.white,
             textTheme: ButtonTextTheme.accent,
             elevation: 2,
             height: 40,
@@ -667,17 +633,17 @@ class MyFormState extends State<MyForm>
             onPressed: () {
               setState(() {
                 bordview = 2;
-                myheader="Actual Page";
+                myheader = "Actual Page";
               });
             },
           ),
-           SizedBox(
+          SizedBox(
             width: 5,
           ),
           MaterialButton(
             child: Text("Variance"),
-            color: Colors.redAccent,
-            textColor: Colors.black,
+            color: Colors.blue,
+            textColor: Colors.white,
             textTheme: ButtonTextTheme.accent,
             elevation: 2,
             height: 40,
@@ -689,7 +655,7 @@ class MyFormState extends State<MyForm>
             onPressed: () {
               setState(() {
                 bordview = 3;
-                myheader="Variance Page";
+                myheader = "Variance Page";
               });
             },
           ),
@@ -700,10 +666,12 @@ class MyFormState extends State<MyForm>
 
   myHeader() {
     return Container(
+      margin: EdgeInsets.only(left: 16),
       child: Center(
         child: Text(
           myheader,
-          style: TextStyle(fontSize: 30, fontFamily: "SourceSansPro"),
+          style: TextStyle(fontSize: 24, fontFamily: "SourceSansPro"),
+          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -711,9 +679,10 @@ class MyFormState extends State<MyForm>
 
   myDropDownButtons() {
     return Container(
-      width: 311,
-      // height: 170,
-      padding: EdgeInsets.only(right: 60),
+      margin: EdgeInsets.only(top: 4),
+      width: 350,
+      height: 50,
+      //  padding: EdgeInsets.only(top: 8),
       child: Column(
         children: <Widget>[
           Row(
@@ -724,15 +693,19 @@ class MyFormState extends State<MyForm>
                     "DepartMent",
                     style: TextStyle(fontSize: 12),
                   ),
+                  SizedBox(
+                    height: 4,
+                  ),
                   Container(
-                    width: 90,
-                    // padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    width: 110,
+                    //padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    //  padding: EdgeInsets.only(bottom: 10),
                     decoration: new BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(10.0),
+                        color: Color.fromARGB(100, 212, 212, 212),
+                        borderRadius: BorderRadius.circular(4.0),
                         border: Border.all(
-                          color: Color.fromRGBO(0, 0, 300, 0),
-                          width: 1.0,
+                          color: Color.fromARGB(100, 140, 140, 140),
+                          width: 1,
                         )),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -742,25 +715,29 @@ class MyFormState extends State<MyForm>
                             canvasColor: Colors.blue.shade200,
                           ),
                           child: ButtonTheme(
-                            alignedDropdown: false,
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              value: dropdownValue1,
-                              onChanged: (String newValue) {
-                                setState(() {
-                                  dropdownValue1 = newValue;
-                                });
-                              },
-                              items: <String>["Chemestry", "Nepali", "Physics"]
-                                  .map<DropdownMenuItem<String>>(
-                                (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value,
-                                        style: TextStyle(fontSize: 12)),
-                                  );
+                            alignedDropdown: true,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: dropdownValue1,
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    dropdownValue1 = newValue;
+                                  });
                                 },
-                              ).toList(),
+                                items: <String>[
+                                  "Chemestry",
+                                  "Nepali",
+                                  "Physics"
+                                ].map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value,
+                                          style: TextStyle(fontSize: 12)),
+                                    );
+                                  },
+                                ).toList(),
+                              ),
                             ),
                           ),
                         ),
@@ -778,14 +755,17 @@ class MyFormState extends State<MyForm>
                     "Date",
                     style: TextStyle(fontSize: 12),
                   ),
+                  SizedBox(
+                    height: 4,
+                  ),
                   Container(
                     width: 80,
                     // padding: EdgeInsets.symmetric(horizontal: 10.0),
                     decoration: new BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(10.0),
+                        color: Color.fromARGB(100, 212, 212, 212),
+                        borderRadius: BorderRadius.circular(4.0),
                         border: Border.all(
-                          color: Color.fromRGBO(0, 0, 300, 0),
+                          color: Color.fromARGB(100, 140, 140, 140),
                           width: 1.0,
                         )),
                     child: Column(
@@ -797,28 +777,26 @@ class MyFormState extends State<MyForm>
                           ),
                           child: ButtonTheme(
                             alignedDropdown: true,
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              value: dropdowndate,
-                              onChanged: (String newValue) {
-                                setState(() {
-                                  dropdowndate = newValue;
-                                });
-                              },
-                              items: <String>[
-                                "2018",
-                                "2019",
-                                "2022",
-                                "2023"
-                              ].map<DropdownMenuItem<String>>(
-                                (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value,
-                                        style: TextStyle(fontSize: 12)),
-                                  );
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                value: dropdowndate,
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    dropdowndate = newValue;
+                                  });
                                 },
-                              ).toList(),
+                                items: <String>["2018", "2019", "2022", "2023"]
+                                    .map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value,
+                                          style: TextStyle(fontSize: 12)),
+                                    );
+                                  },
+                                ).toList(),
+                              ),
                             ),
                           ),
                         ),
@@ -836,14 +814,17 @@ class MyFormState extends State<MyForm>
                     "Month",
                     style: TextStyle(fontSize: 12),
                   ),
+                  SizedBox(
+                    height: 4,
+                  ),
                   Container(
-                    width: 50,
+                    width: 70,
                     // padding: EdgeInsets.symmetric(horizontal: 10.0),
                     decoration: new BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(10.0),
+                        color: Color.fromARGB(100, 212, 212, 212),
+                        borderRadius: BorderRadius.circular(4.0),
                         border: Border.all(
-                          color: Color.fromRGBO(0, 0, 300, 0),
+                          color: Color.fromARGB(100, 140, 140, 140),
                           width: 1.0,
                         )),
                     child: Column(
@@ -854,36 +835,38 @@ class MyFormState extends State<MyForm>
                             canvasColor: Colors.blue.shade200,
                           ),
                           child: ButtonTheme(
-                            //alignedDropdown: false,
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              value: dropdownMonth,
-                              onChanged: (String newValue) {
-                                setState(() {
-                                  dropdownMonth = newValue;
-                                });
-                              },
-                              items: <String>[
-                                "Jan",
-                                "Feb",
-                                "Mar",
-                                "Apr",
-                                "jun",
-                                "jul",
-                                "Aug",
-                                "Sep",
-                                "Oct",
-                                "Nov",
-                                "Dec"
-                              ].map<DropdownMenuItem<String>>(
-                                (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value,
-                                        style: TextStyle(fontSize: 12)),
-                                  );
+                            alignedDropdown: true,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                value: dropdownMonth,
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    dropdownMonth = newValue;
+                                  });
                                 },
-                              ).toList(),
+                                items: <String>[
+                                  "Jan",
+                                  "Feb",
+                                  "Mar",
+                                  "Apr",
+                                  "jun",
+                                  "jul",
+                                  "Aug",
+                                  "Sep",
+                                  "Oct",
+                                  "Nov",
+                                  "Dec"
+                                ].map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value,
+                                          style: TextStyle(fontSize: 12)),
+                                    );
+                                  },
+                                ).toList(),
+                              ),
                             ),
                           ),
                         ),

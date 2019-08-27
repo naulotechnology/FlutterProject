@@ -87,7 +87,7 @@ class PlanningFormModel {
     for (String ce in this.costElements) {
 
       mPlan = new MonthlyPlan();
-      mActual = new MonthlyActual(this);
+      mActual = new MonthlyActual();
       mVariance = new MonthlyVariance();
     
       mPlan.category = ce;
@@ -538,12 +538,11 @@ class MonthlyValues {
 
 class MonthlyActual extends MonthlyValues {
  
- PlanningFormModel pfm;
- MonthlyActual(PlanningFormModel pfm){
-    this.pfm = pfm;
- }
+
+ 
 
   String monthlyActualToJson() {
+    PlanningFormModel pfm = new PlanningFormModel();
     String s = "";
     for (String ce in pfm.costElements) {
       s = s + "{";
