@@ -183,14 +183,18 @@ class MyFormState extends State<MyForm>
         );
       } else if (index == 4) {
         return Container(
-          height: 58.5 * 8,
-          // width: 9000,
-          // padding: EdgeInsets.all(0),
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: boardView(bordview),
-          ),
-        );
+            height: 300,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: 1,
+                itemExtent: 56.8*(pfm.costElements.length),
+                itemBuilder: (BuildContext content, int index) {
+                  return boardView(bordview);
+                },
+              ),
+            ));
       } else if (index == 5) {
         return Container(
           height: 50,
@@ -199,7 +203,7 @@ class MyFormState extends State<MyForm>
           child: Padding(
             padding: EdgeInsets.only(top: 0),
             child: ListView.builder(
-              //scrollDirection: Axis.horizontal,
+              scrollDirection: Axis.horizontal,
               itemCount: 1,
               itemBuilder: (BuildContext content, int index) {
                 return saveRetriveButton();
