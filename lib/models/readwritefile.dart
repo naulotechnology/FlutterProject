@@ -105,7 +105,7 @@ class PlanningFormModel {
 
       for (int i = 0; i < 12; i++) {
         //assign plan amounts to each of the 12 months
-        PlanValue pv = new PlanValue(i * 0, i);
+        PlanValue pv = new PlanValue(i * 10000, i);
         //assign plan amounts to each of the 12 months
         ActualValue av = new ActualValue(i * 0, i);
         //Variance the difference between plan = actual

@@ -684,7 +684,7 @@ class MyFormState extends State<MyForm>
   myDropDownButtons() {
     return Container(
       margin: EdgeInsets.only(top: 4),
-      width: 350,
+      width: 300,
       height: 50,
       //  padding: EdgeInsets.only(top: 8),
       child: Column(
