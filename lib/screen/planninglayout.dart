@@ -56,9 +56,6 @@ class MyFormState extends State<MyForm>
   MyFormState(PlanningFormModel pfm) {
     this.pfm = pfm;
     st = this.pfm.st;
-
-    // with SingleTickerProviderStateMixin
-    // controller = new TabController(vsync: this, length: 3);
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -189,7 +186,7 @@ class MyFormState extends State<MyForm>
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: 1,
-                itemExtent: 56.8*(pfm.costElements.length),
+                itemExtent: 56.8 * (pfm.costElements.length),
                 itemBuilder: (BuildContext content, int index) {
                   return boardView(bordview);
                 },
@@ -197,7 +194,7 @@ class MyFormState extends State<MyForm>
             ));
       } else if (index == 5) {
         return Container(
-          height: 50,
+          height: 60,
           width: 90,
           // padding: EdgeInsets.all(0),
           child: Padding(
@@ -508,36 +505,29 @@ class MyFormState extends State<MyForm>
 
   saveRetriveButton() {
     return Container(
+      height: 40,
+      margin: EdgeInsets.only(left:80),
       child: Row(
         children: <Widget>[
-          RaisedButton(
+          MaterialButton(
             onPressed: () {
               setState(() {
                 pfm.saveData();
               });
               // print("data wrote to file = ${pfm.toStringMa()}");
             },
+            child: Text("Save"),
+            height: 40,
+            color: Colors.blue,
             textColor: Colors.white,
-            padding: const EdgeInsets.all(0.0),
             shape: BeveledRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(7.0)),
-            ),
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: <Color>[
-                    Color(0xFF0D47A1),
-                    Color(0xFF1976D2),
-                    Color(0xFF42A5F5),
-                  ],
-                ),
-              ),
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 10, bottom: 10),
-              child: const Text('Save', style: TextStyle(fontSize: 20)),
+              borderRadius: BorderRadius.all(Radius.circular(4.0)),
             ),
           ),
-          RaisedButton(
+          SizedBox(
+            width: 10,
+          ),
+          MaterialButton(
             onPressed: () async {
               String da = await st.readData();
               pfm.savedStateFromFile = da;
@@ -546,24 +536,13 @@ class MyFormState extends State<MyForm>
               print("data read from file = $da");
             },
             shape: BeveledRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(7.0)),
+              borderRadius: BorderRadius.all(Radius.circular(4.0)),
             ),
+            child: Text("Save"),
+            height: 40,
+            color: Colors.blue,
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: <Color>[
-                    Color(0xFF0D47A1),
-                    Color(0xFF1976D2),
-                    Color(0xFF42A5F5),
-                  ],
-                ),
-              ),
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 10, bottom: 10),
-              child: const Text('Read', style: TextStyle(fontSize: 20)),
-            ),
           ),
         ],
       ),
