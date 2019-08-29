@@ -47,12 +47,12 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return new SavedStateFromFile(pfm);
+        return new MyForm(pfm);
       case 1:
         return new MyAdminForm(pfm);
 
       default:
-        return new MyForm(pfm);
+        return new SavedStateFromFile(pfm);
     }
   }
 
