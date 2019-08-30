@@ -60,7 +60,9 @@ class SaveStateFile extends State {
             itemCount: 1,
             itemExtent: 3000,
             itemBuilder: (BuildContext content, int index) {
-              return Text(pfm.savedStateFromFile);
+              return Container(
+                child:Text(pfm.savedStateFromFile) ,
+              );
             },
           ),
         ),

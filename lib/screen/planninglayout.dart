@@ -16,14 +16,23 @@ class MyForm extends StatefulWidget {
   }
 }
 
-class MyFormState extends State<MyForm>
-    with AutomaticKeepAliveClientMixin<MyForm> {
+class MyFormState extends State<MyForm> {
   String dropdownValue = "Plan";
   String dropdownValue1 = "Chemestry";
   String dropdowndate = "2018";
   String dropdownMonth = "Jan";
+
   int bordview = 1;
+
   String myheader = "Plan Page";
+
+  Color planbuttonColors = Colors.blue;
+  Color actualbuttonColors = Colors.white;
+  Color variancebuttonColors = Colors.white;
+
+  Color plantextColors = Colors.white;
+  Color actualtextColors = Colors.black;
+  Color variancetextColors = Colors.black;
 
   int itemExtend;
   List<String> optionList = <String>['Month', 'Hour'];
@@ -38,18 +47,15 @@ class MyFormState extends State<MyForm>
 
   PlanningFormModel pfm;
 
-  TabController controller;
+  //TabController controller;
 
   Storage st;
   MonthlyPlan mp;
   bool showHour = false;
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   void dispose() {
-    controller.dispose();
+    // controller.dispose();
     super.dispose();
   }
 
@@ -145,7 +151,8 @@ class MyFormState extends State<MyForm>
         return Container(
           height: 80,
           width: 80,
-          padding: EdgeInsets.only(left: 49),
+         // padding: EdgeInsets.only(left: 49),
+         margin: EdgeInsets.only(left:16),
           //decoration: myDecoration(),
           child: Padding(
             padding: EdgeInsets.only(top: 0),
@@ -162,7 +169,8 @@ class MyFormState extends State<MyForm>
         return Container(
           height: 70,
           width: 200,
-          padding: EdgeInsets.only(left: 50),
+         // padding: EdgeInsets.only(left: 50),
+         margin: EdgeInsets.only(left:16),
           child: Padding(
             padding: EdgeInsets.only(bottom: 10),
             child: actualVariancePlanButton(),
@@ -469,8 +477,6 @@ class MyFormState extends State<MyForm>
       decoration: BoxDecoration(
         color: Color.fromARGB(100, 179, 179, 179),
         border: Border(
-          // top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
-          // bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
           left: BorderSide(
             width: 1.0,
             color: Color.fromARGB(100, 120, 120, 120),
@@ -588,8 +594,8 @@ class MyFormState extends State<MyForm>
         children: <Widget>[
           MaterialButton(
             child: Text("Plan"),
-            color: Colors.blue,
-            textColor: Colors.white,
+            color: planbuttonColors,
+            textColor: plantextColors,
             textTheme: ButtonTextTheme.accent,
             elevation: 2,
             height: 40,
@@ -602,7 +608,13 @@ class MyFormState extends State<MyForm>
               setState(() {
                 bordview = 1;
                 myheader = "Plan Page";
-                print("this is Number ${pfm.costElements.length}");
+
+                planbuttonColors = Colors.blue;
+                actualbuttonColors = Colors.white;
+                variancebuttonColors = Colors.white;
+                plantextColors = Colors.white;
+                actualtextColors = Colors.black;
+                variancetextColors = Colors.black;
               });
             },
           ),
@@ -611,8 +623,8 @@ class MyFormState extends State<MyForm>
           ),
           MaterialButton(
             child: Text("Actual"),
-            color: Colors.blue,
-            textColor: Colors.white,
+            color: actualbuttonColors,
+            textColor: actualtextColors,
             textTheme: ButtonTextTheme.accent,
             elevation: 2,
             height: 40,
@@ -625,6 +637,13 @@ class MyFormState extends State<MyForm>
               setState(() {
                 bordview = 2;
                 myheader = "Actual Page";
+
+                actualbuttonColors = Colors.blue;
+                planbuttonColors = Colors.white;
+                variancebuttonColors = Colors.white;
+                actualtextColors = Colors.white;
+                plantextColors = Colors.black;
+                variancetextColors = Colors.black;
               });
             },
           ),
@@ -633,8 +652,8 @@ class MyFormState extends State<MyForm>
           ),
           MaterialButton(
             child: Text("Variance"),
-            color: Colors.blue,
-            textColor: Colors.white,
+            color: variancebuttonColors,
+            textColor: variancetextColors,
             textTheme: ButtonTextTheme.accent,
             elevation: 2,
             height: 40,
@@ -647,6 +666,13 @@ class MyFormState extends State<MyForm>
               setState(() {
                 bordview = 3;
                 myheader = "Variance Page";
+
+                variancebuttonColors = Colors.blue;
+                actualbuttonColors = Colors.white;
+                planbuttonColors = Colors.white;
+                variancetextColors = Colors.white;
+                plantextColors = Colors.black;
+                actualtextColors = Colors.black;
               });
             },
           ),
