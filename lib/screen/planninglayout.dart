@@ -1,8 +1,10 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutterproject/models/readwritefile.dart';
 import 'package:material_switch/material_switch.dart';
 import 'dart:async';
+import 'package:flutter_offline/flutter_offline.dart';
 
 class MyForm extends StatefulWidget {
   PlanningFormModel pfm;
@@ -25,6 +27,8 @@ class MyFormState extends State<MyForm> {
   int bordview = 1;
 
   String myheader = "Plan Page";
+
+  String connection;
 
   Color planbuttonColors = Colors.blue;
   Color actualbuttonColors = Colors.white;
@@ -53,15 +57,48 @@ class MyFormState extends State<MyForm> {
   MonthlyPlan mp;
   bool showHour = false;
 
+  bool connected;
+
+  checkInterNetConnection() async {
+    var result = await Connectivity().checkConnectivity();
+    if (result == ConnectivityResult.wifi ||
+        result == ConnectivityResult.mobile) {
+      print("internet access");
+      connected = true;
+    } else {
+      connected = false;
+      print("no internet access");
+    }
+  }
+
   @override
   void dispose() {
     // controller.dispose();
     super.dispose();
+    //subscription.cancel();
+  }
+
+  initState() {
+    super.initState();
+
+    // subscription = Connectivity()
+    //     .onConnectivityChanged
+    //     .listen((ConnectivityResult result) {
+    //   // Got a new connectivity status!
+    // });
   }
 
   MyFormState(PlanningFormModel pfm) {
     this.pfm = pfm;
     st = this.pfm.st;
+  }
+
+  String checkConnection() {
+    if (connected == true) {
+      return "Wifi Connected";
+    } else {
+      return "No internet Connection";
+    }
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -99,7 +136,7 @@ class MyFormState extends State<MyForm> {
     return BoxDecoration(
       color: Colors.white,
       border: Border(
-        top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+      //  top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
         bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
       ),
     );
@@ -107,6 +144,9 @@ class MyFormState extends State<MyForm> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      checkInterNetConnection();
+    });
     boardView(int i) {
       return ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -151,8 +191,8 @@ class MyFormState extends State<MyForm> {
         return Container(
           height: 80,
           width: 80,
-         // padding: EdgeInsets.only(left: 49),
-         margin: EdgeInsets.only(left:16),
+          // padding: EdgeInsets.only(left: 49),
+          margin: EdgeInsets.only(left: 16),
           //decoration: myDecoration(),
           child: Padding(
             padding: EdgeInsets.only(top: 0),
@@ -169,8 +209,8 @@ class MyFormState extends State<MyForm> {
         return Container(
           height: 70,
           width: 200,
-         // padding: EdgeInsets.only(left: 50),
-         margin: EdgeInsets.only(left:16),
+          // padding: EdgeInsets.only(left: 50),
+          margin: EdgeInsets.only(left: 16),
           child: Padding(
             padding: EdgeInsets.only(bottom: 10),
             child: actualVariancePlanButton(),
@@ -228,13 +268,51 @@ class MyFormState extends State<MyForm> {
       //   //   onPressed:() => Navigator.pop(context, false),
       //   // )
       // ),
-      body: Center(
-        child: ListView.builder(
-            // scrollDirection: Axis.horizontal,
-            itemBuilder: (BuildContext context, int index) {
-          return _makeElement(index);
-        }),
+      // body: onConnectivityChange(pfm.result),
+      body: OfflineBuilder(
+        connectivityBuilder: (
+          BuildContext context,
+          ConnectivityResult connectivity,
+          Widget child,
+        ) {
+          final bool connected = connectivity != ConnectivityResult.none;
+          return new Stack(
+            fit: StackFit.expand,
+            children: [
+              Positioned(
+                height: 24.0,
+                left: 0.0,
+                right: 0.0,
+                child: Container(
+                  color: connected ? Color(0xFF00EE44) : Color(0xFFEE4400),
+                  child: Center(
+                    child: Text("${connected ? 'Online' : 'Offline'}",style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 24),
+                child: ListView.builder(
+                    // scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                  return _makeElement(index);
+                }),
+              )
+            ],
+          );
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[],
+        ),
       ),
+      // Center(
+      //   child: ListView.builder(
+      //       // scrollDirection: Axis.horizontal,
+      //       itemBuilder: (BuildContext context, int index) {
+      //     return _makeElement(index);
+      //   }),
+      // ),
     );
   }
 

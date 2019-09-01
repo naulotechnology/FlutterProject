@@ -58,7 +58,7 @@ class SaveStateFile extends State {
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: 1,
-            itemExtent: 3000,
+            itemExtent: 10000,
             itemBuilder: (BuildContext content, int index) {
               return Container(
                 child:Text(pfm.savedStateFromFile) ,
