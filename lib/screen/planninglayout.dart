@@ -136,7 +136,7 @@ class MyFormState extends State<MyForm> {
     return BoxDecoration(
       color: Colors.white,
       border: Border(
-      //  top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
+        //  top: BorderSide(width: 1.0, color: Colors.lightBlue.shade500),
         bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
       ),
     );
@@ -144,9 +144,13 @@ class MyFormState extends State<MyForm> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      checkInterNetConnection();
-    });
+    showOnlineOflineSnackBar(bool connected) {
+      // Scaffold.of(context).showSnackBar(SnackBar(
+      //   content: Text('Show Snackbar'),
+      //   duration: Duration(seconds: 3),
+      // ));
+    }
+
     boardView(int i) {
       return ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -283,7 +287,8 @@ class MyFormState extends State<MyForm> {
                 height: 24.0,
                 left: 0.0,
                 right: 0.0,
-                child: Container(
+                child: //showOnlineOflineSnackBar(connected),
+                Container(
                   color: connected ? Color(0xFF00EE44) : Color(0xFFEE4400),
                   child: Center(
                     child: Text("${connected ? 'Online' : 'Offline'}",style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
@@ -320,7 +325,7 @@ class MyFormState extends State<MyForm> {
     TextStyle tStyle = new TextStyle(
         fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
     return Container(
-      color: Color.fromARGB(100, 209, 209, 209),
+      color: Color.fromARGB(80, 209, 209, 209),
       child: DataTable(
         columns: [
           DataColumn(
@@ -396,7 +401,7 @@ class MyFormState extends State<MyForm> {
     TextStyle tStyle = new TextStyle(
         fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
     return Container(
-      color: Color.fromARGB(100, 209, 209, 209),
+      color: Color.fromARGB(100, 112, 112, 112),
       child: DataTable(
         columns: [
           DataColumn(
@@ -475,7 +480,7 @@ class MyFormState extends State<MyForm> {
     TextStyle tStyle = new TextStyle(
         fontSize: 15, color: Colors.black54, fontFamily: 'SourceSansPro');
     return Container(
-      color: Color.fromARGB(100, 209, 209, 209),
+      color: Color.fromARGB(100, 112, 112, 112),
       child: DataTable(
         columns: [
           DataColumn(
