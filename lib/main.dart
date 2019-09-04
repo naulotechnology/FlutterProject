@@ -76,7 +76,11 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
 
     return new Scaffold(
       appBar: new AppBar(
+       // automaticallyImplyLeading: false,
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
+        // leading: IconButton(icon:Icon(Icons.arrow_back),
+        //   onPressed:() => Navigator.pop(context, false),
+        // )
       ),
       drawer: new Drawer(
         child: Column(

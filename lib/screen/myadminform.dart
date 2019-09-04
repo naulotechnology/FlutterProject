@@ -83,6 +83,13 @@ class AdminForm extends State {
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.title;
     return Scaffold(
+      // appBar: new AppBar(
+      //   automaticallyImplyLeading: true,
+      //   title: new Text("AdminForm"),
+      //   // leading: IconButton(icon:Icon(Icons.arrow_back),
+      //   //   onPressed:() => Navigator.pop(context, false),
+      //   // )
+      // ),
       //backgroundColor: Colors.red,
       body: SafeArea(
         child: Form(

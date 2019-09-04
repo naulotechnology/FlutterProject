@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterproject/models/readwritefile.dart';
-
+import 'package:flutterproject/screen/planninglayout.dart';
 
 class SavedStateFromFile extends StatefulWidget {
   PlanningFormModel pfm;
@@ -18,62 +18,55 @@ class SavedStateFromFile extends StatefulWidget {
 
 class SaveStateFile extends State {
   PlanningFormModel pfm;
+  MyFormState mfs;
 
   SaveStateFile(PlanningFormModel pfm) {
     this.pfm = pfm;
-  }
-
-  String saveState;
-
-  TextEditingController saveStateFileController = TextEditingController();
-  TextEditingController saveStateFileController1 = TextEditingController();
-
-  void initState() {
-    super.initState();
-    saveStateFileController.text = pfm.savedStateFromFile;
+    this.mfs = new MyFormState(pfm);
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SafeArea(
-        child: Form(
-          child: ListView(
-            children: <Widget>[
-              SizedBox(
-                height: 40,
-              ),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                style: Theme.of(context).textTheme.title,
-                controller: saveStateFileController,
-                onSaved: (txt) {
-                  setState(() {
-                    
-                    saveStateFileController.text = pfm.savedStateFromFile;
-                  });
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                style: Theme.of(context).textTheme.title,
-                controller: saveStateFileController1,
-              ),
-              RaisedButton(
-                child: Text("MyButton"),
-                onPressed: () {
-                  setState(() {
-                    handleText();
-                  });
-                },
-              )
-            ],
-          ),
-        ),
+    return Scaffold(
+      //  appBar: new AppBar(
+      //   automaticallyImplyLeading: true,
+      //   title: new Text("Setting"),
+      //   // leading: IconButton(icon:Icon(Icons.arrow_back),
+      //   //   onPressed:() => Navigator.pop(context, false),
+      //   // )
+      // ),
+      body: Center(
+        child: ListView.builder(
+            // scrollDirection: Axis.vertical,
+            itemBuilder: (BuildContext context, int index) {
+          return _makeElement(index);
+        }),
       ),
     );
   }
-  void handleText() {
-    saveStateFileController.text = saveStateFileController1.text;
+
+  _makeElement(int index) {
+    if (index >= 3) {
+      return null;
+     } 
+    else if (index == 0) {
+      return Center(
+          child: Container(
+        height: 3000,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: 1,
+            itemExtent: 10000,
+            itemBuilder: (BuildContext content, int index) {
+              return Container(
+                child:Text(pfm.savedStateFromFile) ,
+              );
+            },
+          ),
+        ),
+      ));
+    }
   }
 }
