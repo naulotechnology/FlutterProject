@@ -542,9 +542,12 @@ class MyFormState extends State<MyForm>
           RaisedButton(
             onPressed: () {
               setState(() {
-                pfm.saveData();
+               pfm.saveData();
+               //pfm.planningFormModelJSONtoMp();
+                print("data");
               });
-              // print("data wrote to file = ${pfm.toStringMa()}");
+              // print("data wrote to file = ${pfm.planningFormModelMptoJSON()}");
+            //  print( "data  i checked = ${pfm.}");
             },
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
