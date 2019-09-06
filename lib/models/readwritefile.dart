@@ -147,11 +147,19 @@ class PlanningFormModel {
   }
 
 
- loadAppDataFromFile(){
+ loadAppDataFromFile()async {
+     String  jsonReadfromfile;
+    print("welcome to planning application data we are instantiating application");
+    jsonReadfromfile = await st.readData();
+     print("file data read from file = " + jsonReadfromfile);
+
+     
+
+
    this.costElements = new List<String>();
    ceToMaMap = new Map<String, MonthlyActual>();
-    this.costElements.add("Transportation");
-      this.costElements.add("Marketing");
+   ceToMpMap = new Map<String, MonthlyPlan>();
+   
     String dataRetrievedFromFile = 
     '{"Company":"N Tech",'+
     '"department":"Marketing",'+
@@ -187,6 +195,10 @@ class PlanningFormModel {
 
     Map pfmMap = json.decode(dataRetrievedFromFile);
     print('\n************pfmMap.length = '+pfmMap.length.toString()+'************\n');
+
+
+    
+
     List monthlyPlans = pfmMap['Plan'];
     print('\n************monthlyPlan.toString = '+monthlyPlans.toString()+'************\n');
   
@@ -196,18 +208,19 @@ class PlanningFormModel {
     
     for(String ce in costElms){
       print('\n************ce = '+ce);
-    // this.costElements.add(ce);
+     this.costElements.add(ce);
       print("**************this costelments  = " + this.costElements.toString());
     }
 
 
 
-    
+    for (String ce in this.costElements) {
      // MonthlyPlan mpObjFromJSON;
     for(var mPlan in monthlyPlans){
       print('\n************mp = '+mPlan.toString());
       MonthlyPlan mpObjFromJSON = new MonthlyPlan.fromJSONMapmp(mPlan);
       print('\n************Newly instantiated Monthly Plan = '+mpObjFromJSON.toString());
+      this.ceToMpMap[ce] = mpObjFromJSON;
        
     }
   
@@ -218,13 +231,13 @@ class PlanningFormModel {
     List actualPlans = pfmMap['Actual'];
     print('\n************monthlyActual.toString = '+actualPlans.toString()+'************\n');
 
-    for (String ce in this.costElements) {
+    
      // MonthlyActual mActual = new MonthlyActual();
       MonthlyActual maObjFromJSON;
     for(var mActual  in actualPlans){
       print('\n************ap = '+mActual.toString());
        maObjFromJSON = new MonthlyActual.fromJSONMapma(mActual);
-      print('\n************Newly instantiated Monthly actual = '+maObjFromJSON.toString());
+      print('\n************Newly instantiated Monthly actual = '+maObjFromJSON.toJSONString());
      
     }
     this.ceToMaMap[ce] = maObjFromJSON;
@@ -396,7 +409,7 @@ class PlanningFormModel {
     }
     p = p + "],{'Plan':{[";
     for (String ce in this.costElements) {
-      p = p + "${this.ceToMpMap[ce].monthlyPlanToJson()},";
+      p = p + "${this.ceToMpMap[ce].toJSONString()},";
     }
     p = p + "]}";
 
@@ -445,8 +458,52 @@ class PlanningFormModel {
     return p;
   }
 
+  String planningFormModelToJSONString(){
+
+   //company,department,costelements, month , year
+    String  pfmInJSONStringForm = "{" ;
+    pfmInJSONStringForm = pfmInJSONStringForm + '"Company": ' + '"${this.company}"' + ",";
+    pfmInJSONStringForm = pfmInJSONStringForm + '"Department":' + '"${this.department}"' + ",";
+    pfmInJSONStringForm = pfmInJSONStringForm + '"CostElements":[';
+    for (String ce in this.costElements) {
+      pfmInJSONStringForm = pfmInJSONStringForm + '"' + ce + '",';
+    }
+    print("before = " +pfmInJSONStringForm );
+    pfmInJSONStringForm = pfmInJSONStringForm.substring(0,pfmInJSONStringForm.length - 1);
+    print("after = " +pfmInJSONStringForm );
+    pfmInJSONStringForm = pfmInJSONStringForm + "]," + '"Plan":' + "[";
+    
+
+
+    for (String ce in this.costElements) {
+      pfmInJSONStringForm = pfmInJSONStringForm + "{" + '"category":'+'"${ce}",';
+      pfmInJSONStringForm = pfmInJSONStringForm + "${this.ceToMpMap[ce].toJSONString()}" + "},";
+    }
+     pfmInJSONStringForm = pfmInJSONStringForm.substring(0,pfmInJSONStringForm.length - 1);
+    pfmInJSONStringForm = pfmInJSONStringForm + "]";
+
+   
+
+    pfmInJSONStringForm = pfmInJSONStringForm +  "," + '"Actual":' + "[";
+
+     for (String ce in this.costElements) {
+      pfmInJSONStringForm = pfmInJSONStringForm + "{" + '"category":'+'"${ce}",';
+      pfmInJSONStringForm = pfmInJSONStringForm + "${this.ceToMvMap[ce].toJSONString()}" + "},";
+    }
+
+     pfmInJSONStringForm = pfmInJSONStringForm.substring(0,pfmInJSONStringForm.length - 1);
+    pfmInJSONStringForm = pfmInJSONStringForm + "]";
+
+       pfmInJSONStringForm = pfmInJSONStringForm + "}";
+    print("pfmInJSONStringForm ="  + pfmInJSONStringForm);
+
+    
+    return pfmInJSONStringForm;
+  }
+
   savePfmToFile() {
-    this.st.writeData(this.planningFormModelMvtoJSON());
+   // this.st.writeData(this.planningFormModelMvtoJSON());
+    this.st.writeData(this.planningFormModelToJSONString());
     // this.st.writeData(this.toString());
   }
 
@@ -617,15 +674,15 @@ class MonthlyValues {
     mv.category = mpJSONMap['category'];
     List amts = mpJSONMap['amountInMonth'];
     List hrs = mpJSONMap['hourInMonth'];
-    mv.amountInMonth = new List<DataValue>();
-    mv.hourInMonth = new List<DataValue>();
+    mv.amountInMonth = new List<PlanValue>();
+    mv.hourInMonth = new List<PlanValue>();
     int i=0;
     for(var a in amts){
-      DataValue dv = new DataValue(i,int.parse(a));
+      PlanValue dv = new PlanValue(i,int.parse(a));
       mv.amountInMonth.add(dv);
     }
     for(var h in hrs){
-      DataValue dv = new DataValue(i,int.parse(h));
+      PlanValue dv = new PlanValue(i,int.parse(h));
       mv.hourInMonth.add(dv);
     }
     return mv;
@@ -637,17 +694,17 @@ class MonthlyValues {
     mv.category = maJSONMap['category'];
     List amts = maJSONMap['amountInMonth'];
     List hrs = maJSONMap['hourInMonth'];
-    mv.amountInMonth = new List<DataValue>();
-    mv.hourInMonth = new List<DataValue>();
+    mv.amountInMonth = new List<ActualValue>();
+    mv.hourInMonth = new List<ActualValue>();
     int i=0;
     for(var a in amts){
       
-      DataValue dv = new DataValue(int.parse(a),i);
+      ActualValue dv = new ActualValue(int.parse(a),i);
       mv.amountInMonth.add(dv);
       i = i++;
     }
     for(var h in hrs){
-      DataValue dv = new DataValue(int.parse(h),i);
+      ActualValue dv = new ActualValue(int.parse(h),i);
       mv.hourInMonth.add(dv);
       i = i++;
     }
@@ -655,19 +712,75 @@ class MonthlyValues {
   }
   
 
-  toString(){
-    String str = "";
+ String toJSONString(){
+
+
+    String s = "";
+
+
+  //s = s + "{";
+     
+      s = s + '"amountInMonth":[';
+    for(DataValue amount  in this.amountInMonth){
+        s = s + '"${amount.value.toString()}",'; 
+    }
+
+     print("before = " +s );
+    s = s.substring(0,s.length - 1);
+    print("after = " +s );
+    s = s + "],";
+
+
+    s = s + '"hourInMonth":[';
+
+  
+    for(DataValue hour in this.hourInMonth){
+        s = s + '"${hour.value.toString()}",'; 
+    }
+
+     print("before = " +s );
+    s = s.substring(0,s.length - 1);
+    print("after = " +s );
+    s = s + "],";
+
+      
+      print("before = " +s );
+      s = s.substring(0,s.length - 1);
+      print("after = " +s );
+
+      
+
+
+   
+    return s;
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // String str = "";
     
-    //str = "Category = "+this.category;
-    str = str + "\nAmountInMonth = ";
-    for(DataValue dv in this.amountInMonth){
-      str = str + dv.value.toString()+",";
-    }
-    str = str + "\nHourInMonth = ";
-    for(DataValue dv in this.hourInMonth){
-      str = str + dv.value.toString()+",";
-    }
-    return str;
+    // //str = "Category = "+this.category;
+    // str = str + "\nAmountInMonth = ";
+    // for(DataValue dv in this.amountInMonth){
+    //   str = str + dv.value.toString()+",";
+    //   print("*******************dvamount****************");
+    //   print("dvamount = " + str);
+    // }
+    // str = str + "\nHourInMonth = ";
+    // for(DataValue dv in this.hourInMonth){
+    //   str = str + dv.value.toString()+",";
+     
+    // }
+    // return str;
   }
 }
 
@@ -765,29 +878,29 @@ class MonthlyPlan extends MonthlyValues {
     return new MonthlyValues.fromJSONMapmp(jm);
   }
 
-  String monthlyPlanToJson() {
-    PlanningFormModel pfm = new PlanningFormModel();
-    String s = "";
-    for (String ce in pfm.costElements) {
-      s = s + "{";
-      s = s + "'" + ce + "':{";
-      s = s + "'amountInMonth':[";
-      for (PlanValue i in amountInMonth) {
-        s = s + "'" + i.value.toString() + "',";
-      }
-      s = s + "],";
+  // String monthlyPlanToJson() {
+  //   PlanningFormModel pfm = new PlanningFormModel();
+  //   String s = "";
+  //   for (String ce in pfm.costElements) {
+  //     s = s + "{";
+  //     s = s + "'" + ce + "':{";
+  //     s = s + "'amountInMonth':[";
+  //     for (PlanValue i in amountInMonth) {
+  //       s = s + "'" + i.value.toString() + "',";
+  //     }
+  //     s = s + "],";
 
-      s = s + "'hourInMonth':[";
-      for (PlanValue i in hourInMonth) {
-        s = s + "'" + i.value.toString() + "',";
-      }
-      s = s + "]}},";
+  //     s = s + "'hourInMonth':[";
+  //     for (PlanValue i in hourInMonth) {
+  //       s = s + "'" + i.value.toString() + "',";
+  //     }
+  //     s = s + "]}},";
 
-      // s = json.encode(s);
-    }
+  //     // s = json.encode(s);
+  //   }
 
-    return s;
-  }
+  //   return s;
+  // }
 
   List<PlanValue> getMonthlyPlan(bool isHour) {
     if (isHour)
