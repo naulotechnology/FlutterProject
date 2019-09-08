@@ -4,7 +4,7 @@
   "CostElements": ["Transportation", "Marketing"],
   "Plan": [
     {
-      "category": "Transportation",
+      "Category": "Transportation",
       "amountInMonth": [
         "0",
         "0",
@@ -35,7 +35,7 @@
       ]
     },
     {
-      "category": "Marketing",
+      "Category": "Marketing",
       "amountInMonth": [
         "0",
         "0",
@@ -68,7 +68,7 @@
   ],
   "Actual": [
     {
-      "category": "Transportation",
+      "Category": "Transportation",
       "amountInMonth": [
         "0",
         "0",
@@ -99,7 +99,7 @@
       ]
     },
     {
-      "category": "Marketing",
+      "Category": "Marketing",
       "amountInMonth": [
         "0",
         "0",
