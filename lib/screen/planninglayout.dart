@@ -609,9 +609,12 @@ class MyFormState extends State<MyForm> {
           MaterialButton(
             onPressed: () {
               setState(() {
-                pfm.saveData();
+               pfm.saveData();
+               //pfm.planningFormModelJSONtoMp();
+                print("data");
               });
-              // print("data wrote to file = ${pfm.toStringMa()}");
+              // print("data wrote to file = ${pfm.planningFormModelMptoJSON()}");
+            //  print( "data  i checked = ${pfm.}");
             },
             child: Text("Save"),
             height: 40,
