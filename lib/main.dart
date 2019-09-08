@@ -1,12 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutterproject/models/readwritefile.dart';
-import 'package:flutterproject/screen/myadminform.dart';
 import 'package:flutterproject/screen/planninglayout.dart';
 import 'package:flutterproject/screen/satting.dart';
-
-
-
-
+import 'package:splashscreen/splashscreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: MySplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -49,7 +47,7 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
       case 0:
         return new MyForm(pfm);
       case 1:
-        return new MyAdminForm(pfm);
+        return new SavedStateFromFile(pfm);
 
       default:
         return new SavedStateFromFile(pfm);
@@ -76,7 +74,7 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
 
     return new Scaffold(
       appBar: new AppBar(
-       // automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
         // leading: IconButton(icon:Icon(Icons.arrow_back),
         //   onPressed:() => Navigator.pop(context, false),
@@ -102,4 +100,37 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
       body: _getDrawerItemWidget(_selectedDrawerIndex),
     );
   }
-} 
+}
+
+
+class MySplashScreen extends StatefulWidget {
+  @override
+  _MyAppState createState() =>  _MyAppState();
+}
+
+class _MyAppState extends State<MySplashScreen> {
+  
+  
+  @override
+  Widget build(BuildContext context) {
+    List<Color> color = List<Color>();
+    color.add(Colors.red);
+    color.add(Colors.blue);
+    color.add(Colors.green);
+
+    return  SplashScreen(
+      seconds: 4,
+      navigateAfterSeconds:  HomePage(),
+      title:  Text('Welcome,SplashScreen',
+      style: TextStyle(color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 20.0
+      ),),
+     // image: Image.asset('image1.jpg'),
+      backgroundColor: Color.fromARGB(200, 226, 66, 23),
+      styleTextUnderTheLoader: TextStyle(),
+      onClick: ()=>print("Flutter Egypt"),
+      loaderColor: Colors.white
+    );
+  }
+}
