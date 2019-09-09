@@ -2,7 +2,6 @@
 import 'dart:core' ;
 import 'dart:io';
 
-import 'package:flutterproject/main.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,7 +83,7 @@ class PlanningFormModel {
 
     this.costElements.add("Transportation");
       this.costElements.add("Marketing");
-    //  this.costElements.add("Human Resources");
+      this.costElements.add("Human Resources");
     //  this.costElements.add("Information Technology");
     //  this.costElements.add("Legal");
   

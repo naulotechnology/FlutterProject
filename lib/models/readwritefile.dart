@@ -52,7 +52,8 @@ class PlanningFormModel {
       print("data in local file system is available , reading json and populating  data... ");
       //read json from file
       //populate data
-      this.loadAppDataFromFile();
+      this.initializeData();
+      //this.loadAppDataFromFile();
     }
   }
 
@@ -372,8 +373,7 @@ class PlanningFormModel {
     if (isHour) {
       this.ceToMpMap[costElement].hourInMonth[idx].value = (int.parse(amount));
     } else {
-      this.ceToMpMap[costElement].amountInMonth[idx].value =
-          (int.parse(amount));
+      this.ceToMpMap[costElement].amountInMonth[idx].value = (int.parse(amount));
     }
   }
 

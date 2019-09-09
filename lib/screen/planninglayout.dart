@@ -385,7 +385,7 @@ class MyFormState extends State<MyForm> {
                                       showHour, attr, txt, monthlyAmount.index);
                                 },
                                 onTap: () {
-                                  print("${monthlyAmount.index}");
+                                  print("index is ${monthlyAmount.index}");
                                 },
                               ),
                             ),
