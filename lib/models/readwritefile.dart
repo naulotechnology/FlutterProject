@@ -64,13 +64,6 @@ class PlanningFormModel {
      
     }
     else {
-<<<<<<< HEAD
-      print("data in local file system is available , reading json and populating  data... ");
-      //read json from file
-      //populate data
-      this.initializeData();
-      //this.loadAppDataFromFile();
-=======
       print("data in local file system is available , reading json and populating  data... "); 
       //read json from file 
       String pfmJSONStringReadFromFile = "";
@@ -80,7 +73,6 @@ class PlanningFormModel {
 
 
       
->>>>>>> ab69c3514d1b899ff2b5dbcc4970ee683b5f9189
     }
   }
 
