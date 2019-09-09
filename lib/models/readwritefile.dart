@@ -586,40 +586,49 @@ savepfmToFirebase(){
   String month =  "janaury" ; //this.month;
   // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
   path = "/" + company +  "/" + department +"/" + year  +  "/"  + month ;
-    List mPHrs = new List<int>();
-    List mPAmts= new List<int>();
-    List mAHrs = new List<int>();
-    List mAAmts= new List<int>();
-    List mVHrs = new List<int>();
-    List mVAmts= new List<int>();
-     MonthlyPlan mp;
+    List mPAmts ;
+     List mPHrs ;
+    
+    List mAHrs ;
+    List mAAmts ;
+    List mVHrs ;
+    List mVAmts;
+      MonthlyPlan mp;
+      DocumentReference planDocRef;
+      Map<String, List> planData;
    for (String ce in this.costElements) {
-          String a = ce;
-          print(a);
-        
-        // Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMaMap/ceToMaMap/$a/$a");
-           final DocumentReference planDocRef= Firestore.instance.document("$path/$a/plan");
-            final DocumentReference actualDocRef = Firestore.instance.document("$path/$a/actual");
-             final DocumentReference varienceDocRef = Firestore.instance.document("$path/$a/varience");
+      mPAmts= new List<int>();
+      mPHrs = new List<int>();
+      mAHrs = new List<int>();
+      mAAmts= new List<int>();
+      mVHrs = new List<int>();
+      mVAmts= new List<int>();
+      String a = ce;
+    // Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMaMap/ceToMaMap/$a/$a");
+      planDocRef= Firestore.instance.document("$path/$a/plan");
+      final DocumentReference actualDocRef = Firestore.instance.document("$path/$a/actual");
+      final DocumentReference varienceDocRef = Firestore.instance.document("$path/$a/varience");
+      MonthlyPlan mp  = this.ceToMpMap[ce];
+      MonthlyActual ma = this.ceToMaMap[ce];
+      MonthlyVariance mv = this.ceToMvMap[ce];
 
-          
-
-         MonthlyPlan mp  = this.ceToMpMap[ce];
-            MonthlyActual ma = this.ceToMaMap[ce];
-           MonthlyVariance mv = this.ceToMvMap[ce];
+           
       
-   
+   //}
 
            for (PlanValue amount in mp.amountInMonth) {
+           
         pm = amount.value;
         mPAmts.add(pm);
       }
 
         
            for (PlanValue hour in mp.hourInMonth) {
+           
         ph = hour.value;
         mPHrs.add(ph);
       }
+   
 
           for (ActualValue amount in ma.amountInMonth) {
         am = amount.value;
@@ -643,8 +652,8 @@ savepfmToFirebase(){
         mVHrs.add(vh);
       }
 
-
-      Map<String, List> planData = <String,List>{
+   
+       planData = <String,List>{
        
      "amountInMonth":mPAmts,
      "hrInMonth": mPHrs,
@@ -652,6 +661,8 @@ savepfmToFirebase(){
       // "hrInMonth":mp.hourInMonth,
        
     };
+
+   
 
     Map<String, List> actualData = <String,List>{
        
@@ -667,6 +678,13 @@ savepfmToFirebase(){
        "amountInMonth":mVAmts,
         "hrInMonth": mVHrs,
     };
+
+
+
+
+
+
+
      // "amountInMonth":monthlyActualAmts,
       // "amountInMonth":mv.amountInMonth,
       // "hrInMonth":mv.hourInMonth,
@@ -675,22 +693,14 @@ savepfmToFirebase(){
 
       //below codes saves planValue to firebase
 
-      print("the document reference = " + planDocRef.toString());
+     
        planDocRef.setData(planData).whenComplete(() {
       print("Document Added");
     }).catchError((e) => print(e));
-    //   if(planData.toString() ==""){
-    // planDocRef.setData(planData).whenComplete(() {
-    //   print("Document Added");
-    // }).catchError((e) => print(e));
-    //   }
-    //   else{
-    //     planDocRef.updateData(planData).whenComplete(() {
-    //     print("Document updated");
-    // }).catchError((e) => print(e));
-      
-    // }
-    // below codes saves actualValue to firebase
+    
+   
+   
+  // below codes saves actualValue to firebase
     actualDocRef.setData(actualData).whenComplete(() {
       print("Document Added");
     }).catchError((e) => print(e));
@@ -699,11 +709,11 @@ savepfmToFirebase(){
     varienceDocRef.setData(varienceData).whenComplete(() {
       print("Document Added");
     }).catchError((e) => print(e));
+   }
 
-
-  
-  }
 }
+  
+
 
 /*savePfm
 if  device is online
