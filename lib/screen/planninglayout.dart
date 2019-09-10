@@ -5,6 +5,7 @@ import 'package:flutterproject/models/readwritefile.dart';
 import 'package:material_switch/material_switch.dart';
 import 'dart:async';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 class MyForm extends StatefulWidget {
   PlanningFormModel pfm;
@@ -171,6 +172,43 @@ class MyFormState extends State<MyForm> {
       );
     }
 
+    myBordView() {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 10),
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: 1,
+          itemExtent: 60.0 * (pfm.costElements.length),
+          itemBuilder: (BuildContext content, int index) {
+            return boardView(bordview);
+          },
+        ),
+      );
+    }
+
+    myBordSplashScreen() {
+      return Scaffold(
+        body: SplashScreen(
+            seconds: 4,
+            navigateAfterSeconds: SafeArea(
+              child: Scaffold(
+                body: myBordView()
+              ),
+            ),
+            title: Text(
+              'Welcome,SplashScreen',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0),
+            ),
+            backgroundColor: Color.fromARGB(200, 226, 66, 23),
+            styleTextUnderTheLoader: TextStyle(),
+            onClick: () => print("Flutter Egypt"),
+            loaderColor: Colors.white),
+      );
+    }
+
     Widget _makeElement(int index) {
       if (index >= 6) {
         return null;
@@ -233,17 +271,7 @@ class MyFormState extends State<MyForm> {
       } else if (index == 4) {
         return Container(
           height: 300,
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: 1,
-              itemExtent: 56.8 * (pfm.costElements.length),
-              itemBuilder: (BuildContext content, int index) {
-                return boardView(bordview);
-              },
-            ),
-          ),
+          child: myBordSplashScreen(),
         );
       } else if (index == 5) {
         return Container(
@@ -288,10 +316,16 @@ class MyFormState extends State<MyForm> {
                 left: 0.0,
                 right: 0.0,
                 child: //showOnlineOflineSnackBar(connected),
-                Container(
+                    Container(
                   color: connected ? Color(0xFF00EE44) : Color(0xFFEE4400),
                   child: Center(
-                    child: Text("${connected ? 'Online' : 'Offline'}",style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
+                    child: Text(
+                      "${connected ? 'Online' : 'Offline'}",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
@@ -609,12 +643,12 @@ class MyFormState extends State<MyForm> {
           MaterialButton(
             onPressed: () {
               setState(() {
-               pfm.saveData();
-               //pfm.planningFormModelJSONtoMp();
+                pfm.saveData();
+                //pfm.planningFormModelJSONtoMp();
                 print("data");
               });
               // print("data wrote to file = ${pfm.planningFormModelMptoJSON()}");
-            //  print( "data  i checked = ${pfm.}");
+              //  print( "data  i checked = ${pfm.}");
             },
             child: Text("Save"),
             height: 40,

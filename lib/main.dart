@@ -76,6 +76,7 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
       appBar: new AppBar(
         // automaticallyImplyLeading: false,
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
+        automaticallyImplyLeading: false,
         // leading: IconButton(icon:Icon(Icons.arrow_back),
         //   onPressed:() => Navigator.pop(context, false),
         // )
