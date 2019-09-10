@@ -551,6 +551,7 @@ class PlanningFormModel {
   savepfmToFirebase() {
     int pm, am, vm, ph, ah, vh;
 
+<<<<<<< HEAD
     String path = "";
     String company = "company"; // this.Company;
     String department = "department"; //this.department;
@@ -582,14 +583,67 @@ class PlanningFormModel {
       MonthlyVariance mv = this.ceToMvMap[ce];
 
       for (PlanValue amount in mp.amountInMonth) {
+=======
+
+savepfmToFirebase(){
+
+  int pm , am, vm , ph , ah , vh;
+  
+  String path = "";
+  String company = "company"; // this.Company;
+  String department =  "department"  ; //this.department;
+  String year =  "2019" ; //this.year;
+  String month =  "janaury" ; //this.month;
+  // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
+  path = "/" + company +  "/" + department +"/" + year  +  "/"  + month ;
+    List mPAmts ;
+     List mPHrs ;
+    
+    List mAHrs ;
+    List mAAmts ;
+    List mVHrs ;
+    List mVAmts;
+      MonthlyPlan mp;
+      DocumentReference planDocRef;
+      Map<String, List> planData;
+   for (String ce in this.costElements) {
+      mPAmts= new List<int>();
+      mPHrs = new List<int>();
+      mAHrs = new List<int>();
+      mAAmts= new List<int>();
+      mVHrs = new List<int>();
+      mVAmts= new List<int>();
+      String a = ce;
+    // Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMaMap/ceToMaMap/$a/$a");
+      planDocRef= Firestore.instance.document("$path/$a/plan");
+      final DocumentReference actualDocRef = Firestore.instance.document("$path/$a/actual");
+      final DocumentReference varienceDocRef = Firestore.instance.document("$path/$a/varience");
+      MonthlyPlan mp  = this.ceToMpMap[ce];
+      MonthlyActual ma = this.ceToMaMap[ce];
+      MonthlyVariance mv = this.ceToMvMap[ce];
+
+           
+      
+   //}
+
+           for (PlanValue amount in mp.amountInMonth) {
+           
+>>>>>>> 7b51767dfaac78f268c9af2b2bf5d57d3c0e3f37
         pm = amount.value;
         mPAmts.add(pm);
       }
 
+<<<<<<< HEAD
       for (PlanValue hour in mp.hourInMonth) {
+=======
+        
+           for (PlanValue hour in mp.hourInMonth) {
+           
+>>>>>>> 7b51767dfaac78f268c9af2b2bf5d57d3c0e3f37
         ph = hour.value;
         mPHrs.add(ph);
       }
+   
 
       for (ActualValue amount in ma.amountInMonth) {
         am = amount.value;
@@ -611,6 +665,7 @@ class PlanningFormModel {
         mVHrs.add(vh);
       }
 
+<<<<<<< HEAD
       Map<String, List> planData = <String, List>{
         "amountInMonth": mPAmts,
         "hrInMonth": mPHrs,
@@ -623,19 +678,52 @@ class PlanningFormModel {
         // "amountInMonth":ma.amountInMonth,
         // "hrInMonth":ma.hourInMonth,
         "amountInMonth": mAAmts,
+=======
+   
+       planData = <String,List>{
+       
+     "amountInMonth":mPAmts,
+     "hrInMonth": mPHrs,
+      // "amountInMonth":mp.amountInMonth,
+      // "hrInMonth":mp.hourInMonth,
+       
+    };
+
+   
+
+    Map<String, List> actualData = <String,List>{
+       
+     // "amountInMonth":monthlyActualAmts,
+      // "amountInMonth":ma.amountInMonth,
+      // "hrInMonth":ma.hourInMonth,
+       "amountInMonth":mAAmts,
+>>>>>>> 7b51767dfaac78f268c9af2b2bf5d57d3c0e3f37
         "hrInMonth": mAHrs,
       };
 
       Map<String, List> varienceData = <String, List>{
         "amountInMonth": mVAmts,
         "hrInMonth": mVHrs,
+<<<<<<< HEAD
       };
       // "amountInMonth":monthlyActualAmts,
+=======
+    };
+
+
+
+
+
+
+
+     // "amountInMonth":monthlyActualAmts,
+>>>>>>> 7b51767dfaac78f268c9af2b2bf5d57d3c0e3f37
       // "amountInMonth":mv.amountInMonth,
       // "hrInMonth":mv.hourInMonth,
 
       //below codes saves planValue to firebase
 
+<<<<<<< HEAD
       print("the document reference = " + planDocRef.toString());
       planDocRef.setData(planData).whenComplete(() {
         print("Document Added");
@@ -662,6 +750,29 @@ class PlanningFormModel {
       }).catchError((e) => print(e));
     }
   }
+=======
+     
+       planDocRef.setData(planData).whenComplete(() {
+      print("Document Added");
+    }).catchError((e) => print(e));
+    
+   
+   
+  // below codes saves actualValue to firebase
+    actualDocRef.setData(actualData).whenComplete(() {
+      print("Document Added");
+    }).catchError((e) => print(e));
+
+ //below codes saves varienceValue to firebase
+    varienceDocRef.setData(varienceData).whenComplete(() {
+      print("Document Added");
+    }).catchError((e) => print(e));
+   }
+
+}
+  
+
+>>>>>>> 7b51767dfaac78f268c9af2b2bf5d57d3c0e3f37
 
 /*savePfm
 if  device is online

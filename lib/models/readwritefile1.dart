@@ -224,7 +224,7 @@ class PlanningFormModel {
 
 
 
-   for (String ce in this.costElements) {
+    for (String ce in this.costElements) {
      // MonthlyPlan mpObjFromJSON;
     for(var mPlan in monthlyPlans){
       print('\n************mp = '+mPlan.toString());
@@ -532,20 +532,25 @@ class PlanningFormModel {
     String month = "janaury"; //this.month;
     // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
     path = "/" + company + "/" + department + "/" + year + "/" + month;
-    List mPHrs = new List<int>();
-    List mPAmts = new List<int>();
-    List mAHrs = new List<int>();
-    List mAAmts = new List<int>();
-    List mVHrs = new List<int>();
-    List mVAmts = new List<int>();
+    List mPHrs ;
+    List mPAmts ;
+    List mAHrs ;
+    List mAAmts ;
+    List mVHrs ;
+    List mVAmts ;
     for (String ce in this.costElements) {
-      String a = ce;
+         mPHrs = new List<int>();
+         mPAmts = new List<int>();
+         mAHrs = new List<int>();
+         mAAmts = new List<int>();
+         mVHrs = new List<int>();
+         mVAmts = new List<int>();
+         String a = ce;
 
       // Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMaMap/ceToMaMap/$a/$a");
       final DocumentReference planDocRef =
           Firestore.instance.document("$path/$a/plan");
-      final DocumentReference actualDocRef =
-          Firestore.instance.document("$path/$a/actual");
+      final DocumentReference actualDocRef = Firestore.instance.document("$path/$a/actual");
       final DocumentReference varienceDocRef =
           Firestore.instance.document("$path/$a/varience");
 
@@ -558,7 +563,7 @@ class PlanningFormModel {
         mPAmts.add(pm);
       }
 
-      for (PlanValue hour in mp.amountInMonth) {
+      for (PlanValue hour in mp.hourInMonth) {
         ph = hour.value;
         mPHrs.add(ph);
       }
@@ -568,7 +573,7 @@ class PlanningFormModel {
         mAAmts.add(am);
       }
 
-      for (ActualValue hour in ma.amountInMonth) {
+      for (ActualValue hour in ma.hourInMonth) {
         ah = hour.value;
         mAHrs.add(ah);
       }
@@ -578,7 +583,7 @@ class PlanningFormModel {
         mVAmts.add(vm);
       }
 
-      for (VarianceValue hour in mv.amountInMonth) {
+      for (VarianceValue hour in mv.hourInMonth) {
         vh = hour.value;
         mVHrs.add(vh);
       }
