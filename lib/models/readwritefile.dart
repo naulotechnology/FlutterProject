@@ -551,39 +551,6 @@ class PlanningFormModel {
   savepfmToFirebase() {
     int pm, am, vm, ph, ah, vh;
 
-<<<<<<< HEAD
-    String path = "";
-    String company = "company"; // this.Company;
-    String department = "department"; //this.department;
-    String year = "2019"; //this.year;
-    String month = "janaury"; //this.month;
-    // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
-    path = "/" + company + "/" + department + "/" + year + "/" + month;
-    List mPHrs = new List<int>();
-    List mPAmts = new List<int>();
-    List mAHrs = new List<int>();
-    List mAAmts = new List<int>();
-    List mVHrs = new List<int>();
-    List mVAmts = new List<int>();
-    MonthlyPlan mp;
-    for (String ce in this.costElements) {
-      String a = ce;
-      print(a);
-
-      // Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMaMap/ceToMaMap/$a/$a");
-      final DocumentReference planDocRef =
-          Firestore.instance.document("$path/$a/plan");
-      final DocumentReference actualDocRef =
-          Firestore.instance.document("$path/$a/actual");
-      final DocumentReference varienceDocRef =
-          Firestore.instance.document("$path/$a/varience");
-
-      MonthlyPlan mp = this.ceToMpMap[ce];
-      MonthlyActual ma = this.ceToMaMap[ce];
-      MonthlyVariance mv = this.ceToMvMap[ce];
-
-      for (PlanValue amount in mp.amountInMonth) {
-=======
 
 savepfmToFirebase(){
 
@@ -628,18 +595,13 @@ savepfmToFirebase(){
 
            for (PlanValue amount in mp.amountInMonth) {
            
->>>>>>> 7b51767dfaac78f268c9af2b2bf5d57d3c0e3f37
         pm = amount.value;
         mPAmts.add(pm);
       }
 
-<<<<<<< HEAD
-      for (PlanValue hour in mp.hourInMonth) {
-=======
         
            for (PlanValue hour in mp.hourInMonth) {
            
->>>>>>> 7b51767dfaac78f268c9af2b2bf5d57d3c0e3f37
         ph = hour.value;
         mPHrs.add(ph);
       }
@@ -665,20 +627,6 @@ savepfmToFirebase(){
         mVHrs.add(vh);
       }
 
-<<<<<<< HEAD
-      Map<String, List> planData = <String, List>{
-        "amountInMonth": mPAmts,
-        "hrInMonth": mPHrs,
-        // "amountInMonth":mp.amountInMonth,
-        // "hrInMonth":mp.hourInMonth,
-      };
-
-      Map<String, List> actualData = <String, List>{
-        // "amountInMonth":monthlyActualAmts,
-        // "amountInMonth":ma.amountInMonth,
-        // "hrInMonth":ma.hourInMonth,
-        "amountInMonth": mAAmts,
-=======
    
        planData = <String,List>{
        
@@ -697,17 +645,12 @@ savepfmToFirebase(){
       // "amountInMonth":ma.amountInMonth,
       // "hrInMonth":ma.hourInMonth,
        "amountInMonth":mAAmts,
->>>>>>> 7b51767dfaac78f268c9af2b2bf5d57d3c0e3f37
         "hrInMonth": mAHrs,
       };
 
       Map<String, List> varienceData = <String, List>{
         "amountInMonth": mVAmts,
         "hrInMonth": mVHrs,
-<<<<<<< HEAD
-      };
-      // "amountInMonth":monthlyActualAmts,
-=======
     };
 
 
@@ -717,13 +660,11 @@ savepfmToFirebase(){
 
 
      // "amountInMonth":monthlyActualAmts,
->>>>>>> 7b51767dfaac78f268c9af2b2bf5d57d3c0e3f37
       // "amountInMonth":mv.amountInMonth,
       // "hrInMonth":mv.hourInMonth,
 
       //below codes saves planValue to firebase
 
-<<<<<<< HEAD
       print("the document reference = " + planDocRef.toString());
       planDocRef.setData(planData).whenComplete(() {
         print("Document Added");
@@ -750,29 +691,12 @@ savepfmToFirebase(){
       }).catchError((e) => print(e));
     }
   }
-=======
      
-       planDocRef.setData(planData).whenComplete(() {
-      print("Document Added");
-    }).catchError((e) => print(e));
-    
-   
-   
-  // below codes saves actualValue to firebase
-    actualDocRef.setData(actualData).whenComplete(() {
-      print("Document Added");
-    }).catchError((e) => print(e));
-
- //below codes saves varienceValue to firebase
-    varienceDocRef.setData(varienceData).whenComplete(() {
-      print("Document Added");
-    }).catchError((e) => print(e));
-   }
+       
 
 }
   
 
->>>>>>> 7b51767dfaac78f268c9af2b2bf5d57d3c0e3f37
 
 /*savePfm
 if  device is online
