@@ -172,40 +172,42 @@ class MyFormState extends State<MyForm> {
       );
     }
 
+    fatchDataLoodingScreen() {
+      return Container(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 130.0),
+            ),
+            CircularProgressIndicator(),
+            Text(
+              "Loading",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     myBordView() {
       return Padding(
         padding: EdgeInsets.only(bottom: 10),
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: 1,
-          itemExtent: 60.0 * (pfm.costElements.length),
+          itemExtent: 60.0 * 10,
           itemBuilder: (BuildContext content, int index) {
-            return boardView(bordview);
+            if (pfm.isFatches == true) {
+              return fatchDataLoodingScreen();
+            } else {
+              return boardView(bordview);
+            }
           },
         ),
-      );
-    }
-
-    myBordSplashScreen() {
-      return Scaffold(
-        body: SplashScreen(
-            seconds: 4,
-            navigateAfterSeconds: SafeArea(
-              child: Scaffold(
-                body: myBordView()
-              ),
-            ),
-            title: Text(
-              'Welcome,SplashScreen',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0),
-            ),
-            backgroundColor: Color.fromARGB(200, 226, 66, 23),
-            styleTextUnderTheLoader: TextStyle(),
-            onClick: () => print("Flutter Egypt"),
-            loaderColor: Colors.white),
       );
     }
 
@@ -271,7 +273,7 @@ class MyFormState extends State<MyForm> {
       } else if (index == 4) {
         return Container(
           height: 300,
-          child: myBordSplashScreen(),
+          child: myBordView(),
         );
       } else if (index == 5) {
         return Container(
