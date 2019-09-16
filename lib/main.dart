@@ -4,6 +4,8 @@ import 'package:flutterproject/screen/planninglayout.dart';
 import 'package:flutterproject/screen/satting.dart';
 import 'package:splashscreen/splashscreen.dart';
 
+import 'chart/chart.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -27,6 +29,7 @@ class HomePage extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("MyTable", Icons.table_chart),
     new DrawerItem("MyForm", Icons.folder),
+    new DrawerItem("Chart", Icons.settings),
     new DrawerItem("Setting", Icons.settings)
   ];
 
@@ -45,8 +48,9 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
       case 0:
         return new MyForm(pfm);
       case 1:
-        return new SavedStateFromFile(pfm);
-
+        return new SavedStateFromFile(pfm);  
+      case 2:
+        return new MyChart();
       default:
         return new SavedStateFromFile(pfm);
     }

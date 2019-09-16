@@ -25,6 +25,7 @@ dependencies:
   connectivity: 0.4.3+7
   flutter_offline: "^0.2.4"
   splashscreen: "1.2.0"
+  charts_flutter: ^0.8.0
 
 
   # The following adds the Cupertino Icons font to your application.
