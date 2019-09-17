@@ -55,15 +55,17 @@ class PlanningFormModel {
     // this.costElements.add("Transportation");
     //   this.costElements.add("Marketing");
 
-    if (st.readData().toString() == "") {
+    if (st.readData().toString() == "") {  
       this.initializeData();
+      saveData();
+      isFatches = false;
     } else {
       print(
           "data in local file system is available , reading json and populating  data... ");
       //read json from file
       String pfmJSONStringReadFromFile = "";
       //populate data
-      //   this.initializeData();
+      //this.initializeData();
       this.instantiatePFMfromJSONString();
     }
   }
@@ -170,36 +172,36 @@ class PlanningFormModel {
     jsonReadfromfile = await st.readData();
     print("file data read from file = " + jsonReadfromfile);
 
-    String data = '{"Company":"N Tech",' +
-        '"Department":"Marketing",' +
-        '"CostElements":["Transportation","Marketing"],' +
-        '"Plan":' +
-        '[' +
-        '{' +
-        '"category": "Transportation",' +
-        '"amountInMonth":["0","10000","20000","30000","40000","50000","60000","70000","80000","90000","100000","110000"],' +
-        '"hourInMonth":["0","0","0","0","0","0","0","0","0","0","0","0"]' +
-        '},' +
-        '{' +
-        '"category": "Marketing",' +
-        '"amountInMonth":["0","10000","20000","30000","40000","50000","60000","70000","80000","90000","100000","110000"],' +
-        '"hourInMonth":["0","0","0","0","0","0","0","0","0","0","0","0"]' +
-        '}' +
-        '],' +
-        '"Actual":' +
-        '[' +
-        '{' +
-        '"category": "Transportation",' +
-        '"amountInMonth":["0","10000","20000","30000","40000","50000","60000","70000","80000","90000","100000","110000"],' +
-        '"hourInMonth":["0","0","0","0","0","0","0","0","0","0","0","0"]' +
-        '},' +
-        '{' +
-        '"category": "Marketing",' +
-        '"amountInMonth":["0","10000","20000","30000","40000","50000","60000","70000","80000","90000","100000","110000"],' +
-        '"hourInMonth":["0","0","0","0","0","0","0","0","0","0","0","0"]' +
-        '}' +
-        ']' +
-        '}';
+    // String data = '{"Company":"N Tech",' +
+    //     '"Department":"Marketing",' +
+    //     '"CostElements":["Transportation","Marketing"],' +
+    //     '"Plan":' +
+    //     '[' +
+    //     '{' +
+    //     '"category": "Transportation",' +
+    //     '"amountInMonth":["0","10000","20000","30000","40000","50000","60000","70000","80000","90000","100000","110000"],' +
+    //     '"hourInMonth":["0","0","0","0","0","0","0","0","0","0","0","0"]' +
+    //     '},' +
+    //     '{' +
+    //     '"category": "Marketing",' +
+    //     '"amountInMonth":["0","10000","20000","30000","40000","50000","60000","70000","80000","90000","100000","110000"],' +
+    //     '"hourInMonth":["0","0","0","0","0","0","0","0","0","0","0","0"]' +
+    //     '}' +
+    //     '],' +
+    //     '"Actual":' +
+    //     '[' +
+    //     '{' +
+    //     '"category": "Transportation",' +
+    //     '"amountInMonth":["0","10000","20000","30000","40000","50000","60000","70000","80000","90000","100000","110000"],' +
+    //     '"hourInMonth":["0","0","0","0","0","0","0","0","0","0","0","0"]' +
+    //     '},' +
+    //     '{' +
+    //     '"category": "Marketing",' +
+    //     '"amountInMonth":["0","10000","20000","30000","40000","50000","60000","70000","80000","90000","100000","110000"],' +
+    //     '"hourInMonth":["0","0","0","0","0","0","0","0","0","0","0","0"]' +
+    //     '}' +
+    //     ']' +
+    //     '}';
 
     Map jsonMap = json.decode(jsonReadfromfile);
     // print("decoded data =" + jsonMap.toString() );
