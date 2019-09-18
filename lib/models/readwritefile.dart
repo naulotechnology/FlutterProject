@@ -56,9 +56,9 @@ class PlanningFormModel {
     //   this.costElements.add("Marketing");
 
     if (st.readData().toString() == "") {  
-      this.initializeData();
-      saveData();
+      saveData(); 
       isFatches = false;
+      this.initializeData();
     } else {
       print(
           "data in local file system is available , reading json and populating  data... ");
