@@ -39,11 +39,7 @@ class PlanningFormModel {
   */
   Storage st;
 
-        this.savedStateFromFile = "";
-  // String daa = await st.readData();
-  // print(daa);
-  return savedStateFromFile;
-}
+
   PlanningFormModel() {
     //check if data files already exists
 
@@ -59,10 +55,6 @@ class PlanningFormModel {
     // this.costElements.add("Transportation");
     //   this.costElements.add("Marketing");
     //this.initializeData();
-
- 
-
-    if(checkdata() == ""){
 
     // if (st.readData().toString() == null) {
     //   this.initializeData();

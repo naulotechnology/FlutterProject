@@ -1,10 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutterproject/models/readwritefile.dart';
 import 'package:flutterproject/screen/planninglayout.dart';
 import 'package:flutterproject/screen/satting.dart';
 import 'package:splashscreen/splashscreen.dart';
+
+import 'chart/chart.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MySplashScreen(),
+      home: HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -29,6 +29,7 @@ class HomePage extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("MyTable", Icons.table_chart),
     new DrawerItem("MyForm", Icons.folder),
+    new DrawerItem("Chart", Icons.settings),
     new DrawerItem("Setting", Icons.settings)
   ];
 
@@ -47,8 +48,9 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
       case 0:
         return new MyForm(pfm);
       case 1:
-        return new SavedStateFromFile(pfm);
-
+        return new SavedStateFromFile(pfm);  
+      case 2:
+        return new MyChart();
       default:
         return new SavedStateFromFile(pfm);
     }
@@ -76,6 +78,7 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
       appBar: new AppBar(
         // automaticallyImplyLeading: false,
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
+        automaticallyImplyLeading: false,
         // leading: IconButton(icon:Icon(Icons.arrow_back),
         //   onPressed:() => Navigator.pop(context, false),
         // )
@@ -103,34 +106,34 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
 }
 
 
-class MySplashScreen extends StatefulWidget {
-  @override
-  _MyAppState createState() =>  _MyAppState();
-}
+// class MySplashScreen extends StatefulWidget {
+//   @override
+//   _MyAppState createState() =>  _MyAppState();
+// }
 
-class _MyAppState extends State<MySplashScreen> {
+// class _MyAppState extends State<MySplashScreen> {
   
   
-  @override
-  Widget build(BuildContext context) {
-    List<Color> color = List<Color>();
-    color.add(Colors.red);
-    color.add(Colors.blue);
-    color.add(Colors.green);
+//   @override
+//   Widget build(BuildContext context) {
+//     List<Color> color = List<Color>();
+//     color.add(Colors.red);
+//     color.add(Colors.blue);
+//     color.add(Colors.green);
 
-    return  SplashScreen(
-      seconds: 4,
-      navigateAfterSeconds:  HomePage(),
-      title:  Text('Welcome,SplashScreen',
-      style: TextStyle(color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: 20.0
-      ),),
-     // image: Image.asset('image1.jpg'),
-      backgroundColor: Color.fromARGB(200, 226, 66, 23),
-      styleTextUnderTheLoader: TextStyle(),
-      onClick: ()=>print("Flutter Egypt"),
-      loaderColor: Colors.white
-    );
-  }
-}
+//     return  SplashScreen(
+//       seconds: 4,
+//       navigateAfterSeconds:  HomePage(),
+//       title:  Text('Welcome,SplashScreen',
+//       style: TextStyle(color: Colors.white,
+//         fontWeight: FontWeight.bold,
+//         fontSize: 20.0
+//       ),),
+//      // image: Image.asset('image1.jpg'),
+//       backgroundColor: Color.fromARGB(200, 226, 66, 23),
+//       styleTextUnderTheLoader: TextStyle(),
+//       onClick: ()=>print("Flutter Egypt"),
+//       loaderColor: Colors.white
+//     );
+//   }
+// }

@@ -5,6 +5,7 @@ import 'package:flutterproject/models/readwritefile.dart';
 import 'package:material_switch/material_switch.dart';
 import 'dart:async';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 class MyForm extends StatefulWidget {
   PlanningFormModel pfm;
@@ -171,6 +172,45 @@ class MyFormState extends State<MyForm> {
       );
     }
 
+    fatchDataLoodingScreen() {
+      return Container(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 130.0),
+            ),
+            CircularProgressIndicator(),
+            Text(
+              "Loading",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    myBordView() {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 10),
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: 1,
+          itemExtent: 60.0 * 10,
+          itemBuilder: (BuildContext content, int index) {
+            if (pfm.isFatches == true) {
+              return fatchDataLoodingScreen();
+            } else {
+              return boardView(bordview);
+            }
+          },
+        ),
+      );
+    }
+
     Widget _makeElement(int index) {
       if (index >= 6) {
         return null;
@@ -233,17 +273,7 @@ class MyFormState extends State<MyForm> {
       } else if (index == 4) {
         return Container(
           height: 300,
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: 1,
-              itemExtent: 56.8 * (pfm.costElements.length),
-              itemBuilder: (BuildContext content, int index) {
-                return boardView(bordview);
-              },
-            ),
-          ),
+          child: myBordView(),
         );
       } else if (index == 5) {
         return Container(
@@ -288,10 +318,16 @@ class MyFormState extends State<MyForm> {
                 left: 0.0,
                 right: 0.0,
                 child: //showOnlineOflineSnackBar(connected),
-                Container(
+                    Container(
                   color: connected ? Color(0xFF00EE44) : Color(0xFFEE4400),
                   child: Center(
-                    child: Text("${connected ? 'Online' : 'Offline'}",style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
+                    child: Text(
+                      "${connected ? 'Online' : 'Offline'}",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
@@ -385,7 +421,7 @@ class MyFormState extends State<MyForm> {
                                       showHour, attr, txt, monthlyAmount.index);
                                 },
                                 onTap: () {
-                                  print("${monthlyAmount.index}");
+                                  print("index is ${monthlyAmount.index}");
                                 },
                               ),
                             ),
@@ -609,12 +645,12 @@ class MyFormState extends State<MyForm> {
           MaterialButton(
             onPressed: () {
               setState(() {
-               pfm.saveData();
-               //pfm.planningFormModelJSONtoMp();
+                pfm.saveData();
+                //pfm.planningFormModelJSONtoMp();
                 print("data");
               });
               // print("data wrote to file = ${pfm.planningFormModelMptoJSON()}");
-            //  print( "data  i checked = ${pfm.}");
+              //  print( "data  i checked = ${pfm.}");
             },
             child: Text("Save"),
             height: 40,
