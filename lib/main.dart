@@ -12,8 +12,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
       debugShowCheckedModeBanner: false,
+      home: HomePage(), 
     );
   }
 }
@@ -78,7 +78,7 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
       appBar: new AppBar(
         // automaticallyImplyLeading: false,
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
-        automaticallyImplyLeading: false,
+        //automaticallyImplyLeading: false,
         // leading: IconButton(icon:Icon(Icons.arrow_back),
         //   onPressed:() => Navigator.pop(context, false),
         // )
