@@ -5,7 +5,7 @@ import 'package:flutterproject/models/readwritefile.dart';
 import 'package:material_switch/material_switch.dart';
 import 'dart:async';
 import 'package:flutter_offline/flutter_offline.dart';
-import 'package:splashscreen/splashscreen.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class MyForm extends StatefulWidget {
   PlanningFormModel pfm;
@@ -21,7 +21,7 @@ class MyForm extends StatefulWidget {
 
 class MyFormState extends State<MyForm> {
   String dropdownValue = "Plan";
-  String dropdownValue1 = "Chemestry";
+  String dropdownValue1 = "Chemistry";
   String dropdowndate = "2018";
   String dropdownMonth = "Jan";
 
@@ -41,9 +41,11 @@ class MyFormState extends State<MyForm> {
 
   int itemExtend;
   List<String> optionList = <String>['Month', 'Hour'];
+  List<String> optionListForChart = <String>['Table', 'Chart'];
   List<String> optionList1 = <String>['Plan', 'Actual'];
 
   String optionSelect = 'Month';
+  String optionSelectChart = 'Table';
   String optionSelect1 = 'Plan';
   TextEditingController costElementController = TextEditingController();
 
@@ -52,12 +54,12 @@ class MyFormState extends State<MyForm> {
 
   PlanningFormModel pfm;
 
-  
   //TabController controller;
 
   Storage st;
   MonthlyPlan mp;
   bool showHour = false;
+  bool showChart = false;
 
   bool connected;
 
@@ -268,25 +270,43 @@ class MyFormState extends State<MyForm> {
           ),
         );
       } else if (index == 3) {
-        return Container(
-          height: 60,
-          //  decoration: myDecoration(),
-          child: Padding(
-                padding:
-                    EdgeInsets.only(top: 10, bottom: 10,left: 115,right: 115),
+        return Row(
+          children: <Widget>[
+            Container(
+              height: 60,
+              width: 145,
+              //  decoration: myDecoration(),
+              child: Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 10, left: 12),
                 child: hourMonthToogleButton(),
               ),
-              // Padding(
-              //   padding:
-              //       EdgeInsets.only(top: 10, bottom: 10),
-              //   child: chartTableleButton(),
-              // ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+              height: 60,
+              width: 145,
+              //  decoration: myDecoration(),
+              child: Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 10, left: 12),
+                child: chartTableleButton(),
+              ),
+            ),
+          ],
         );
       } else if (index == 4) {
-        return Container(
-          height: 300,
-          child: myBordView(),
-        );
+        if (showChart == false) {
+          return Container(
+            height: 300,
+            child: myBordView(),
+          );
+        } else {
+          return Container(
+            height: 300,
+            child: myChart(),
+          );
+        }
       } else if (index == 5) {
         return Container(
           height: 60,
@@ -367,6 +387,48 @@ class MyFormState extends State<MyForm> {
       //   }),
       // ),
     );
+  }
+
+  //chart
+  myChart() {
+    var data = [
+      new ChartPerYear('jan', 1200, Colors.red),
+      new ChartPerYear('fab', 4200, Colors.yellow),
+      new ChartPerYear('mar', 3000, Colors.green),
+      new ChartPerYear('apr', 6000, Colors.black),
+      new ChartPerYear('may', 2500, Colors.pink),
+      new ChartPerYear('jun', 3500, Colors.pink),
+      new ChartPerYear('jul', 1200, Colors.red),
+      new ChartPerYear('aug', 14200, Colors.yellow),
+      new ChartPerYear('sep', 3000, Colors.green),
+      new ChartPerYear('oct', 6000, Colors.black),
+      new ChartPerYear('nov', 2500, Colors.pink),
+      new ChartPerYear('dec', 3500, Colors.pink),
+    ];
+
+    var series = [
+      new charts.Series(
+        domainFn: (ChartPerYear clickData, _) => clickData.year,
+        measureFn: (ChartPerYear clickData, _) => clickData.clicks,
+        colorFn: (ChartPerYear clickData, _) => clickData.color,
+        id: 'Clicks',
+        data: data,
+      ),
+    ];
+
+    var chart = new charts.BarChart(
+      series,
+      animate: true,
+    );
+    var chartWidget = new Padding(
+      padding: new EdgeInsets.only(left: 25),
+      child: new SizedBox(
+        height: 200.0,
+        child: chart,
+      ),
+    );
+
+    return chartWidget;
   }
 
   dataBody() {
@@ -722,23 +784,23 @@ class MyFormState extends State<MyForm> {
     );
   }
 
-   chartTableleButton() {
+  chartTableleButton() {
     return Container(
       height: 100,
       child: MaterialSwitch(
         padding: EdgeInsets.only(bottom: 12.0, left: 12.0),
-        options: optionList,
-        selectedOption: optionSelect,
+        options: optionListForChart,
+        selectedOption: optionSelectChart,
         selectedBackgroundColor: Colors.blue,
         selectedTextColor: Colors.white,
         onSelect: (String optionList) {
           setState(() {
-            optionSelect = optionList;
-            if (optionSelect == "Table") {
-              showHour = false;
+            optionSelectChart = optionList;
+            if (optionSelectChart == "Table") {
+              showChart = false;
               print("Table");
             } else {
-              showHour = true;
+              showChart = true;
               print("Chart");
             }
           });
@@ -853,7 +915,7 @@ class MyFormState extends State<MyForm> {
     );
   }
 
-  myDropDownButtons(){
+  myDropDownButtons() {
     return Container(
       margin: EdgeInsets.only(top: 4),
       width: 300,
@@ -901,11 +963,10 @@ class MyFormState extends State<MyForm> {
                                   });
                                 },
                                 items: <String>[
-                                    "Chemistry",
-                                    "Nepali"
-                                    "English"
-                                ]
-                                    .map<DropdownMenuItem<String>>(
+                                  "Chemistry",
+                                  "Nepali",
+                                  "English"
+                                ].map<DropdownMenuItem<String>>(
                                   (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
@@ -1058,4 +1119,14 @@ class MyFormState extends State<MyForm> {
       ),
     );
   }
+}
+
+class ChartPerYear {
+  final String year;
+  final int clicks;
+  final charts.Color color;
+
+  ChartPerYear(this.year, this.clicks, Color color)
+      : this.color = new charts.Color(
+            r: color.red, g: color.green, b: color.blue, a: color.alpha);
 }
