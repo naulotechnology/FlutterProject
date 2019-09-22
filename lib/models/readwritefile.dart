@@ -1,5 +1,6 @@
 
 import 'dart:core' ;
+import 'dart:core' as prefix0;
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -15,7 +16,7 @@ class PlanningFormModel {
   List<String> costElements;
   String year;
  String month;
- 
+ //String savedStateFromFile;
   /*
   Cost Element to Monthly Plan map
   */
@@ -34,20 +35,26 @@ class PlanningFormModel {
   /*
   *This string is to hold current state of the App read from Storage
   */
-  String savedStateFromFile="This is default";
+  
 
   /*
   *Storge class does the file/cloudstore/db read/write
   */
   Storage st ;
-  
+  String savedStateFromFile ;
+     String checkdata() {
 
+        this.savedStateFromFile = "";
+  // String daa = await st.readData();
+  // print(daa);
+  return savedStateFromFile;
+}
   PlanningFormModel() {
     //check if data files already exists 
 
     //this.initializeData();
     this.st = new Storage();
-
+    String empty = "empty";
     
     //   this.company = "N Tech";
     // this.department = "Marketing";
@@ -58,18 +65,25 @@ class PlanningFormModel {
 
     // this.costElements.add("Transportation");
     //   this.costElements.add("Marketing");
+    //this.initializeData();
 
-    if(st.readData().toString()==""){
+ 
+
+    if(checkdata() == ""){
+
+
+    // if(checkdata() == 'empty'){
+      print("data in local file system isnot available "); 
        this.initializeData();
      
     }
-    else {
+    else{
       print("data in local file system is available , reading json and populating  data... "); 
       //read json from file 
-      String pfmJSONStringReadFromFile = "";
+      //String pfmJSONStringReadFromFile = "";
       //populate data 
-    //  this.initializeData();
-     this.instantiatePFMfromJSONString();
+     // this.initializeData();
+      this.instantiatePFMfromJSONString();
 
 
       
@@ -77,7 +91,7 @@ class PlanningFormModel {
   }
 
     initializeData(){
-       print("welcome to planning application data we are initializibg application");
+       print("welcome to planning application data we are initializing application");
       this.company = "Naulo Tech";
     this.department = "Marketing";
      
@@ -569,6 +583,11 @@ class PlanningFormModel {
     // this.st.writeData(this.toString());
   }
 
+
+
+
+
+
   Future<String> readPfmFromFile() {
     return this.st.readData();
   }
@@ -580,12 +599,15 @@ savepfmToFirebase(){
   int pm , am, vm , ph , ah , vh;
   
   String path = "";
+  String organization  = "organization";
   String company = "company"; // this.Company;
   String department =  "department"  ; //this.department;
+  String family =  "family ";
+  String brand = "brand ";
   String year =  "2019" ; //this.year;
   String month =  "janaury" ; //this.month;
   // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
-  path = "/" + company +  "/" + department +"/" + year  +  "/"  + month ;
+  path = path + "/" + organization + "/" + organization + "/" + company +  "/" + company +  "/" + department +"/" + department +"/" + family +"/"+ family +"/" + brand +"/" + brand +"/" + year  +  "/" + year +"/" + month +"/" + month ;
     List mPAmts ;
      List mPHrs ;
     
@@ -1034,22 +1056,26 @@ class Storage {
     return File('$path/db.json');
   }
 
-  Future<String> readData() async {
-    try {
-      final file = await localFile;
-      String body = await file.readAsString();
-
-      return body;
-    } catch (e) {
-      print(e.toString()) ;
-       return "";
-     
-    }
-  }
 
   Future<File> writeData(String data) async {
     final file = await localFile;
     return file.writeAsString("$data");
+  }
+
+  Future<String> readData() async {
+    try
+    
+     {
+      final file = await localFile;
+      String body = await file.readAsString();
+
+      return body;
+    } 
+    catch (e) {
+      print(e.toString()) ;
+       return "empty";
+     
+    }
   }
 }
 
