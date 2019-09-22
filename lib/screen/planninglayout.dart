@@ -52,6 +52,7 @@ class MyFormState extends State<MyForm> {
 
   PlanningFormModel pfm;
 
+  
   //TabController controller;
 
   Storage st;
@@ -70,6 +71,12 @@ class MyFormState extends State<MyForm> {
       connected = false;
       print("no internet access");
     }
+  }
+
+  valueForDepartMent() async {
+    List<String> valuefordepartment;
+    valuefordepartment = await pfm.getDepartments();
+    return valuefordepartment;
   }
 
   @override
@@ -265,10 +272,15 @@ class MyFormState extends State<MyForm> {
           height: 60,
           //  decoration: myDecoration(),
           child: Padding(
-            padding:
-                EdgeInsets.only(top: 10, bottom: 10, left: 115, right: 115),
-            child: hourMonthToogleButton(),
-          ),
+                padding:
+                    EdgeInsets.only(top: 10, bottom: 10,left: 115,right: 115),
+                child: hourMonthToogleButton(),
+              ),
+              // Padding(
+              //   padding:
+              //       EdgeInsets.only(top: 10, bottom: 10),
+              //   child: chartTableleButton(),
+              // ),
         );
       } else if (index == 4) {
         return Container(
@@ -410,21 +422,21 @@ class MyFormState extends State<MyForm> {
                       .getMonthlyPlan(showHour)
                       .map(
                         (monthlyAmount) => DataCell(
-                              TextField(
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    labelStyle: TextStyle(
-                                        fontSize: 14, color: Colors.red),
-                                    hintText: monthlyAmount.value.toString()),
-                                onChanged: (txt) {
-                                  pfm.setAmount(
-                                      showHour, attr, txt, monthlyAmount.index);
-                                },
-                                onTap: () {
-                                  print("index is ${monthlyAmount.index}");
-                                },
-                              ),
-                            ),
+                          TextField(
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelStyle:
+                                    TextStyle(fontSize: 14, color: Colors.red),
+                                hintText: monthlyAmount.value.toString()),
+                            onChanged: (txt) {
+                              pfm.setAmount(
+                                  showHour, attr, txt, monthlyAmount.index);
+                            },
+                            onTap: () {
+                              print("index is ${monthlyAmount.index}");
+                            },
+                          ),
+                        ),
                       )
                       .toList(),
                 ))
@@ -618,19 +630,19 @@ class MyFormState extends State<MyForm> {
           rows: pfm.costElements
               .map(
                 (attr) => DataRow(
-                      cells: [
-                        /*1*/ DataCell(
-                            Text(
-                              attr,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black54,
-                                  fontFamily: 'SourceSansPro'),
-                            ), onTap: () {
-                          print('Selected ${attr}');
-                        }),
-                      ],
-                    ),
+                  cells: [
+                    /*1*/ DataCell(
+                        Text(
+                          attr,
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black54,
+                              fontFamily: 'SourceSansPro'),
+                        ), onTap: () {
+                      print('Selected ${attr}');
+                    }),
+                  ],
+                ),
               )
               .toList()),
     );
@@ -668,7 +680,6 @@ class MyFormState extends State<MyForm> {
               String da = await st.readData();
               pfm.savedStateFromFile = da;
 
-
               //print(da);
               print("data read from file = $da");
             },
@@ -704,6 +715,31 @@ class MyFormState extends State<MyForm> {
             } else {
               showHour = true;
               print("Hour");
+            }
+          });
+        },
+      ),
+    );
+  }
+
+   chartTableleButton() {
+    return Container(
+      height: 100,
+      child: MaterialSwitch(
+        padding: EdgeInsets.only(bottom: 12.0, left: 12.0),
+        options: optionList,
+        selectedOption: optionSelect,
+        selectedBackgroundColor: Colors.blue,
+        selectedTextColor: Colors.white,
+        onSelect: (String optionList) {
+          setState(() {
+            optionSelect = optionList;
+            if (optionSelect == "Table") {
+              showHour = false;
+              print("Table");
+            } else {
+              showHour = true;
+              print("Chart");
             }
           });
         },
@@ -817,7 +853,7 @@ class MyFormState extends State<MyForm> {
     );
   }
 
-  myDropDownButtons() {
+  myDropDownButtons(){
     return Container(
       margin: EdgeInsets.only(top: 4),
       width: 300,
@@ -865,10 +901,11 @@ class MyFormState extends State<MyForm> {
                                   });
                                 },
                                 items: <String>[
-                                  "Chemestry",
-                                  "Nepali",
-                                  "Physics"
-                                ].map<DropdownMenuItem<String>>(
+                                    "Chemistry",
+                                    "Nepali"
+                                    "English"
+                                ]
+                                    .map<DropdownMenuItem<String>>(
                                   (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,

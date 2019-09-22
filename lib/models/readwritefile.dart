@@ -92,6 +92,7 @@ class PlanningFormModel {
       for(String de in departments){
         this.departments.add(de);
       }
+      return departments;
 
     }
 
@@ -775,6 +776,7 @@ call savePfmTOfirebase
     }
     this.savePfmToFile();
   }
+
 }
 
 class DataValue {
