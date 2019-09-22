@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MySplashScreen(),
+      home: HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -106,34 +106,34 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
 }
 
 
-class MySplashScreen extends StatefulWidget {
-  @override
-  _MyAppState createState() =>  _MyAppState();
-}
+// class MySplashScreen extends StatefulWidget {
+//   @override
+//   _MyAppState createState() =>  _MyAppState();
+// }
 
-class _MyAppState extends State<MySplashScreen> {
+// class _MyAppState extends State<MySplashScreen> {
   
   
-  @override
-  Widget build(BuildContext context) {
-    List<Color> color = List<Color>();
-    color.add(Colors.red);
-    color.add(Colors.blue);
-    color.add(Colors.green);
+//   @override
+//   Widget build(BuildContext context) {
+//     List<Color> color = List<Color>();
+//     color.add(Colors.red);
+//     color.add(Colors.blue);
+//     color.add(Colors.green);
 
-    return  SplashScreen(
-      seconds: 4,
-      navigateAfterSeconds:  HomePage(),
-      title:  Text('Welcome,SplashScreen',
-      style: TextStyle(color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: 20.0
-      ),),
-     // image: Image.asset('image1.jpg'),
-      backgroundColor: Color.fromARGB(200, 226, 66, 23),
-      styleTextUnderTheLoader: TextStyle(),
-      onClick: ()=>print("Flutter Egypt"),
-      loaderColor: Colors.white
-    );
-  }
-}
+//     return  SplashScreen(
+//       seconds: 4,
+//       navigateAfterSeconds:  HomePage(),
+//       title:  Text('Welcome,SplashScreen',
+//       style: TextStyle(color: Colors.white,
+//         fontWeight: FontWeight.bold,
+//         fontSize: 20.0
+//       ),),
+//      // image: Image.asset('image1.jpg'),
+//       backgroundColor: Color.fromARGB(200, 226, 66, 23),
+//       styleTextUnderTheLoader: TextStyle(),
+//       onClick: ()=>print("Flutter Egypt"),
+//       loaderColor: Colors.white
+//     );
+//   }
+// }

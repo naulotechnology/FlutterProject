@@ -55,26 +55,43 @@ class PlanningFormModel {
     // this.costElements.add("Transportation");
     //   this.costElements.add("Marketing");
 
-    if (st.readData().toString() == null) {  
-       print(
-          "data in local file system is Not available");
-      //saveData(); 
-      //isFatches = false;
+    // if (st.readData().toString() == null) {
+    //   this.initializeData();
+    // } else {
+    //   print(
+    //       "data in local file system is available , reading json and populating  data... ");
+    //   print("${st.readData().toString()}");
+    //   //read json from file
+    //   String pfmJSONStringReadFromFile = "";
+    //   //populate data
+    //   // this.initializeData();
+    //   this.instantiatePFMfromJSONString();
+    // }
+
+    setAllData();
+  }
+
+  setAllData() async {
+    String readData = await st.readData();
+
+    if (readData == null) {
       this.initializeData();
     } else {
       print(
           "data in local file system is available , reading json and populating  data... ");
+      print("${st.readData().toString()}");
       //read json from file
       String pfmJSONStringReadFromFile = "";
       //populate data
-      //this.initializeData();
+      // this.initializeData();
       this.instantiatePFMfromJSONString();
     }
   }
 
   initializeData() {
+    isFatches = false;
     print(
-        "welcome to planning application data we are initializibg application");
+        "welcome to planning application data we are initializeData application");
     this.company = "Naulo Tech";
     this.department = "Marketing";
 
@@ -975,11 +992,11 @@ class Storage {
     try {
       final file = await localFile;
       String body = await file.readAsString();
-
+      print("What, It is not working");
       return body;
     } catch (e) {
-      print(e.toString());
-      return "";
+      print("What is happening,It is not working");
+      return null;
     }
   }
 
