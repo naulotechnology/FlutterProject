@@ -4,11 +4,13 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:http/http.dart' as http;
 
 class PlanningFormModel {
   String company;
   String department;
   List<String> costElements;
+  List<String> departments;
   String year;
   String month;
 
@@ -38,13 +40,18 @@ class PlanningFormModel {
   *Storge class does the file/cloudstore/db read/write
   */
   Storage st;
+  
+
+  
 
   PlanningFormModel() {
+
+   
+
     //check if data files already exists
 
     //this.initializeData();
     this.st = new Storage();
-
     //   this.company = "N Tech";
     // this.department = "Marketing";
 
@@ -54,6 +61,7 @@ class PlanningFormModel {
 
     // this.costElements.add("Transportation");
     //   this.costElements.add("Marketing");
+    //this.initializeData();
 
     // if (st.readData().toString() == null) {
     //   this.initializeData();
@@ -67,9 +75,51 @@ class PlanningFormModel {
     //   // this.initializeData();
     //   this.instantiatePFMfromJSONString();
     // }
-
+   
+   getDepartments();
     setAllData();
+
   }
+
+  getDepartments() async {
+
+      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartments");
+      var jsonData = json.decode(data.body);
+    
+      List departments = jsonData['Department'];
+        print("*************departments ***************** =" + departments.toString());
+        this.departments = new List<String>();
+      for(String de in departments){
+        this.departments.add(de);
+      }
+
+    }
+
+    // getDepartment() async {
+
+    //   var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartment");
+    //   var jsonData = json.decode(data.body);
+    
+    //   String department1 = jsonData['Department'];
+    //     print("*************department ***************** =" + department1 );
+    //   this.department = department1 ;
+     
+
+    // }
+
+  //  Future<List<String> > getCostElements() async {
+
+  //     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getCostElements");
+  //     var jsonData = json.decode(data.body);
+    
+  //     List costElements = jsonData['costElements'];
+  //       print("*************costElements ***************** =" + costElements.toString());
+  //       this.costElements = new List<String>();
+  //     for(String ce in costElements){
+  //       this.costElements.add(ce);
+  //     }
+
+  //   }
 
   setAllData() async {
     String readData = await st.readData();
@@ -93,9 +143,10 @@ class PlanningFormModel {
     print(
         "welcome to planning application data we are initializeData application");
     this.company = "Naulo Tech";
-    this.department = "Marketing";
+    //this.department = "Marketing";
 
     this.year = "2019";
+     //getCostElements();
     this.costElements = new List<String>();
     //mPlan = new MonthlyPlan(this);
 
@@ -225,7 +276,7 @@ class PlanningFormModel {
     Map jsonMap = json.decode(jsonReadfromfile);
     // print("decoded data =" + jsonMap.toString() );
     this.company = jsonMap['Company'];
-    this.department = jsonMap['Department'];
+    //this.department = jsonMap['Department'];
     print("company = " + this.company);
     print("data extracting = " + jsonMap['Plan'].toString());
     this.year = "2019";
@@ -567,6 +618,11 @@ class PlanningFormModel {
 
     // this.st.writeData(this.toString());
   }
+
+
+
+
+
 
   Future<String> readPfmFromFile() {
     return this.st.readData();
@@ -988,8 +1044,16 @@ class Storage {
     return File('$path/db.json');
   }
 
+
+  Future<File> writeData(String data) async {
+    final file = await localFile;
+    return file.writeAsString("$data");
+  }
+
   Future<String> readData() async {
-    try {
+    try
+    
+     {
       final file = await localFile;
       String body = await file.readAsString();
       print("What, It is not working");
@@ -998,10 +1062,5 @@ class Storage {
       print("What is happening,It is not working");
       return null;
     }
-  }
-
-  Future<File> writeData(String data) async {
-    final file = await localFile;
-    return file.writeAsString("$data");
   }
 }
