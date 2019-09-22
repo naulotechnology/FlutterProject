@@ -31,7 +31,7 @@ class ActualPlanVarianceChart extends State {
       new ChartPerYear('may', 2500, Colors.pink),
       new ChartPerYear('jun', 3500, Colors.pink),
       new ChartPerYear('jul', 1200, Colors.red),
-      new ChartPerYear('aug', 4200, Colors.yellow),
+      new ChartPerYear('aug', 14200, Colors.yellow),
       new ChartPerYear('sep', 3000, Colors.green),
       new ChartPerYear('oct', 6000, Colors.black),
       new ChartPerYear('nov', 2500, Colors.pink),
