@@ -55,9 +55,11 @@ class PlanningFormModel {
     // this.costElements.add("Transportation");
     //   this.costElements.add("Marketing");
 
-    if (st.readData().toString() == "") {  
-      saveData(); 
-      isFatches = false;
+    if (st.readData().toString() == null) {  
+       print(
+          "data in local file system is Not available");
+      //saveData(); 
+      //isFatches = false;
       this.initializeData();
     } else {
       print(
