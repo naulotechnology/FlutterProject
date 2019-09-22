@@ -290,7 +290,7 @@ class MyFormState extends State<MyForm> {
               //  decoration: myDecoration(),
               child: Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 10, left: 12),
-                child: chartTableleButton(),
+                child: chartTableleToogleButton(),
               ),
             ),
           ],
@@ -784,7 +784,7 @@ class MyFormState extends State<MyForm> {
     );
   }
 
-  chartTableleButton() {
+  chartTableleToogleButton() {
     return Container(
       height: 100,
       child: MaterialSwitch(
