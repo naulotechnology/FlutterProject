@@ -20,8 +20,10 @@ class MyForm extends StatefulWidget {
 }
 
 class MyFormState extends State<MyForm> {
+  List<String> valueDepartment = [];
+
   String dropdownValue = "Plan";
-  String dropdownValue1 = "Chemistry";
+  String dropdownValue1;
   String dropdowndate = "2018";
   String dropdownMonth = "Jan";
 
@@ -74,11 +76,33 @@ class MyFormState extends State<MyForm> {
       print("no internet access");
     }
   }
+  
+  
+   String dropdownInitialValue;
+  dropdownValue1ForDepartMent() {
+   
+    List<String> department = pfm.departments;
+    
+    // return valueDepartment;
 
-  valueForDepartMent() async {
-    List<String> valuefordepartment;
-    valuefordepartment = await pfm.getDepartments();
-    return valuefordepartment;
+    if (department == null) {
+      return dropdownInitialValue = "looding";
+    } else {
+      return dropdownInitialValue = pfm.departments[0];
+    }
+  }
+
+  dropDownValueForDepartment() {
+    var department = pfm.departments;
+    if (department == null) {
+      //valueDepartment.add("looding");
+      return valueDepartment;
+    } else {
+      for (String i in department) {
+        valueDepartment.add(i);
+      }
+      return valueDepartment;
+    }
   }
 
   @override
@@ -90,12 +114,8 @@ class MyFormState extends State<MyForm> {
 
   initState() {
     super.initState();
-
-    // subscription = Connectivity()
-    //     .onConnectivityChanged
-    //     .listen((ConnectivityResult result) {
-    //   // Got a new connectivity status!
-    // });
+    // print("Hellow this is Department = $valueForDepartMent()");
+    setState(() {});
   }
 
   MyFormState(PlanningFormModel pfm) {
@@ -914,8 +934,8 @@ class MyFormState extends State<MyForm> {
       ),
     );
   }
-
   myDropDownButtons() {
+    //dropdownValue1 = dropdownValue1ForDepartMent();
     return Container(
       margin: EdgeInsets.only(top: 4),
       width: 300,
@@ -956,17 +976,20 @@ class MyFormState extends State<MyForm> {
                             alignedDropdown: true,
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
-                                value: dropdownValue1,
+                                isExpanded: true,
+                                value: dropdownValue1 = dropdownValue1ForDepartMent(),
                                 onChanged: (String newValue) {
                                   setState(() {
                                     dropdownValue1 = newValue;
                                   });
                                 },
-                                items: <String>[
-                                  "Chemistry",
-                                  "Nepali",
-                                  "English"
-                                ].map<DropdownMenuItem<String>>(
+                                // items: <String>[
+                                //   "Chemistry",
+                                //   "Nepali",
+                                //   "English"
+                                // ]
+                                items: dropDownValueForDepartment()
+                                    .map<DropdownMenuItem<String>>(
                                   (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,

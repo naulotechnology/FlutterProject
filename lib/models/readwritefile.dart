@@ -14,6 +14,7 @@ class PlanningFormModel {
   String year;
   String month;
 
+    List<String> depart = ["a",'b',"c"];
   bool isFatches = true;
 
   /*
