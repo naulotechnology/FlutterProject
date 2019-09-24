@@ -20,6 +20,7 @@ class MyForm extends StatefulWidget {
 }
 
 class MyFormState extends State<MyForm> {
+  Users currentValue;
   List<String> valueDepartment = [];
 
   String dropdownValue = "Plan";
@@ -76,13 +77,11 @@ class MyFormState extends State<MyForm> {
       print("no internet access");
     }
   }
-  
-  
-   String dropdownInitialValue;
+
+  String dropdownInitialValue;
   dropdownValue1ForDepartMent() {
-   
     List<String> department = pfm.departments;
-    
+
     // return valueDepartment;
 
     if (department == null) {
@@ -103,6 +102,13 @@ class MyFormState extends State<MyForm> {
       }
       return valueDepartment;
     }
+  }
+
+  Future<List<Users>> dropDownValueForDepartment1() async{
+    List<Users> valueDepartment;
+    List<Users> department = await pfm.getDepartments();
+    
+    return department;
   }
 
   @override
@@ -273,7 +279,7 @@ class MyFormState extends State<MyForm> {
               scrollDirection: Axis.horizontal,
               itemCount: 1,
               itemBuilder: (BuildContext content, int index) {
-                return myDropDownButtons();
+                return departmentDropDown();
               },
             ),
           ),
@@ -934,8 +940,15 @@ class MyFormState extends State<MyForm> {
       ),
     );
   }
+
+  int user = 0;
   myDropDownButtons() {
-    //dropdownValue1 = dropdownValue1ForDepartMent();
+    //String value1 = "pra";
+
+    List<String> users = dropDownValueForDepartment();
+    // var users = <String>["pra","philip",'bidari'];
+
+   /// String depValue = user == null ? null : users[user];
     return Container(
       margin: EdgeInsets.only(top: 4),
       width: 300,
@@ -977,10 +990,15 @@ class MyFormState extends State<MyForm> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                 isExpanded: true,
-                                value: dropdownValue1 = dropdownValue1ForDepartMent(),
+                                hint: Text("Select Department",
+                                    style: TextStyle(fontSize: 12)),
+                                value: users[user],
                                 onChanged: (String newValue) {
                                   setState(() {
-                                    dropdownValue1 = newValue;
+                                    user = users.indexOf(newValue);
+                                    print("This is user value $user");
+                                    print("This is user value ${users[user]}");
+                                    //value1 = newValue;
                                   });
                                 },
                                 // items: <String>[
@@ -988,8 +1006,7 @@ class MyFormState extends State<MyForm> {
                                 //   "Nepali",
                                 //   "English"
                                 // ]
-                                items: dropDownValueForDepartment()
-                                    .map<DropdownMenuItem<String>>(
+                                items: users.map<DropdownMenuItem<String>>(
                                   (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
@@ -1142,6 +1159,33 @@ class MyFormState extends State<MyForm> {
       ),
     );
   }
+
+  departmentDropDown() {
+    return Container(
+      child: FutureBuilder(
+        future: dropDownValueForDepartment1(),
+        builder: (BuildContext context, AsyncSnapshot<List<Users>> snapshot) {
+          if (!snapshot.hasData) return CircularProgressIndicator();
+            return DropdownButton<Users>(
+                    items: snapshot.data
+                        .map((user) => DropdownMenuItem<Users>(
+                              child: Text(user.name),
+                              value: user,
+                            ))
+                        .toList(),
+                    onChanged: (Users value) {
+                      setState(() {
+                        currentValue = value;
+                      });
+                    },
+                    isExpanded: false,
+                    //value: _currentUser,
+                    hint: Text('Select User'),
+                  );
+        },
+      ),
+    );
+  }
 }
 
 class ChartPerYear {
@@ -1152,4 +1196,12 @@ class ChartPerYear {
   ChartPerYear(this.year, this.clicks, Color color)
       : this.color = new charts.Color(
             r: color.red, g: color.green, b: color.blue, a: color.alpha);
+}
+
+class Users {
+  String name;
+
+  Users({
+    this.name,
+  });
 }

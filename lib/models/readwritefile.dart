@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'dart:io';
+import 'package:flutterproject/screen/planninglayout.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +15,6 @@ class PlanningFormModel {
   String year;
   String month;
 
-    List<String> depart = ["a",'b',"c"];
   bool isFatches = true;
 
   /*
