@@ -87,13 +87,13 @@ class PlanningFormModel {
       var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartments");
       var jsonData = json.decode(data.body);
     
-      List departments = jsonData['Department'];
-        print("*************departments ***************** =" + departments.toString());
+      List department = jsonData['Department'];
+        print("*************departments ***************** =" + department.toString());
         this.departments = new List<String>();
-      for(String de in departments){
+      for(String de in department){
         this.departments.add(de);
       }
-      return departments;
+      return department;
 
     }
 

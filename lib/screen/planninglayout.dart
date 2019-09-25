@@ -29,6 +29,8 @@ class MyFormState extends State<MyForm> {
   String dropdownMonth = "Jan";
 
   int bordview = 1;
+  int user;
+  List<String> users;
 
   String myheader = "Plan Page";
 
@@ -92,9 +94,9 @@ class MyFormState extends State<MyForm> {
   }
 
   dropDownValueForDepartment() {
-    var department = pfm.departments;
+    List<String> department = pfm.departments;
     if (department == null) {
-      //valueDepartment.add("looding");
+      //valueDepartment.add("");
       return valueDepartment;
     } else {
       for (String i in department) {
@@ -104,10 +106,10 @@ class MyFormState extends State<MyForm> {
     }
   }
 
-  Future<List<Users>> dropDownValueForDepartment1() async{
+  Future<List<Users>> dropDownValueForDepartment1() async {
     List<Users> valueDepartment;
     List<Users> department = await pfm.getDepartments();
-    
+
     return department;
   }
 
@@ -121,7 +123,10 @@ class MyFormState extends State<MyForm> {
   initState() {
     super.initState();
     // print("Hellow this is Department = $valueForDepartMent()");
-    setState(() {});
+
+    setState(() {
+      users = dropDownValueForDepartment();
+    });
   }
 
   MyFormState(PlanningFormModel pfm) {
@@ -279,7 +284,7 @@ class MyFormState extends State<MyForm> {
               scrollDirection: Axis.horizontal,
               itemCount: 1,
               itemBuilder: (BuildContext content, int index) {
-                return departmentDropDown();
+                return myDropDownButtons();
               },
             ),
           ),
@@ -941,14 +946,12 @@ class MyFormState extends State<MyForm> {
     );
   }
 
-  int user = 0;
   myDropDownButtons() {
     //String value1 = "pra";
 
-    List<String> users = dropDownValueForDepartment();
     // var users = <String>["pra","philip",'bidari'];
 
-   /// String depValue = user == null ? null : users[user];
+    /// String depValue = user == null ? null : users[user];
     return Container(
       margin: EdgeInsets.only(top: 4),
       width: 300,
@@ -992,7 +995,7 @@ class MyFormState extends State<MyForm> {
                                 isExpanded: true,
                                 hint: Text("Select Department",
                                     style: TextStyle(fontSize: 12)),
-                                value: users[user],
+                                value: user == null ? null : users[user],
                                 onChanged: (String newValue) {
                                   setState(() {
                                     user = users.indexOf(newValue);
@@ -1166,22 +1169,22 @@ class MyFormState extends State<MyForm> {
         future: dropDownValueForDepartment1(),
         builder: (BuildContext context, AsyncSnapshot<List<Users>> snapshot) {
           if (!snapshot.hasData) return CircularProgressIndicator();
-            return DropdownButton<Users>(
-                    items: snapshot.data
-                        .map((user) => DropdownMenuItem<Users>(
-                              child: Text(user.name),
-                              value: user,
-                            ))
-                        .toList(),
-                    onChanged: (Users value) {
-                      setState(() {
-                        currentValue = value;
-                      });
-                    },
-                    isExpanded: false,
-                    //value: _currentUser,
-                    hint: Text('Select User'),
-                  );
+          return DropdownButton<Users>(
+            items: snapshot.data
+                .map((user) => DropdownMenuItem<Users>(
+                      child: Text(user.name),
+                      value: user,
+                    ))
+                .toList(),
+            onChanged: (Users value) {
+              setState(() {
+                currentValue = value;
+              });
+            },
+            isExpanded: false,
+            //value: _currentUser,
+            hint: Text('Select User'),
+          );
         },
       ),
     );
