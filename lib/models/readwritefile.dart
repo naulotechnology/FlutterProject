@@ -38,12 +38,14 @@ class PlanningFormModel {
   String savedStateFromFile = "This is default";
 
   /*
+  *This string is used to hold the current selected Department
+  */
+  String selectedDepartment = "";
+
+  /*
   *Storge class does the file/cloudstore/db read/write
   */
   Storage st;
-  
-
-  
 
   PlanningFormModel() {
 
@@ -53,6 +55,8 @@ class PlanningFormModel {
 
     //this.initializeData();
     this.st = new Storage();
+    this.departments = new List<String>();
+    
     //   this.company = "N Tech";
     // this.department = "Marketing";
 
@@ -77,24 +81,30 @@ class PlanningFormModel {
     //   this.instantiatePFMfromJSONString();
     // }
    
-   getDepartments();
+    //getDepartments();
     setAllData();
 
   }
 
-  getDepartments() async {
-
+  Future<List<String>> getDepartments() async {
+      this.departments = new List<String>();
       var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartments");
       var jsonData = json.decode(data.body);
     
-      List department = jsonData['Department'];
-        print("*************departments ***************** =" + department.toString());
-        this.departments = new List<String>();
-      for(String de in department){
-        this.departments.add(de);
+      List<String> departmentsFromCloudStore = jsonData['Department'];
+      print("*************departmentsFromCloudStore length ***************** =" + departmentsFromCloudStore.length.toString());
+      for(String d in departmentsFromCloudStore){
+         print("**Department value = ****" + d.toString());
+         this.departments.add(d.toString());
       }
-      return department;
+    
+      return departmentsFromCloudStore;
 
+    }
+
+    void setSelectedDepartment(String dept){
+      this.selectedDepartment = dept;
+      print("PFM - selectedDepartment set as = "+dept);
     }
 
     // getDepartment() async {

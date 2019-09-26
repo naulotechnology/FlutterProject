@@ -31,6 +31,7 @@ class MyFormState extends State<MyForm> {
   int bordview = 1;
   int user;
   List<String> users;
+  String _selectedDepartment;
 
   String myheader = "Plan Page";
 
@@ -65,6 +66,8 @@ class MyFormState extends State<MyForm> {
   MonthlyPlan mp;
   bool showHour = false;
   bool showChart = false;
+
+  List<String> _departments;
 
   bool connected;
 
@@ -106,12 +109,12 @@ class MyFormState extends State<MyForm> {
     }
   }
 
-  Future<List<Users>> dropDownValueForDepartment1() async {
-    List<Users> valueDepartment;
-    List<Users> department = await pfm.getDepartments();
+  //Future<List<Users>> dropDownValueForDepartment1() async {
+  //  List<String> valueDepartment;
+  //  Future<List<String>> department = await pfm.getDepartments();
 
-    return department;
-  }
+  //  return department;
+  //}
 
   @override
   void dispose() {
@@ -132,6 +135,14 @@ class MyFormState extends State<MyForm> {
   MyFormState(PlanningFormModel pfm) {
     this.pfm = pfm;
     st = this.pfm.st;
+  }
+
+  Future<List<String>> fetchDepartments() async{
+    List<String> d = await this.pfm.getDepartments();
+    setState((){
+      this._departments = d;
+    });
+    return d;
   }
 
   String checkConnection() {
@@ -732,7 +743,7 @@ class MyFormState extends State<MyForm> {
                               color: Colors.black54,
                               fontFamily: 'SourceSansPro'),
                         ), onTap: () {
-                      print('Selected ${attr}');
+                      print('Selected cost Elements = ${attr}');
                     }),
                   ],
                 ),
@@ -964,7 +975,7 @@ class MyFormState extends State<MyForm> {
               Column(
                 children: <Widget>[
                   Text(
-                    "DepartMent",
+                    "DepartMent - blah",
                     style: TextStyle(fontSize: 12),
                   ),
                   SizedBox(
@@ -991,25 +1002,55 @@ class MyFormState extends State<MyForm> {
                           child: ButtonTheme(
                             alignedDropdown: true,
                             child: DropdownButtonHideUnderline(
+                              // new async dropDown
+                            child: FutureBuilder<List<String>>(
+                              future: this.fetchDepartments(),
+                              builder: (BuildContext context,
+                                AsyncSnapshot<List<String>> snapshot) {
+                                /*return  Container(
+                                      height: 80.0,
+                                      child: 
+                                      snapshot.hasData ? snapshot.data : Text('loading..'),);
+                                   */
+                                  if (snapshot.hasData){  
+                                    return DropdownButton<String>(
+                                    items: snapshot.data
+                                      .map((dept) => DropdownMenuItem<String>(
+                                        child: Text(dept.toString()),
+                                        value: dept,
+                                      ))
+                                      .toList(),
+                                      onChanged: (String dept) {
+                                        setState(() {
+                                          _selectedDepartment = dept;
+                                        });
+                                      },
+                                      isExpanded: false,
+                                      value: _selectedDepartment,
+                                      hint: Text('Select User'),
+                                    );
+                                  }
+                                  else return CircularProgressIndicator();
+                                 
+
+
+                              }),
+                              //end new async dorpDown
+                              /*
                               child: DropdownButton<String>(
                                 isExpanded: true,
                                 hint: Text("Select Department",
                                     style: TextStyle(fontSize: 12)),
-                                value: user == null ? null : users[user],
+                                value: this._selectedDepartment == null ? null : this._selectedDepartment,
                                 onChanged: (String newValue) {
                                   setState(() {
-                                    user = users.indexOf(newValue);
-                                    print("This is user value $user");
-                                    print("This is user value ${users[user]}");
+                                    //user = users.indexOf(newValue);
+                                    print("new item "+newValue+" selected");
                                     //value1 = newValue;
                                   });
                                 },
-                                // items: <String>[
-                                //   "Chemistry",
-                                //   "Nepali",
-                                //   "English"
-                                // ]
-                                items: users.map<DropdownMenuItem<String>>(
+                              
+                                items: this.pfm.departments.map<DropdownMenuItem<String>>(
                                   (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
@@ -1019,6 +1060,8 @@ class MyFormState extends State<MyForm> {
                                   },
                                 ).toList(),
                               ),
+                              */
+                              //
                             ),
                           ),
                         ),
@@ -1165,25 +1208,26 @@ class MyFormState extends State<MyForm> {
 
   departmentDropDown() {
     return Container(
-      child: FutureBuilder(
-        future: dropDownValueForDepartment1(),
-        builder: (BuildContext context, AsyncSnapshot<List<Users>> snapshot) {
-          if (!snapshot.hasData) return CircularProgressIndicator();
-          return DropdownButton<Users>(
-            items: snapshot.data
-                .map((user) => DropdownMenuItem<Users>(
-                      child: Text(user.name),
-                      value: user,
+      child: FutureBuilder<List<String>>(
+        future: this.pfm.getDepartments(),
+        builder: (BuildContext context, AsyncSnapshot<List<String>> deptSnapShot) {
+          if (!deptSnapShot.hasData) return CircularProgressIndicator();
+          return DropdownButton<String>(
+            items: deptSnapShot.data
+              .map((dept) => DropdownMenuItem<String>(
+                      child: Text(dept),
+                      value: dept,
                     ))
                 .toList(),
-            onChanged: (Users value) {
+            onChanged: (String value) {
+              this.pfm.setSelectedDepartment(value);
               setState(() {
-                currentValue = value;
+                _selectedDepartment = value;
               });
             },
-            isExpanded: false,
+            isExpanded: true,
             //value: _currentUser,
-            hint: Text('Select User'),
+            hint: Text('Select a Department'),
           );
         },
       ),
