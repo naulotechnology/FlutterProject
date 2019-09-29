@@ -9,18 +9,13 @@ import 'package:http/http.dart' as http;
 
 class PlanningFormModel {
   String company;
- 
+  String department;
   List<String> costElements;
   List<String> departments;
   String year;
   String month;
 
   bool isFatches = true;
-
-   /*
-  *This string is used to hold the current selected Department
-  */
-  String selectedDepartment;
 
   /*
   Cost Element to Monthly Plan map
@@ -42,6 +37,10 @@ class PlanningFormModel {
   */
   String savedStateFromFile = "This is default";
 
+  /*
+  *This string is used to hold the current selected Department
+  */
+  String selectedDepartment = "";
 
   /*
   *Storge class does the file/cloudstore/db read/write
@@ -87,37 +86,26 @@ class PlanningFormModel {
 
   }
 
-  void setSelectedDepartment(String department){
-    this.selectedDepartment = department;
-  }
-
   Future<List<String>> getDepartments() async {
-      print("Entering get Department ...");
-     
-      print("Firing up HTTP request ...");
+      this.departments = new List<String>();
       var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartments");
-      print("Fired up HTTP request ...");
-      print("Data Received = "+data.toString());
-      Map jsonData = json.decode(data.body);
-      print("Decoded json = "+jsonData.toString());
-      print("Decoded json Map length = "+jsonData.length.toString());
-      print("jsonData.values.toString() = "+jsonData.values.toString());
-      //lets trim the first and last two chars
-      String depts = jsonData.values.toString().substring(2,jsonData.values.toString().length-2);
-      print("jsonData.values.toString() after trim = "+depts);
-      //this.departments = jsonData.values;
-      print("jsonData.values.toString(),split(',') = "+depts.split(",").toString());
-      for(String s in depts.split(",")){
-        print("token = "+s);
-        this.departments.add(s);
+      var jsonData = json.decode(data.body);
+    
+      List<String> departmentsFromCloudStore = jsonData['Department'];
+      print("*************departmentsFromCloudStore length ***************** =" + departmentsFromCloudStore.length.toString());
+      for(String d in departmentsFromCloudStore){
+         print("**Department value = ****" + d.toString());
+         this.departments.add(d.toString());
       }
-      //int i = 0;
-      //for(String s in this.departments){
-        //print("this.Departments["+i.toString()+"] = "+s);
-        //i++;
-      //}
-      return depts.split(",");
-  }
+    
+      return departmentsFromCloudStore;
+
+    }
+
+    void setSelectedDepartment(String dept){
+      this.selectedDepartment = dept;
+      print("PFM - selectedDepartment set as = "+dept);
+    }
 
     // getDepartment() async {
 
@@ -422,7 +410,7 @@ class PlanningFormModel {
         this.company +
         "\n" +
         "department = " +
-        this.selectedDepartment +
+        this.department +
         "\n";
 
     planningFormInString = planningFormInString + "Monthly Amount Plan\n";
@@ -459,7 +447,7 @@ class PlanningFormModel {
         this.company +
         "\n" +
         "department = " +
-        this.selectedDepartment +
+        this.department +
         "\n";
 
     planningFormInString = planningFormInString + "Monthly Amount Plan\n";
@@ -496,7 +484,7 @@ class PlanningFormModel {
         this.company +
         "\n" +
         "department = " +
-        this.selectedDepartment +
+        this.department +
         "\n";
 
     planningFormInString = planningFormInString + "Monthly Amount Plan\n";
@@ -583,7 +571,7 @@ class PlanningFormModel {
     pfmInJSONStringForm =
         pfmInJSONStringForm + '"Company": ' + '"${this.company}"' + ",";
     pfmInJSONStringForm =
-        pfmInJSONStringForm + '"Department":' + '"${this.selectedDepartment}"' + ",";
+        pfmInJSONStringForm + '"Department":' + '"${this.department}"' + ",";
     pfmInJSONStringForm = pfmInJSONStringForm + '"CostElements":[';
     for (String ce in this.costElements) {
       pfmInJSONStringForm = pfmInJSONStringForm + '"' + ce + '",';

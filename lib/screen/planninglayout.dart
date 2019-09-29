@@ -66,7 +66,7 @@ class MyFormState extends State<MyForm> {
   bool showHour = false;
   bool showChart = false;
 
-  List<String> _departments;
+  List<String> _departments = [];
 
   bool connected;
 
@@ -127,7 +127,7 @@ class MyFormState extends State<MyForm> {
     // print("Hellow this is Department = $valueForDepartMent()");
 
     setState(() {
-     // users = dropDownValueForDepartment();
+      // users = dropDownValueForDepartment();
       _selectedDepartment = "";
     });
   }
@@ -137,12 +137,16 @@ class MyFormState extends State<MyForm> {
     st = this.pfm.st;
   }
 
-  Future<List<String>> fetchDepartments() async{
+  Future<List<String>> fetchDepartments() async {
     List<String> d = await this.pfm.getDepartments();
-    setState((){
+    setState(() {
       this._departments = d;
     });
-    return d;
+    // for (String dep in _departments) {
+
+    // }
+    print("Department is $d");
+    return _departments;
   }
 
   String checkConnection() {
@@ -176,7 +180,6 @@ class MyFormState extends State<MyForm> {
       print('Time selected: ${_time.toString()}');
       setState(() {
         _time = picked;
-        
       });
     }
   }
@@ -602,10 +605,8 @@ class MyFormState extends State<MyForm> {
                   cells: pfm.ceToMaMap[attr]
                       .getMonthlyActual(showHour)
                       .map(
-                        (monthlyAmount) => DataCell(
-
-                          
-                            Text(monthlyAmount.value.toString())),
+                        (monthlyAmount) =>
+                            DataCell(Text(monthlyAmount.value.toString())),
                       )
                       .toList(),
                 ))
@@ -666,9 +667,8 @@ class MyFormState extends State<MyForm> {
                   cells: pfm.ceToMvMap[attr]
                       .getMonthlyVariance(showHour)
                       .map(
-                        (monthlyAmount) => DataCell(
-                          
-                            Text(monthlyAmount.value.toString())),
+                        (monthlyAmount) =>
+                            DataCell(Text(monthlyAmount.value.toString())),
                       )
                       .toList(),
                 ))
@@ -751,14 +751,14 @@ class MyFormState extends State<MyForm> {
             width: 10,
           ),
           MaterialButton(
-            onPressed: () async {                                        
+            onPressed: () async {
               // String da = await st.readData();
               // pfm.savedStateFromFile = da;
               List<String> st = await pfm.getDepartments();
 
               //print("Value OF Department is = ${fetchDepartments()}");
               print("Value OF Department is = $st");
-             // print("data read from file = $da");
+              // print("data read from file = $da");
             },
             shape: BeveledRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -976,42 +976,46 @@ class MyFormState extends State<MyForm> {
                             alignedDropdown: true,
                             child: DropdownButtonHideUnderline(
                               // new async dropDown
-                            child: FutureBuilder<List<String>>(
-                              future: this.pfm.getDepartments(),
-                              builder: (BuildContext context,
-                                AsyncSnapshot<List<String>> snapshot) {
-                                  if (snapshot.hasData){  
-                                    return DropdownButton<String>(
-                                     
-                                      value: _selectedDepartment,
-                                      hint: Text('Selec a Department',
-                                              style: TextStyle(
-                                              fontSize: 8),
-                                            ),
-                                      isExpanded: false,
-                                      items: snapshot.data
-                                        .map((dept) => DropdownMenuItem<String>(
-                                          child: Text(
-                                            dept.toString(),
-                                            style: TextStyle(
-                                              fontSize: 8),
-                                          ),
-                                          value: dept,  
-                                        ))
-                                        .toList(),
+                              child: FutureBuilder<List<String>>(
+                                  future: this.fetchDepartments(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<String>> snapshot) {
+                                    if (snapshot.hasData) {
+                                      return DropdownButton<String>(
+                                        value: this.user == null
+                                            ? null
+                                            : _departments[user],
+                                        hint: Text(
+                                          'Selec a Department',
+                                          style: TextStyle(fontSize: 8),
+                                        ),
+                                        isExpanded: false,
+                                        items: snapshot.data
+                                            .map((dept) =>
+                                                DropdownMenuItem<String>(
+                                                  child: Text(
+                                                    dept.toString(),
+                                                    style:
+                                                        TextStyle(fontSize: 8),
+                                                  ),
+                                                  value: dept,
+                                                ))
+                                            .toList(),
                                         onChanged: (String selectedDept) {
-                                          print("selected dept = "+selectedDept);
+                                          print("selected deptment is = " +
+                                              selectedDept);
                                           setState(() {
-                                            _selectedDepartment = selectedDept;
+                                            user = _departments
+                                                .indexOf(selectedDept);
+
+                                            print(
+                                                "indexOf selected deptment is = $user");
                                           });
                                         },
-                                    );
-                                  }
-                                  else return CircularProgressIndicator();
-                                 
-
-
-                              }),
+                                      );
+                                    } else
+                                      return CircularProgressIndicator();
+                                  }),
                               //end new async dorpDown
                               /*
                               child: DropdownButton<String>(
@@ -1183,33 +1187,34 @@ class MyFormState extends State<MyForm> {
     );
   }
 
-  departmentDropDown() {
-    return Container(
-      child: FutureBuilder<List<String>>(
-        future: this.pfm.getDepartments(),
-        builder: (BuildContext context, AsyncSnapshot<List<String>> deptSnapShot) {
-          if (!deptSnapShot.hasData) return CircularProgressIndicator();
-          return DropdownButton<String>(
-            items: deptSnapShot.data
-              .map((dept) => DropdownMenuItem<String>(
-                      child: Text(dept),
-                      value: dept,
-                    ))
-                .toList(),
-            onChanged: (String value) {
-              this.pfm.setSelectedDepartment(value);
-              setState(() {
-                _selectedDepartment = value;
-              });
-            },
-            isExpanded: true,
-            //value: _currentUser,
-            hint: Text('Select a Department'),
-          );
-        },
-      ),
-    );
-  }
+//   departmentDropDown() {
+//     return Container(
+//       child: FutureBuilder<List<String>>(
+//         future: this.pfm.getDepartments(),
+//         builder:
+//             (BuildContext context, AsyncSnapshot<List<String>> deptSnapShot) {
+//           if (!deptSnapShot.hasData) return CircularProgressIndicator();
+//           return DropdownButton<String>(
+//             items: deptSnapShot.data
+//                 .map((dept) => DropdownMenuItem<String>(
+//                       child: Text(dept),
+//                       value: dept,
+//                     ))
+//                 .toList(),
+//             onChanged: (String value) {
+//               this.pfm.setSelectedDepartment(value);
+//               setState(() {
+//                 _selectedDepartment = value;
+//               });
+//             },
+//             isExpanded: true,
+//             //value: _currentUser,
+//             hint: Text('Select a Department'),
+//           );
+//         },
+//       ),
+//     );
+//   }
 }
 
 class ChartPerYear {
