@@ -938,7 +938,7 @@ class MyFormState extends State<MyForm> {
     /// String depValue = user == null ? null : users[user];
     return Container(
       margin: EdgeInsets.only(top: 4),
-      width: 300,
+      width: 330,
       height: 50,
       //  padding: EdgeInsets.only(top: 8),
       child: Column(
@@ -949,13 +949,13 @@ class MyFormState extends State<MyForm> {
                 children: <Widget>[
                   Text(
                     "Department",
-                    style: TextStyle(fontSize: 8),
+                    style: TextStyle(fontSize: 12),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 4,
                   ),
                   Container(
-                    width: 250,
+                    width: 150,
                     //padding: EdgeInsets.symmetric(horizontal: 10.0),
                     //  padding: EdgeInsets.only(bottom: 10),
                     decoration: new BoxDecoration(
@@ -987,16 +987,16 @@ class MyFormState extends State<MyForm> {
                                             : _departments[user],
                                         hint: Text(
                                           'Selec a Department',
-                                          style: TextStyle(fontSize: 8),
+                                          style: TextStyle(fontSize: 12),
                                         ),
-                                        isExpanded: false,
+                                        isExpanded: true,
                                         items: snapshot.data
                                             .map((dept) =>
                                                 DropdownMenuItem<String>(
                                                   child: Text(
                                                     dept.toString(),
                                                     style:
-                                                        TextStyle(fontSize: 8),
+                                                        TextStyle(fontSize: 12),
                                                   ),
                                                   value: dept,
                                                 ))
