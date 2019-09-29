@@ -127,7 +127,8 @@ class MyFormState extends State<MyForm> {
     // print("Hellow this is Department = $valueForDepartMent()");
 
     setState(() {
-      users = dropDownValueForDepartment();
+     // users = dropDownValueForDepartment();
+      _selectedDepartment = "";
     });
   }
 
@@ -175,6 +176,7 @@ class MyFormState extends State<MyForm> {
       print('Time selected: ${_time.toString()}');
       setState(() {
         _time = picked;
+        
       });
     }
   }
@@ -602,22 +604,7 @@ class MyFormState extends State<MyForm> {
                       .map(
                         (monthlyAmount) => DataCell(
 
-                            // TextField(
-                            //   decoration: InputDecoration(
-                            //       border: InputBorder.none,
-                            //       labelStyle: TextStyle(
-                            //           fontSize: 14, color: Colors.red),
-                            //       hintText: monthlyAmount.value.toString()),
-                            //   controller: costElementController,
-                            // //  save the txt to amount in month
-                            //   onChanged: (txt) {
-                            //     pfm.setAmount(
-                            //         showHour, attr, txt, monthlyAmount.index);
-                            //   },
-                            //   onTap: () {
-                            //     print("${monthlyAmount.index}");
-                            //   },
-                            // ),
+                          
                             Text(monthlyAmount.value.toString())),
                       )
                       .toList(),
@@ -680,22 +667,7 @@ class MyFormState extends State<MyForm> {
                       .getMonthlyVariance(showHour)
                       .map(
                         (monthlyAmount) => DataCell(
-                            // TextField(
-                            //   decoration: InputDecoration(
-                            //       border: InputBorder.none,
-                            //       labelStyle: TextStyle(
-                            //           fontSize: 14, color: Colors.red),
-                            //       hintText: monthlyAmount.value.toString()),
-                            //   controller: costElementController,
-                            //   //save the txt to amount in month
-                            //   onChanged: (txt) {
-                            //     pfm.setAmount(
-                            //         showHour, attr, txt, monthlyAmount.index);
-                            //   },
-                            //   onTap: () {
-                            //     print("${monthlyAmount.index}");
-                            //   },
-                            // ),
+                          
                             Text(monthlyAmount.value.toString())),
                       )
                       .toList(),
@@ -976,14 +948,14 @@ class MyFormState extends State<MyForm> {
               Column(
                 children: <Widget>[
                   Text(
-                    "DepartMent - blah",
-                    style: TextStyle(fontSize: 12),
+                    "Department",
+                    style: TextStyle(fontSize: 8),
                   ),
                   SizedBox(
-                    height: 4,
+                    height: 10,
                   ),
                   Container(
-                    width: 110,
+                    width: 250,
                     //padding: EdgeInsets.symmetric(horizontal: 10.0),
                     //  padding: EdgeInsets.only(bottom: 10),
                     decoration: new BoxDecoration(
@@ -1005,30 +977,34 @@ class MyFormState extends State<MyForm> {
                             child: DropdownButtonHideUnderline(
                               // new async dropDown
                             child: FutureBuilder<List<String>>(
-                              future: this.fetchDepartments(),
+                              future: this.pfm.getDepartments(),
                               builder: (BuildContext context,
                                 AsyncSnapshot<List<String>> snapshot) {
-                                /*return  Container(
-                                      height: 80.0,
-                                      child: 
-                                      snapshot.hasData ? snapshot.data : Text('loading..'),);
-                                   */
                                   if (snapshot.hasData){  
                                     return DropdownButton<String>(
-                                    items: snapshot.data
-                                      .map((dept) => DropdownMenuItem<String>(
-                                        child: Text(dept.toString()),
-                                        value: dept,
-                                      ))
-                                      .toList(),
-                                      onChanged: (String dept) {
-                                        setState(() {
-                                          _selectedDepartment = dept;
-                                        });
-                                      },
-                                      isExpanded: false,
+                                     
                                       value: _selectedDepartment,
-                                      hint: Text('Select User'),
+                                      hint: Text('Selec a Department',
+                                              style: TextStyle(
+                                              fontSize: 8),
+                                            ),
+                                      isExpanded: false,
+                                      items: snapshot.data
+                                        .map((dept) => DropdownMenuItem<String>(
+                                          child: Text(
+                                            dept.toString(),
+                                            style: TextStyle(
+                                              fontSize: 8),
+                                          ),
+                                          value: dept,  
+                                        ))
+                                        .toList(),
+                                        onChanged: (String selectedDept) {
+                                          print("selected dept = "+selectedDept);
+                                          setState(() {
+                                            _selectedDepartment = selectedDept;
+                                          });
+                                        },
                                     );
                                   }
                                   else return CircularProgressIndicator();
