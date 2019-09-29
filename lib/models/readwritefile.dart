@@ -782,11 +782,8 @@ class PlanningFormModel {
 /*savePfm
 if  device is online
 call savePfmTOfirebase
-
   savePfmToFile
 //savePfmtoFirebase(){
-
-
 */
 
   saveData() async {
