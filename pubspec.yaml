@@ -71,13 +71,22 @@ flutter:
   fonts:
     - family: SourceSansPro
       fonts:
-        - asset: fonts/SourceSansPro-Bold.ttf
-          weight: 700 
+        - asset: fonts/SourceSansPro-Regular.ttf
+          weight: 100 
           
         
     - family: Regular
       fonts:
         - asset: fonts/Pacifico-Regular.ttf
           weight: 400
+
+    - family: ArchitectsDaughter
+      fonts:
+        - asset: fonts/ArchitectsDaughter-Regular.ttf
+
+    - family: Chilanka
+      fonts:
+        - asset: fonts/Chilanka-Regular.ttf
+          
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
