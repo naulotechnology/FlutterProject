@@ -20,7 +20,6 @@ class MyForm extends StatefulWidget {
 }
 
 class MyFormState extends State<MyForm> {
-  Users currentValue;
   List<String> valueDepartment = [];
 
   String dropdownValue = "Plan";
@@ -780,12 +779,14 @@ class MyFormState extends State<MyForm> {
             width: 10,
           ),
           MaterialButton(
-            onPressed: () async {
-              String da = await st.readData();
-              pfm.savedStateFromFile = da;
+            onPressed: () async {                                        
+              // String da = await st.readData();
+              // pfm.savedStateFromFile = da;
+              List<String> st = await pfm.getDepartments();
 
-              //print(da);
-              print("data read from file = $da");
+              //print("Value OF Department is = ${fetchDepartments()}");
+              print("Value OF Department is = $st");
+             // print("data read from file = $da");
             },
             shape: BeveledRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -1243,12 +1244,4 @@ class ChartPerYear {
   ChartPerYear(this.year, this.clicks, Color color)
       : this.color = new charts.Color(
             r: color.red, g: color.green, b: color.blue, a: color.alpha);
-}
-
-class Users {
-  String name;
-
-  Users({
-    this.name,
-  });
 }
