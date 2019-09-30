@@ -13,6 +13,7 @@ class PlanningFormModel {
   List<String> costElements;
   List<String> departments;
   String year;
+  bool isOnline=false;
   String month;
 
   bool isFatches = true;

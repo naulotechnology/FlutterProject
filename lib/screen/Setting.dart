@@ -1,19 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:material_switch/material_switch.dart';
+import 'package:flutterproject/models/readwritefile.dart';
 
 class Setting extends StatefulWidget {
+  PlanningFormModel pfm;
+
+  Setting(PlanningFormModel pfm) {
+    this.pfm = pfm;
+  }
+
   @override
   State<StatefulWidget> createState() {
-    return MySetting();
+    return MySetting(pfm);
   }
 }
 
 class MySetting extends State {
+  PlanningFormModel pfm;
+
   List<String> optionListForInternet = <String>['Online', 'Offline'];
   String optionSelectConnectivity = "Online";
 
+  MySetting(PlanningFormModel pfm) {
+    this.pfm = pfm;
+  }
+
   bool _value1 = false;
-  void _onChanged1(bool value) => setState(() => _value1 = value);
+  void _onChanged1(bool value) {
+    setState(() {
+      pfm.isOnline = value;
+      _value1 = value;
+
+      print("Value is = $_value1");
+      print("isOnline is = ${pfm.isOnline}");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
