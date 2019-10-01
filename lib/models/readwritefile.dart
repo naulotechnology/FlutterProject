@@ -12,6 +12,8 @@ class PlanningFormModel {
  
   List<String> costElements;
   List<String> departments;
+  List<String> hrData;
+  List data;
   String year;
   String month;
 
@@ -83,6 +85,7 @@ class PlanningFormModel {
     // }
    
     //getDepartments();
+    getHrData();
     setAllData();
 
   }
@@ -104,18 +107,18 @@ class PlanningFormModel {
       print("jsonData.values.toString() = "+jsonData.values.toString());
       //lets trim the first and last two chars
       String depts = jsonData.values.toString().substring(2,jsonData.values.toString().length-2);
-      print("jsonData.values.toString() after trim = "+depts);
+       print("jsonData.values.toString() after trim = "+depts);
       //this.departments = jsonData.values;
       print("jsonData.values.toString(),split(',') = "+depts.split(",").toString());
       for(String s in depts.split(",")){
-        print("token = "+s);
+        // print("token = "+s);
         this.departments.add(s);
       }
-      //int i = 0;
-      //for(String s in this.departments){
-        //print("this.Departments["+i.toString()+"] = "+s);
-        //i++;
-      //}
+      // int i = 0;
+      // for(String s in this.departments){
+      //   print("this.Departments["+i.toString()+"] = "+s);
+      //   i++;
+      // }
       return depts.split(",");
   }
 
@@ -131,19 +134,59 @@ class PlanningFormModel {
 
     // }
 
-  //  Future<List<String> > getCostElements() async {
+    //  Future<List<String> > getDepartments() async {
 
-  //     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getCostElements");
-  //     var jsonData = json.decode(data.body);
+    //   var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartments");
+    //   var jsonData = json.decode(data.body);
     
-  //     List costElements = jsonData['costElements'];
-  //       print("*************costElements ***************** =" + costElements.toString());
-  //       this.costElements = new List<String>();
-  //     for(String ce in costElements){
-  //       this.costElements.add(ce);
-  //     }
+    //   List departments = jsonData['Department'];
+    //   String data1 = departments.toString();
+    //     print("*************Department ***************** =" + data1);
+    //    // this.costElements = new List<String>();
+    //   for(String ce in data1.split(",")){
+    //     this.departments.add(ce);
+    //   }
+    //   return data1.split(",") ;
+    // }
 
-  //   }
+   Future<List<String> > getCostElements() async {
+
+      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getCostElements");
+      var jsonData = json.decode(data.body);
+    
+      List costElements = jsonData['costElements'];
+        print("*************costElements ***************** =" + costElements.toString());
+        this.costElements = new List<String>();
+      for(String ce in costElements){
+        this.costElements.add(ce);
+      }
+      return costElements ;
+    }
+
+
+    
+   Future<List<String> > getHrData() async {
+
+      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/hr");
+      var jsonData = json.decode(data.body);
+    
+     // List costElements = jsonData['costElements'];
+        print("*************hrData ***************** =" + jsonData.toString());
+           this.hrData = new List<String>();
+            this.data = [];
+      for(String e in jsonData){
+         var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/hr" + e);
+      var jsonData1 = json.decode(data.body);
+      print("*************hr" + e+ "***************** =" + jsonData1.toString());
+        // this.data.add(e);
+        //this.hrData.add(e);
+      }
+
+
+
+ 
+      return costElements ;
+    }
 
   setAllData() async {
     String readData = await st.readData();
@@ -157,8 +200,8 @@ class PlanningFormModel {
       //read json from file
       String pfmJSONStringReadFromFile = "";
       //populate data
-      // this.initializeData();
-      this.instantiatePFMfromJSONString();
+       this.initializeData();
+      //this.instantiatePFMfromJSONString();
     }
   }
 
@@ -652,8 +695,7 @@ class PlanningFormModel {
     return this.st.readData();
   }
 
-  savepfmToFirebase() {
-    int pm, am, vm, ph, ah, vh;
+
 
     savepfmToFirebase() {
       int pm, am, vm, ph, ah, vh;
@@ -663,8 +705,9 @@ class PlanningFormModel {
       String department = "department"; //this.department;
       String year = "2019"; //this.year;
       String month = "janaury"; //this.month;
+     path ="/" + " organization" +"/" + "organization" + "/" +  "company" +  "/" + "company" +  "/" + "Cleaning Product Department/"+ "Cleaning Product Department" ;
       // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
-      path = "/" + company + "/" + department + "/" + year + "/" + month;
+      //path = "/" + company + "/" + department + "/" + year + "/" + month;
       List mPAmts;
       List mPHrs;
 
@@ -684,11 +727,11 @@ class PlanningFormModel {
         mVAmts = new List<int>();
         String a = ce;
         // Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMaMap/ceToMaMap/$a/$a");
-        planDocRef = Firestore.instance.document("$path/$a/plan");
+        planDocRef = Firestore.instance.document("$path/$a/$a/plan/plan");
         final DocumentReference actualDocRef =
-            Firestore.instance.document("$path/$a/actual");
+            Firestore.instance.document("$path/$a/$a/actual/actual");
         final DocumentReference varienceDocRef =
-            Firestore.instance.document("$path/$a/varience");
+            Firestore.instance.document("$path/$a/$a/varience/varience");
         MonthlyPlan mp = this.ceToMpMap[ce];
         MonthlyActual ma = this.ceToMaMap[ce];
         MonthlyVariance mv = this.ceToMvMap[ce];
@@ -777,13 +820,16 @@ class PlanningFormModel {
         }).catchError((e) => print(e));
       }
     }
-  }
+  
 
 /*savePfm
 if  device is online
 call savePfmTOfirebase
+
   savePfmToFile
 //savePfmtoFirebase(){
+
+
 */
 
   saveData() async {
