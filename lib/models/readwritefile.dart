@@ -15,6 +15,7 @@ class PlanningFormModel {
   List<String> hrData;
   List data;
   String year;
+  bool isOnline=false;
   String month;
 
   bool isFatches = true;

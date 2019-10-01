@@ -146,7 +146,7 @@ class MyFormState extends State<MyForm> {
 
     // }
     print("Department is $d");
-    return _departments;
+    return d;
   }
 
   String checkConnection() {
