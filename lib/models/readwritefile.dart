@@ -9,18 +9,18 @@ import 'package:http/http.dart' as http;
 
 class PlanningFormModel {
   String company;
-
+ 
   List<String> costElements;
   List<String> departments;
   List<String> hrData;
   List data;
   String year;
-  bool isOnline = false;
+  bool isOnline=false;
   String month;
 
   bool isFatches = true;
 
-  /*
+   /*
   *This string is used to hold the current selected Department
   */
   String selectedDepartment;
@@ -45,18 +45,22 @@ class PlanningFormModel {
   */
   String savedStateFromFile = "This is default";
 
+
   /*
   *Storge class does the file/cloudstore/db read/write
   */
   Storage st;
 
   PlanningFormModel() {
+
+   
+
     //check if data files already exists
 
     //this.initializeData();
     this.st = new Storage();
     this.departments = new List<String>();
-
+    
     //   this.company = "N Tech";
     // this.department = "Marketing";
 
@@ -80,9 +84,8 @@ class PlanningFormModel {
     //   // this.initializeData();
     //   this.instantiatePFMfromJSONString();
     // }
-
+   
     //getDepartments();
-<<<<<<< HEAD
    // getHrData();
      //setAllData();
     if(isOnline ==false ){
@@ -106,34 +109,25 @@ class PlanningFormModel {
     }
     
 
-=======
-    setAllData();
->>>>>>> 1fce1e3605e0af6db1c33e9a5250bb6f3d31d821
   }
 
-  void setSelectedDepartment(String department) {
+  void setSelectedDepartment(String department){
     this.selectedDepartment = department;
   }
 
   Future<List<String>> getDepartments() async {
-<<<<<<< HEAD
    // if(isOnline == true) {
-=======
-    if (isOnline == false) {
->>>>>>> 1fce1e3605e0af6db1c33e9a5250bb6f3d31d821
       print("Entering get Department ...");
-
+     
       print("Firing up HTTP request ...");
-      var data = await http.get(
-          "https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartments");
+      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartments");
       print("Fired up HTTP request ...");
-      print("Data Received = " + data.toString());
+      print("Data Received = "+data.toString());
       Map jsonData = json.decode(data.body);
-      print("Decoded json = " + jsonData.toString());
-      print("Decoded json Map length = " + jsonData.length.toString());
-      print("jsonData.values.toString() = " + jsonData.values.toString());
+      print("Decoded json = "+jsonData.toString());
+      print("Decoded json Map length = "+jsonData.length.toString());
+      print("jsonData.values.toString() = "+jsonData.values.toString());
       //lets trim the first and last two chars
-<<<<<<< HEAD
       String depts = jsonData.values.toString().substring(2,jsonData.values.toString().length-2);
        print("jsonData.values.toString() after trim = "+depts);
       //this.departments = jsonData.values;
@@ -152,44 +146,22 @@ class PlanningFormModel {
     // else {
     //  return null ;
     // }
-=======
-      String depts = jsonData.values
-          .toString()
-          .substring(2, jsonData.values.toString().length - 2);
-      print("jsonData.values.toString() after trim = " + depts);
-      //this.departments = jsonData.values;
-      print("jsonData.values.toString(),split(',') = " +
-          depts.split(",").toString());
-      for (String s in depts.split(",")) {
-        print("token = " + s);
-        this.departments.add(s);
-      }
-      //int i = 0;
-      //for(String s in this.departments){
-      //print("this.Departments["+i.toString()+"] = "+s);
-      //i++;
-      //}
-      return depts.split(",");
-    }else{
-      return null;
-    }
->>>>>>> 1fce1e3605e0af6db1c33e9a5250bb6f3d31d821
   }
 
-  // getDepartment() async {
+    // getDepartment() async {
 
-  //   var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartment");
-  //   var jsonData = json.decode(data.body);
+    //   var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartment");
+    //   var jsonData = json.decode(data.body);
+    
+    //   String department1 = jsonData['Department'];
+    //     print("*************department ***************** =" + department1 );
+    //   this.department = department1 ;
+     
 
-  //   String department1 = jsonData['Department'];
-  //     print("*************department ***************** =" + department1 );
-  //   this.department = department1 ;
-
-  // }
+    // }
 
     //  Future<List<String> > getDepartments() async {
 
-<<<<<<< HEAD
     //   var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartments");
     //   var jsonData = json.decode(data.body);
     
@@ -349,17 +321,6 @@ class PlanningFormModel {
       return ceToMaMap;
     }
 
-=======
-  //     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getCostElements");
-  //     var jsonData = json.decode(data.body);
-
-  //     List costElements = jsonData['costElements'];
-  //       print("*************costElements ***************** =" + costElements.toString());
-  //       this.costElements = new List<String>();
-  //     for(String ce in costElements){
-  //       this.costElements.add(ce);
-  //     }
->>>>>>> 1fce1e3605e0af6db1c33e9a5250bb6f3d31d821
 
 
   setAllData() async {
@@ -387,7 +348,7 @@ class PlanningFormModel {
     //this.department = "Marketing";
 
     this.year = "2019";
-    //getCostElements();
+     //getCostElements();
     this.costElements = new List<String>();
     //mPlan = new MonthlyPlan(this);
    
@@ -808,10 +769,8 @@ class PlanningFormModel {
     String pfmInJSONStringForm = "{";
     pfmInJSONStringForm =
         pfmInJSONStringForm + '"Company": ' + '"${this.company}"' + ",";
-    pfmInJSONStringForm = pfmInJSONStringForm +
-        '"Department":' +
-        '"${this.selectedDepartment}"' +
-        ",";
+    pfmInJSONStringForm =
+        pfmInJSONStringForm + '"Department":' + '"${this.selectedDepartment}"' + ",";
     pfmInJSONStringForm = pfmInJSONStringForm + '"CostElements":[';
     for (String ce in this.costElements) {
       pfmInJSONStringForm = pfmInJSONStringForm + '"' + ce + '",';
@@ -870,6 +829,11 @@ class PlanningFormModel {
 
     // this.st.writeData(this.toString());
   }
+
+
+
+
+
 
   Future<String> readPfmFromFile() {
     return this.st.readData();
@@ -1022,6 +986,7 @@ call savePfmTOfirebase
     }
     this.savePfmToFile();
   }
+
 }
 
 class DataValue {
@@ -1291,13 +1256,16 @@ class Storage {
     return File('$path/db.json');
   }
 
+
   Future<File> writeData(String data) async {
     final file = await localFile;
     return file.writeAsString("$data");
   }
 
   Future<String> readData() async {
-    try {
+    try
+    
+     {
       final file = await localFile;
       String body = await file.readAsString();
       print("What, It is not working");
