@@ -56,7 +56,7 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
       case 3:
         return new SavedStateFromFile(pfm);
       default:
-        return new Setting();
+        return new Setting(pfm);
     }
   }
 

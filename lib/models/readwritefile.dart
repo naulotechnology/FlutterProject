@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'dart:io';
+import 'package:flutterproject/models/readwritefile1.dart' as prefix0;
 import 'package:flutterproject/screen/planninglayout.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
@@ -12,7 +13,10 @@ class PlanningFormModel {
  
   List<String> costElements;
   List<String> departments;
+  List<String> hrData;
+  List data;
   String year;
+  bool isOnline=false;
   String month;
 
   bool isFatches = true;
@@ -36,6 +40,8 @@ class PlanningFormModel {
   Cost Element to Monthly Variance map
   */
   Map<String, MonthlyVariance> ceToMvMap;
+
+   Map<String,Map<String,MonthlyValues>> deToMap;
 
   /*
   *This string is to hold current state of the App read from Storage
@@ -83,7 +89,29 @@ class PlanningFormModel {
     // }
    
     //getDepartments();
-    setAllData();
+   // getHrData();
+     //setAllData();
+    if(isOnline ==false ){
+      print("*********************phone is offline**********************");
+     // getDepartments();
+    getPlanData();
+    getActualData();
+    getVariecneData();
+    //  getHrData().whenComplete((){
+    //    getDepartments();
+    //  });
+    //  setAllData();
+
+  
+      
+     //initializeData();
+     
+    }
+    else {
+
+      print("**************no costElement data**************");
+    }
+    
 
   }
 
@@ -92,6 +120,7 @@ class PlanningFormModel {
   }
 
   Future<List<String>> getDepartments() async {
+   // if(isOnline == true) {
       print("Entering get Department ...");
      
       print("Firing up HTTP request ...");
@@ -104,19 +133,23 @@ class PlanningFormModel {
       print("jsonData.values.toString() = "+jsonData.values.toString());
       //lets trim the first and last two chars
       String depts = jsonData.values.toString().substring(2,jsonData.values.toString().length-2);
-      print("jsonData.values.toString() after trim = "+depts);
+       print("jsonData.values.toString() after trim = "+depts);
       //this.departments = jsonData.values;
       print("jsonData.values.toString(),split(',') = "+depts.split(",").toString());
       for(String s in depts.split(",")){
-        print("token = "+s);
+        // print("token = "+s);
         this.departments.add(s);
       }
-      //int i = 0;
-      //for(String s in this.departments){
-        //print("this.Departments["+i.toString()+"] = "+s);
-        //i++;
-      //}
+      // int i = 0;
+      // for(String s in this.departments){
+      //   print("this.Departments["+i.toString()+"] = "+s);
+      //   i++;
+      // }
       return depts.split(",");
+    // }
+    // else {
+    //  return null ;
+    // }
   }
 
     // getDepartment() async {
@@ -131,19 +164,247 @@ class PlanningFormModel {
 
     // }
 
-  //  Future<List<String> > getCostElements() async {
+    //  Future<List<String> > getDepartments() async {
 
-  //     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getCostElements");
-  //     var jsonData = json.decode(data.body);
+    //   var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartments");
+    //   var jsonData = json.decode(data.body);
     
-  //     List costElements = jsonData['costElements'];
-  //       print("*************costElements ***************** =" + costElements.toString());
-  //       this.costElements = new List<String>();
-  //     for(String ce in costElements){
-  //       this.costElements.add(ce);
-  //     }
+    //   List departments = jsonData['Department'];
+    //   String data1 = departments.toString();
+    //     print("*************Department ***************** =" + data1);
+    //    // this.costElements = new List<String>();
+    //   for(String ce in data1.split(",")){
+    //     this.departments.add(ce);
+    //   }
+    //   return data1.split(",") ;
+    // }
 
-  //   }
+   Future<List<String> > getCostElements() async {
+
+      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getCostElements");
+      var jsonData = json.decode(data.body);
+    
+      List costElements = jsonData['costElements'];
+        print("*************costElements ***************** =" + costElements.toString());
+        this.costElements = new List<String>();
+      for(String ce in costElements){
+        this.costElements.add(ce);
+      }
+      return costElements ;
+    }
+
+
+
+
+
+   Future<Map<String,MonthlyPlan> > getPlanData() async {
+          isFatches = false;
+         this.costElements = new List<String>();
+    // this.costElements.add("Marketing");  
+    // this.costElements.add("Transportation");
+    var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p");
+    var jsonData = json.decode(data.body);
+    List costelements = jsonData['costElements'];
+    
+    //  // List costElements = jsonData['costElements'];
+         print("*************costElements ***************** =" + costelements.toString());
+    //        this.hrData = new List<String>();
+           // this.data = [];
+          
+            
+            print("*******************************************************************************************");
+      for(String ce in costelements) {
+          this.costElements.add(ce);
+      
+      }
+          ceToMpMap = new Map<String, MonthlyPlan>();
+       for(String ce in costElements) {
+         //  this.costElements.add(ce);
+      
+      print("*************ce ***************** =" + ce.toString());
+      
+               
+              var data1 = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p" +ce);
+             
+      Map plan = json.decode(data1.body);
+      String planData = plan.toString();
+      print(" ************hrplan***************** =" + planData);
+      List amountInMonth = plan['amountInMonth'];
+      List hourInMonth  = plan['hourInMonth'];
+
+      print("*************************************plan******************************************************");
+       
+      print(" ************amountInMonth***************** =" + amountInMonth.toString());
+      print(" ************hourInMonth***************** =" + hourInMonth.toString());
+       print("*******************************************************************************************");
+       MonthlyPlan mPlan = new MonthlyPlan();
+       mPlan.amountInMonth = new List<PlanValue>();
+       mPlan.hourInMonth = new List<PlanValue>();
+       int i = 0 ;
+       for(int amount  in amountInMonth) {
+           PlanValue pv = new PlanValue(amount, i);
+         // PlanValue dv = new PlanValue(int.parse(a), i);
+      mPlan.amountInMonth.add(pv);
+      i = i + 1;
+        }
+       for(int hour  in hourInMonth) {
+           PlanValue pv = new PlanValue(hour, i);
+      mPlan.hourInMonth.add(pv);
+      i = i + 1;
+       }
+     // mPlan.amountInMonth= montlyPlanAmts;
+    // this.ceToMpMap["Marketing"] = mPlan;
+     this.ceToMpMap[ce] = mPlan;
+
+   
+     }
+      return ceToMpMap;
+    }
+
+   Future<Map > getActualData() async {
+          isFatches = false;
+    //      this.costElements = new List<String>();
+    // // this.costElements.add("Marketing");  
+    // // this.costElements.add("Transportation");
+    var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p");
+    var jsonData = json.decode(data.body);
+    List costelements = jsonData['costElements'];
+    
+    //  // List costElements = jsonData['costElements'];
+         print("*************costElements ***************** =" + costelements.toString());
+    // //        this.hrData = new List<String>();
+    //        // this.data = [];
+          
+            
+    //         print("*******************************************************************************************");
+    //   for(String ce in costelements) {
+    //       this.costElements.add(ce);
+      
+    //   }
+          ceToMaMap = new Map<String, MonthlyActual>();
+       for(String ce in costelements) {
+         //  this.costElements.add(ce);
+      
+      print("*************ce ***************** =" + ce.toString());
+      
+               
+              var data1 = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p" +ce);
+             
+      Map actual = json.decode(data1.body);
+      String actualData = actual.toString();
+      print(" ************hrplan***************** =" + actualData);
+      List amountInMonth = actual['amountInMonth'];
+      List hourInMonth  = actual['hourInMonth'];
+
+      print("*************************************Actual******************************************************");
+       
+      print(" ************amountInMonth***************** =" + amountInMonth.toString());
+      print(" ************hourInMonth***************** =" + hourInMonth.toString());
+       print("*******************************************************************************************");
+       MonthlyActual monthlyActual = new MonthlyActual();
+       monthlyActual.amountInMonth = new List<ActualValue>();
+       monthlyActual.hourInMonth = new List<ActualValue>();
+       int i = 0 ;
+       for(int amount  in amountInMonth) {
+           ActualValue av = new ActualValue(amount, i);
+         // PlanValue dv = new PlanValue(int.parse(a), i);
+      monthlyActual.amountInMonth.add(av);
+      i = i + 1;
+        }
+       for(int hour  in hourInMonth) {
+           ActualValue av = new ActualValue(hour, i);
+      monthlyActual.hourInMonth.add(av);
+      i = i + 1;
+       }
+     // mPlan.amountInMonth= montlyPlanAmts;
+    // this.ceToMpMap["Marketing"] = mPlan;
+     this.ceToMaMap[ce] = monthlyActual;
+
+   
+     }
+      return ceToMaMap;
+    }
+
+
+    Future<Map > getVariecneData() async {
+          isFatches = false;
+    //      this.costElements = new List<String>();
+    // // this.costElements.add("Marketing");  
+    // // this.costElements.add("Transportation");
+    var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p");
+    var jsonData = json.decode(data.body);
+    List costelements = jsonData['costElements'];
+    
+    //  // List costElements = jsonData['costElements'];
+         print("*************costElements ***************** =" + costelements.toString());
+    // //        this.hrData = new List<String>();
+    //        // this.data = [];
+          
+            
+    //         print("*******************************************************************************************");
+    //   for(String ce in costelements) {
+    //       this.costElements.add(ce);
+      
+    //   }
+          ceToMvMap = new Map<String, MonthlyVariance>();
+       for(String ce in costelements) {
+         //  this.costElements.add(ce);
+      
+      print("*************ce ***************** =" + ce.toString());
+      
+               
+              var data1 = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p" +ce);
+             
+      Map varience = json.decode(data1.body);
+      String varienceData = varience.toString();
+      print(" ************Varience***************** =" + varienceData);
+      List amountInMonth = varience['amountInMonth'];
+      List hourInMonth  = varience['hourInMonth'];
+
+      print("*************************************plan******************************************************");
+       
+      print(" ************amountInMonth***************** =" + amountInMonth.toString());
+      print(" ************hourInMonth***************** =" + hourInMonth.toString());
+       print("*******************************************************************************************");
+       MonthlyVariance monthlyVariance  = new MonthlyVariance();
+       monthlyVariance.amountInMonth = new List<VarianceValue>();
+       monthlyVariance.hourInMonth = new List<VarianceValue>();
+       int i = 0 ;
+       for(int amount  in amountInMonth) {
+           VarianceValue vv = new VarianceValue(amount, i);
+         // PlanValue dv = new PlanValue(int.parse(a), i);
+      monthlyVariance.amountInMonth.add(vv);
+      i = i + 1;
+        }
+       for(int hour  in hourInMonth) {
+           VarianceValue vv = new VarianceValue(hour, i);
+      monthlyVariance.hourInMonth.add(vv);
+      i = i + 1;
+       }
+     // mPlan.amountInMonth= montlyPlanAmts;
+    // this.ceToMpMap["Marketing"] = mPlan;
+     this.ceToMvMap[ce] = monthlyVariance;
+
+   
+     }
+      return ceToMaMap;
+    }
+
+
+
+
+    // setFirebaseData(){
+    //  deToMap = new Map<String,Map<String,MonthlyValues>>();
+    //     this.getDepartments();
+
+    //     for(String de in this.departments){
+              
+    //           deToMap[de] = this.getPlanData();
+
+    //     }
+
+
+    // }
 
   setAllData() async {
     String readData = await st.readData();
@@ -157,8 +418,8 @@ class PlanningFormModel {
       //read json from file
       String pfmJSONStringReadFromFile = "";
       //populate data
-      // this.initializeData();
-      this.instantiatePFMfromJSONString();
+       this.initializeData();
+      //this.instantiatePFMfromJSONString();
     }
   }
 
@@ -173,7 +434,7 @@ class PlanningFormModel {
      //getCostElements();
     this.costElements = new List<String>();
     //mPlan = new MonthlyPlan(this);
-
+   
     this.costElements.add("Transportation");
     this.costElements.add("Marketing");
     this.costElements.add("Human Resources");
@@ -184,13 +445,14 @@ class PlanningFormModel {
     ceToMpMap = new Map<String, MonthlyPlan>();
     ceToMaMap = new Map<String, MonthlyActual>();
     ceToMvMap = new Map<String, MonthlyVariance>();
-
+    MonthlyValues mv ;
     MonthlyPlan mPlan;
     MonthlyActual mActual;
     MonthlyVariance mVariance;
     List<DataValue> monthlyActualAmts, montlyPlanAmts, monthlyVarianceAmts;
     List<DataValue> monthlyActualHrs, montlyPlanHrs, monthlyVarianceHrs;
-
+    
+ 
     for (String ce in this.costElements) {
       mPlan = new MonthlyPlan();
       mActual = new MonthlyActual();
@@ -199,7 +461,7 @@ class PlanningFormModel {
       mPlan.category = ce;
       mActual.category = ce;
       mVariance.category = ce;
-
+      mPlan.amountInMonth=  new List<PlanValue>();
       monthlyActualAmts = new List<ActualValue>();
       montlyPlanAmts = new List<PlanValue>();
       monthlyVarianceAmts = new List<VarianceValue>();
@@ -209,6 +471,7 @@ class PlanningFormModel {
       monthlyVarianceHrs = new List<VarianceValue>();
 
       for (int i = 0; i < 12; i++) {
+        
         //assign plan amounts to each of the 12 months
         PlanValue pv = new PlanValue(i * 1000, i);
         //assign plan amounts to each of the 12 months
@@ -225,27 +488,34 @@ class PlanningFormModel {
 
         //add to amounts list for Plan, Actual, Variance
         monthlyActualAmts.add(av);
-        montlyPlanAmts.add(pv);
+       montlyPlanAmts.add(pv);
         monthlyVarianceAmts.add(vv);
+        mPlan.amountInMonth .add(pv);
 
         //add to amounts list for Plan, Actual, Variance
         monthlyActualHrs.add(ah);
         montlyPlanHrs.add(ph);
         monthlyVarianceHrs.add(vh);
       }
-
+      
       //assign Monthly Plan Actual Vairance amounts to each plan
       mActual.amountInMonth = monthlyActualAmts;
-      mPlan.amountInMonth = montlyPlanAmts;
+     // mPlan.amountInMonth = montlyPlanAmts;
       mVariance.amountInMonth = monthlyVarianceAmts;
 
       //assign Monthly Plan Actual Vairance amounts to each plan
       mActual.hourInMonth = monthlyActualHrs;
-      mPlan.hourInMonth = montlyPlanHrs;
+     mPlan.hourInMonth = montlyPlanHrs;
       mVariance.hourInMonth = monthlyVarianceHrs;
 
+       print("*******************************************************************************************");
+      print("****************mPlan=" + mPlan.toString());
+      print("*******************************************************************************************");
+
+
       //add monthly plan for the is
-      this.ceToMpMap[ce] = mPlan;
+     //this.ceToMpMap["Transportation"] = mPlan;
+     this.ceToMpMap[ce] = mPlan;
       this.ceToMaMap[ce] = mActual;
       this.ceToMvMap[ce] = mVariance;
     }
@@ -406,7 +676,7 @@ class PlanningFormModel {
   //  String check = data1['Company'];
   //  print("check ="  + check);
 
-  // return check;
+  // return check; 
 
   // dataRead ()async {
   //   String data = await st.readData();
@@ -652,8 +922,7 @@ class PlanningFormModel {
     return this.st.readData();
   }
 
-  savepfmToFirebase() {
-    int pm, am, vm, ph, ah, vh;
+
 
     savepfmToFirebase() {
       int pm, am, vm, ph, ah, vh;
@@ -663,8 +932,9 @@ class PlanningFormModel {
       String department = "department"; //this.department;
       String year = "2019"; //this.year;
       String month = "janaury"; //this.month;
+     path ="/" + " organization" +"/" + "organization" + "/" +  "company" +  "/" + "company" +  "/" + "Cleaning Product Department/"+ "Cleaning Product Department" ;
       // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
-      path = "/" + company + "/" + department + "/" + year + "/" + month;
+      //path = "/" + company + "/" + department + "/" + year + "/" + month;
       List mPAmts;
       List mPHrs;
 
@@ -684,11 +954,11 @@ class PlanningFormModel {
         mVAmts = new List<int>();
         String a = ce;
         // Firestore.instance.document("/PlanningFormModel/PlanningFormModel/ceToMaMap/ceToMaMap/$a/$a");
-        planDocRef = Firestore.instance.document("$path/$a/plan");
+        planDocRef = Firestore.instance.document("$path/plan/plan/$a/$a");
         final DocumentReference actualDocRef =
-            Firestore.instance.document("$path/$a/actual");
+            Firestore.instance.document("$path/actual/actual/$a/$a");
         final DocumentReference varienceDocRef =
-            Firestore.instance.document("$path/$a/varience");
+            Firestore.instance.document("$path/varience/varience/$a/$a");
         MonthlyPlan mp = this.ceToMpMap[ce];
         MonthlyActual ma = this.ceToMaMap[ce];
         MonthlyVariance mv = this.ceToMvMap[ce];
@@ -777,13 +1047,16 @@ class PlanningFormModel {
         }).catchError((e) => print(e));
       }
     }
-  }
+  
 
 /*savePfm
 if  device is online
 call savePfmTOfirebase
+
   savePfmToFile
 //savePfmtoFirebase(){
+
+
 */
 
   saveData() async {
@@ -821,7 +1094,7 @@ class VarianceValue extends DataValue {
   VarianceValue(int amt, int idx) : super(amt, idx);
 }
 
-class MonthlyValues {
+class  MonthlyValues {
   String category;
   List<DataValue> amountInMonth;
   List<DataValue> hourInMonth;

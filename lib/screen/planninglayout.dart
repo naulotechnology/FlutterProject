@@ -148,7 +148,7 @@ class MyFormState extends State<MyForm> {
 
     // }
     print("Department is $d");
-    return _departments;
+    return d;
   }
 
   String checkConnection() {
@@ -375,10 +375,19 @@ class MyFormState extends State<MyForm> {
             child: myBordView(),
           );
         } else {
-          return Container(
-            height: 300,
-            child: myChart(),
-          );
+          if (showHour == true) {
+            return Container(
+              height: 300,
+              child: myChart(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000,
+                  9000, 10000, 11000, 12000),
+            );
+          } else {
+            return Container(
+              height: 300,
+              child: myChart(5100, 1200, 13300, 9400, 7500, 10600, 7700, 880,
+                  9900, 1200, 1100, 1200),
+            );
+          }
         }
       } else if (index == 5) {
         return Container(
@@ -463,20 +472,21 @@ class MyFormState extends State<MyForm> {
   }
 
   //chart
-  myChart() {
+  myChart(int jan, int feb, int mar, int apr, int may, int jun, int july,
+      int aug, int sep, int oct, int nov, int dec) {
     var data = [
-      new ChartPerYear('jan', 1200, Colors.red),
-      new ChartPerYear('fab', 4200, Colors.yellow),
-      new ChartPerYear('mar', 3000, Colors.green),
-      new ChartPerYear('apr', 6000, Colors.black),
-      new ChartPerYear('may', 2500, Colors.pink),
-      new ChartPerYear('jun', 3500, Colors.pink),
-      new ChartPerYear('jul', 1200, Colors.red),
-      new ChartPerYear('aug', 14200, Colors.yellow),
-      new ChartPerYear('sep', 3000, Colors.green),
-      new ChartPerYear('oct', 6000, Colors.black),
-      new ChartPerYear('nov', 2500, Colors.pink),
-      new ChartPerYear('dec', 3500, Colors.pink),
+      new ChartPerYear('jan', jan, Colors.red),
+      new ChartPerYear('fab', feb, Colors.yellow),
+      new ChartPerYear('mar', mar, Colors.green),
+      new ChartPerYear('apr', apr, Colors.black),
+      new ChartPerYear('may', may, Colors.pink),
+      new ChartPerYear('jun', jun, Colors.pink),
+      new ChartPerYear('jul', july, Colors.red),
+      new ChartPerYear('aug', aug, Colors.yellow),
+      new ChartPerYear('sep', sep, Colors.green),
+      new ChartPerYear('oct', oct, Colors.black),
+      new ChartPerYear('nov', nov, Colors.pink),
+      new ChartPerYear('dec', dec, Colors.pink),
     ];
 
     var series = [
@@ -1215,35 +1225,6 @@ class MyFormState extends State<MyForm> {
       ),
     );
   }
-
-//   departmentDropDown() {
-//     return Container(
-//       child: FutureBuilder<List<String>>(
-//         future: this.pfm.getDepartments(),
-//         builder:
-//             (BuildContext context, AsyncSnapshot<List<String>> deptSnapShot) {
-//           if (!deptSnapShot.hasData) return CircularProgressIndicator();
-//           return DropdownButton<String>(
-//             items: deptSnapShot.data
-//                 .map((dept) => DropdownMenuItem<String>(
-//                       child: Text(dept),
-//                       value: dept,
-//                     ))
-//                 .toList(),
-//             onChanged: (String value) {
-//               this.pfm.setSelectedDepartment(value);
-//               setState(() {
-//                 _selectedDepartment = value;
-//               });
-//             },
-//             isExpanded: true,
-//             //value: _currentUser,
-//             hint: Text('Select a Department'),
-//           );
-//         },
-//       ),
-//     );
-//   }
 }
 
 class ChartPerYear {
