@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutterproject/models/readwritefile.dart';
 import 'package:material_switch/material_switch.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -155,6 +157,31 @@ class MyFormState extends State<MyForm> {
     } else {
       return "No internet Connection";
     }
+  }
+
+  String depart;
+  myShearePreferenceSet() async {
+    final prefs = await SharedPreferences.getInstance();
+    //prefs.setString(key, value);
+    for (int i = 0; i < _departments.length; i++) {
+      prefs.setString("depart", _departments[i]);
+    }
+
+    Fluttertoast.showToast(msg: 'Saved data!', toastLength: Toast.LENGTH_SHORT);
+  }
+
+  myShearedPreferenceGet() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> preference = [];
+
+    setState(() {
+      for (int i = 0; i < _departments.length; i++) {
+        preference.add(prefs.getString("depart$i"));
+      }
+    });
+
+    Fluttertoast.showToast(msg: '$preference', toastLength: Toast.LENGTH_SHORT);
+    return preference;
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -735,6 +762,7 @@ class MyFormState extends State<MyForm> {
                 pfm.saveData();
                 //pfm.planningFormModelJSONtoMp();
                 print("data");
+                myShearePreferenceSet();
               });
               // print("data wrote to file = ${pfm.planningFormModelMptoJSON()}");
               //  print( "data  i checked = ${pfm.}");
@@ -752,6 +780,7 @@ class MyFormState extends State<MyForm> {
           ),
           MaterialButton(
             onPressed: () async {
+              myShearedPreferenceGet();
               // String da = await st.readData();
               // pfm.savedStateFromFile = da;
               List<String> st = await pfm.getDepartments();
