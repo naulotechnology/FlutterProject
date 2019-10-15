@@ -165,10 +165,11 @@ class MyFormState extends State<MyForm> {
     }
   }
 
-
   List<String> preference = [];
   Future<List<String>> myShearedPreferenceGet() async {
-    fetchDepartments();
+    if (_departments.length == 0) {
+      await fetchDepartments();
+    }
     final prefs1 = await SharedPreferences.getInstance();
 
     setState(() {
@@ -179,7 +180,7 @@ class MyFormState extends State<MyForm> {
       }
     });
 
-   // Fluttertoast.showToast(msg: '${preference.length}', toastLength: Toast.LENGTH_SHORT);
+    // Fluttertoast.showToast(msg: '${preference.length}', toastLength: Toast.LENGTH_SHORT);
     return preference;
   }
 
@@ -1048,7 +1049,10 @@ class MyFormState extends State<MyForm> {
 
                                             print(
                                                 "indexOf selected deptment is = $user");
-                                                Fluttertoast.showToast(msg: "indexOf selected deptment is = $user", toastLength: Toast.LENGTH_LONG);
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "indexOf selected deptment is = $user",
+                                                toastLength: Toast.LENGTH_LONG);
                                           });
                                         },
                                       );
