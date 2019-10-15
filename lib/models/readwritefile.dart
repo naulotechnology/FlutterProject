@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:io';
-import 'package:flutterproject/models/readwritefile1.dart' as prefix0;
+
+import 'package:flutter/material.dart';
 import 'package:flutterproject/screen/planninglayout.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
@@ -10,13 +11,16 @@ import 'package:http/http.dart' as http;
 
 class PlanningFormModel {
   String company;
+
  
   List<String> costElements;
   List<String> departments;
   List<String> hrData;
+
   List data;
   String year;
-  bool isOnline=false;
+ // bool isOnline;
+  bool isOnline = false ;
   String month;
 
   bool isFatches = true;
@@ -61,6 +65,7 @@ class PlanningFormModel {
     //check if data files already exists
 
     //this.initializeData();
+
     this.st = new Storage();
     this.departments = new List<String>();
     
@@ -91,28 +96,69 @@ class PlanningFormModel {
     //getDepartments();
    // getHrData();
      //setAllData();
-    if(isOnline ==false ){
-      print("*********************phone is offline**********************");
-     // getDepartments();
-    // getPlanData();
-    // getActualData();
-    // getVariecneData();
-    //  getHrData().whenComplete((){
-    //    getDepartments();
-    //  });
-      setAllData();
 
-  
-      
-     //initializeData();
+    // switch (isOnline) {
+    //   case false:
+    //   print("**************phone is offline**************");
+    //     setAllData();
+
+    //     break;
+    //   case true:
+    //   print("**************phone is online**************");
+    //     getPlanData();
+    //     getActualData();
+    //     getVariecneData();
+    //     break;
+    // }
+
+  work();
+     }
+
+   work(){
+
+      switch (isOnline) {
+      case false:
+      print("**************phone is offline**************");
+        setAllData();
+
+        break;
+      case true:
+      print("**************phone is online**************");
+        getPlanData();
+        getActualData();
+        getVariecneData();
+        break;
+    }
+
+
+
+// if(this.isOnline ==false ){
+//       print("*********************phone is offline**********************");
      
-    }
-    else {
-
-      print("**************no costElement data**************");
-    }
+  
+//     // getPlanData();
+//     // getActualData();
+//     // getVariecneData();
+     
     
+    
+//    setAllData();
 
+    
+     
+//     }
+//     if(this.isOnline ==true ){
+
+//       print("**************phone is online**************");
+//      // getDepartments();
+//      return getPlanData();
+//     // getActualData();
+//     // getVariecneData();
+     
+      
+
+//     }
+    
   }
 
   void setSelectedDepartment(String department){
@@ -198,10 +244,9 @@ class PlanningFormModel {
 
 
    Future<Map<String,MonthlyPlan> > getPlanData() async {
-          isFatches = false;
+        isFatches = false;
          this.costElements = new List<String>();
-    // this.costElements.add("Marketing");  
-    // this.costElements.add("Transportation");
+    
     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p");
     var jsonData = json.decode(data.body);
     List costelements = jsonData['costElements'];
@@ -213,19 +258,26 @@ class PlanningFormModel {
           
             
             print("*******************************************************************************************");
-      for(String ce in costelements) {
-          this.costElements.add(ce);
+      // for(String ce in costelements) {
+      //     this.costElements.add(ce);
       
-      }
+      // }
+      // this.costElements.add("Transportation");
+      // this.costElements.add("Marketing");
+      //Transportation, Marketing, Legal
           ceToMpMap = new Map<String, MonthlyPlan>();
-       for(String ce in costElements) {
-         //  this.costElements.add(ce);
-      
+         
+       for(String ce in costelements) {
+        //  isFatches = true;
+         
+          // this.costElements.add(ce);
+       
       print("*************ce ***************** =" + ce.toString());
       
-               
+        
+
               var data1 = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p" +ce);
-             
+               
       Map plan = json.decode(data1.body);
       String planData = plan.toString();
       print(" ************hrplan***************** =" + planData);
@@ -252,17 +304,20 @@ class PlanningFormModel {
       mPlan.hourInMonth.add(pv);
       i = i + 1;
        }
-     // mPlan.amountInMonth= montlyPlanAmts;
-    // this.ceToMpMap["Marketing"] = mPlan;
-     this.ceToMpMap[ce] = mPlan;
-
    
+    this.costElements.add(ce);
+     this.ceToMpMap[ce] = mPlan;
+    // Future.delayed(Duration( seconds:15));
+    
+     // isFatches = false;
+  
      }
+       //isFatches = false;
       return ceToMpMap;
     }
 
    Future<Map > getActualData() async {
-          isFatches = false;
+       //   isFatches = false;
     //      this.costElements = new List<String>();
     // // this.costElements.add("Marketing");  
     // // this.costElements.add("Transportation");
@@ -327,7 +382,7 @@ class PlanningFormModel {
 
 
     Future<Map > getVariecneData() async {
-          isFatches = false;
+        //  isFatches = false;
     //      this.costElements = new List<String>();
     // // this.costElements.add("Marketing");  
     // // this.costElements.add("Transportation");
@@ -361,7 +416,7 @@ class PlanningFormModel {
       List amountInMonth = varience['amountInMonth'];
       List hourInMonth  = varience['hourInMonth'];
 
-      print("*************************************plan******************************************************");
+      print("*************************************varience******************************************************");
        
       print(" ************amountInMonth***************** =" + amountInMonth.toString());
       print(" ************hourInMonth***************** =" + hourInMonth.toString());
@@ -383,11 +438,12 @@ class PlanningFormModel {
        }
      // mPlan.amountInMonth= montlyPlanAmts;
     // this.ceToMpMap["Marketing"] = mPlan;
+    
      this.ceToMvMap[ce] = monthlyVariance;
 
    
      }
-      return ceToMaMap;
+      return ceToMvMap;
     }
 
 
@@ -428,7 +484,8 @@ class PlanningFormModel {
     print(
         "welcome to planning application data we are initializeData application");
     this.company = "Naulo Tech";
-    //this.department = "Marketing";
+    this.departments.add("department1");
+    this.departments.add("department2");
 
     this.year = "2019";
      //getCostElements();
@@ -440,6 +497,7 @@ class PlanningFormModel {
     this.costElements.add("Human Resources");
     this.costElements.add("Legal");
     this.costElements.add("Information Technology");
+    
 
     //instatiate the map to store monthly plan for each costEleemnts
     ceToMpMap = new Map<String, MonthlyPlan>();
@@ -1064,9 +1122,11 @@ call savePfmTOfirebase
     var result = await Connectivity().checkConnectivity();
     if (result == ConnectivityResult.wifi ||
         result == ConnectivityResult.mobile) {
+        //  this.isOnline=true;
       this.savepfmToFirebase();
     } else {
       print("no internet access");
+      // this.isOnline=false;
     }
     this.savePfmToFile();
   }
