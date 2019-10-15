@@ -24,6 +24,7 @@ class MySetting extends State {
     this.pfm = pfm;
   }
 
+  
   bool _value1 = false;
   void _onChanged1(bool value) {
     setState(() {

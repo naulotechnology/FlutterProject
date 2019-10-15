@@ -137,17 +137,50 @@ class MyFormState extends State<MyForm> {
     st = this.pfm.st;
   }
 
-  Future<List<String>> fetchDepartments() async {
-    List<String> d = await this.pfm.getDepartments();
-    setState(() {
-      this._departments = d;
-    });
+  //Future<List<String>> fetchDepartments() async 
+  Future<List<String>> fetchDepartments() async{
+    List<String> d ;
+   //List<String> d ; await this.pfm.getDepartments();
+  // setState(() async {
+     if (pfm.isOnline==true) {
+        d = await this.pfm.getDepartments();
+       setState(()   {
+        print("***********getting online departments*************");
+       
+        this._departments = d;
+         });
+      } 
+      else {
+        print("***********getting offline departments*************");
+       // d=["1","2"];
+        this._departments =pfm.departments ;
+        d=pfm.departments;
+        
+      }
+      
+   // });
+    // setState(() {
+    //   if (pfm.isOnline=true) {
+    //     print("***********getting online departments*************");
+    //     this._departments = d;
+        
+    //   } else {
+    //     print("***********getting offline departments*************");
+    //     this._departments= ["1","2"];
+        
+    //   }
+      
+    // });
     // for (String dep in _departments) {
 
     // }
     print("Department is $d");
     return d;
   }
+
+
+ 
+
 
   String checkConnection() {
     if (connected == true) {
@@ -1012,6 +1045,7 @@ class MyFormState extends State<MyForm> {
                                                 ))
                                             .toList(),
                                         onChanged: (String selectedDept) {
+                                          
                                           print("selected deptment is = " +
                                               selectedDept);
                                           setState(() {
