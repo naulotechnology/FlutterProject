@@ -94,13 +94,13 @@ class PlanningFormModel {
     if(isOnline ==false ){
       print("*********************phone is offline**********************");
      // getDepartments();
-    getPlanData();
-    getActualData();
-    getVariecneData();
+    // getPlanData();
+    // getActualData();
+    // getVariecneData();
     //  getHrData().whenComplete((){
     //    getDepartments();
     //  });
-    //  setAllData();
+      setAllData();
 
   
       
@@ -424,7 +424,7 @@ class PlanningFormModel {
   }
 
   initializeData() {
-    isFatches = false;
+    isFatches = true;
     print(
         "welcome to planning application data we are initializeData application");
     this.company = "Naulo Tech";
@@ -519,6 +519,7 @@ class PlanningFormModel {
       this.ceToMaMap[ce] = mActual;
       this.ceToMvMap[ce] = mVariance;
     }
+    isFatches = false;
     //assign month plan
     //this.monthLevelPlan = ceToMpMap;
   }

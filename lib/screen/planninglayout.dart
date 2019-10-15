@@ -148,7 +148,13 @@ class MyFormState extends State<MyForm> {
 
     // }
     print("Department is $d");
-    return d;
+
+    final prefs = await SharedPreferences.getInstance();
+    //prefs.setString(key, value);
+    for (int i = 0; i < _departments.length; i++) {
+      prefs.setString("depart$i", d[i]);
+    }
+    // return d;
   }
 
   String checkConnection() {
@@ -159,28 +165,21 @@ class MyFormState extends State<MyForm> {
     }
   }
 
-  String depart;
-  myShearePreferenceSet() async {
-    final prefs = await SharedPreferences.getInstance();
-    //prefs.setString(key, value);
-    for (int i = 0; i < _departments.length; i++) {
-      prefs.setString("depart", _departments[i]);
-    }
 
-    Fluttertoast.showToast(msg: 'Saved data!', toastLength: Toast.LENGTH_SHORT);
-  }
-
-  myShearedPreferenceGet() async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String> preference = [];
+  List<String> preference = [];
+  Future<List<String>> myShearedPreferenceGet() async {
+    fetchDepartments();
+    final prefs1 = await SharedPreferences.getInstance();
 
     setState(() {
-      for (int i = 0; i < _departments.length; i++) {
-        preference.add(prefs.getString("depart$i"));
+      if (this.preference.length != _departments.length) {
+        for (int i = 0; i < _departments.length; i++) {
+          this.preference.add(prefs1.getString("depart$i"));
+        }
       }
     });
 
-    Fluttertoast.showToast(msg: '$preference', toastLength: Toast.LENGTH_SHORT);
+   // Fluttertoast.showToast(msg: '${preference.length}', toastLength: Toast.LENGTH_SHORT);
     return preference;
   }
 
@@ -772,7 +771,7 @@ class MyFormState extends State<MyForm> {
                 pfm.saveData();
                 //pfm.planningFormModelJSONtoMp();
                 print("data");
-                myShearePreferenceSet();
+                // myShearePreferenceSet();
               });
               // print("data wrote to file = ${pfm.planningFormModelMptoJSON()}");
               //  print( "data  i checked = ${pfm.}");
@@ -790,7 +789,7 @@ class MyFormState extends State<MyForm> {
           ),
           MaterialButton(
             onPressed: () async {
-              myShearedPreferenceGet();
+              //  myShearedPreferenceGet();
               // String da = await st.readData();
               // pfm.savedStateFromFile = da;
               List<String> st = await pfm.getDepartments();
@@ -1016,14 +1015,14 @@ class MyFormState extends State<MyForm> {
                             child: DropdownButtonHideUnderline(
                               // new async dropDown
                               child: FutureBuilder<List<String>>(
-                                  future: this.fetchDepartments(),
+                                  future: this.myShearedPreferenceGet(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<List<String>> snapshot) {
                                     if (snapshot.hasData) {
                                       return DropdownButton<String>(
                                         value: this.user == null
                                             ? null
-                                            : _departments[user],
+                                            : preference[user],
                                         hint: Text(
                                           'Selec a Department',
                                           style: TextStyle(fontSize: 12),
@@ -1044,11 +1043,12 @@ class MyFormState extends State<MyForm> {
                                           print("selected deptment is = " +
                                               selectedDept);
                                           setState(() {
-                                            user = _departments
+                                            user = preference
                                                 .indexOf(selectedDept);
 
                                             print(
                                                 "indexOf selected deptment is = $user");
+                                                Fluttertoast.showToast(msg: "indexOf selected deptment is = $user", toastLength: Toast.LENGTH_LONG);
                                           });
                                         },
                                       );
