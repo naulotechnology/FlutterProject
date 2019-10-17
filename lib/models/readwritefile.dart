@@ -227,16 +227,18 @@ class PlanningFormModel {
 
    Future<List<String> > getCostElements() async {
 
-      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getCostElements");
+      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p");
       var jsonData = json.decode(data.body);
     
       List costElements = jsonData['costElements'];
-        print("*************costElements ***************** =" + costElements.toString());
+      String cE = costElements.toString();
+      cE =cE.substring(1,costElements.toString().length-1);
+        print("*************costElements ***************** =" + cE);
         this.costElements = new List<String>();
-      for(String ce in costElements){
+      for(String ce in cE.split(",")){
         this.costElements.add(ce);
       }
-      return costElements ;
+      return cE.split(",") ;
     }
 
 
