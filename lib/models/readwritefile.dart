@@ -15,12 +15,13 @@ class PlanningFormModel {
  
   List<String> costElements;
   List<String> departments;
+  List<String> offlineDepartments;
   List<String> hrData;
 
   List data;
   String year;
  // bool isOnline;
-  bool isOnline = false ;
+  bool isOnline = true;
   String month;
 
   bool isFatches = true;
@@ -110,56 +111,84 @@ class PlanningFormModel {
     //     getVariecneData();
     //     break;
     // }
-
-  work();
-     }
-
-   work(){
-
-      switch (isOnline) {
-      case false:
-      print("**************phone is offline**************");
-        setAllData();
-
-        break;
-      case true:
-      print("**************phone is online**************");
-        getPlanData();
-        getActualData();
-        getVariecneData();
-        break;
-    }
-
-
-
-// if(this.isOnline ==false ){
-//       print("*********************phone is offline**********************");
+    if(this.isOnline ==false ){
+      print("*********************phone is offline**********************");
      
   
-//     // getPlanData();
-//     // getActualData();
-//     // getVariecneData();
+    // getPlanData();
+    // getActualData();
+    // getVariecneData();
      
     
-    
-//    setAllData();
+    getCostElements();
+   setAllData();
+   
+   
 
     
      
-//     }
-//     if(this.isOnline ==true ){
+    }
+    if(this.isOnline ==true ){
 
-//       print("**************phone is online**************");
-//      // getDepartments();
-//      return getPlanData();
-//     // getActualData();
-//     // getVariecneData();
+      print("**************phone is online**************");
+     // getDepartments();
+      getPlanData();
+    getActualData();
+    getVariecneData();
      
       
 
+    }
+
+  //work();
+     }
+
+//    work(){
+
+//       switch (isOnline) {
+//       case false:
+//       print("**************phone is offline**************");
+//         setAllData();
+
+//         break;
+//       case true:
+//       print("**************phone is online**************");
+//         getPlanData();
+//         getActualData();
+//         getVariecneData();
+//         break;
 //     }
+
+
+
+// // if(this.isOnline ==false ){
+// //       print("*********************phone is offline**********************");
+     
+  
+// //     // getPlanData();
+// //     // getActualData();
+// //     // getVariecneData();
+     
     
-  }
+    
+// //    setAllData();
+
+    
+     
+// //     }
+// //     if(this.isOnline ==true ){
+
+// //       print("**************phone is online**************");
+// //      // getDepartments();
+// //      return getPlanData();
+// //     // getActualData();
+// //     // getVariecneData();
+     
+      
+
+// //     }
+    
+//   }
 
   void setSelectedDepartment(String department){
     this.selectedDepartment = department;
@@ -227,16 +256,18 @@ class PlanningFormModel {
 
    Future<List<String> > getCostElements() async {
 
-      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getCostElements");
+      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p");
       var jsonData = json.decode(data.body);
     
       List costElements = jsonData['costElements'];
-        print("*************costElements ***************** =" + costElements.toString());
+      String cE = costElements.toString();
+      cE = cE.substring(1,costElements.toString().length-1);
+        print("*************costElements ***************** =" + cE);
         this.costElements = new List<String>();
-      for(String ce in costElements){
-        this.costElements.add(ce);
-      }
-      return costElements ;
+      // for(String ce in cE.split(",")){
+      //   this.costElements.add(ce);
+      // }
+      return cE.split(",") ;
     }
 
 
@@ -373,6 +404,7 @@ class PlanningFormModel {
        }
      // mPlan.amountInMonth= montlyPlanAmts;
     // this.ceToMpMap["Marketing"] = mPlan;
+   //this.costElements.add(ce);
      this.ceToMaMap[ce] = monthlyActual;
 
    
@@ -438,7 +470,7 @@ class PlanningFormModel {
        }
      // mPlan.amountInMonth= montlyPlanAmts;
     // this.ceToMpMap["Marketing"] = mPlan;
-    
+    //this.costElements.add(ce);
      this.ceToMvMap[ce] = monthlyVariance;
 
    
@@ -484,8 +516,9 @@ class PlanningFormModel {
     print(
         "welcome to planning application data we are initializeData application");
     this.company = "Naulo Tech";
-    this.departments.add("department1");
-    this.departments.add("department2");
+    this.offlineDepartments = new List<String>();
+    offlineDepartments.add("department1");
+    offlineDepartments.add("department2");
 
     this.year = "2019";
      //getCostElements();

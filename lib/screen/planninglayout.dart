@@ -140,10 +140,25 @@ class MyFormState extends State<MyForm> {
   }
 
   Future<List<String>> fetchDepartments() async {
-    List<String> d = await this.pfm.getDepartments();
-    setState(() {
-      this._departments = d;
-    });
+    List<String> d ;
+    // = await this.pfm.getDepartments();
+
+    if(pfm.isOnline==true){
+      //  d =await this.pfm.getDepartments();
+        d =await this.pfm.getCostElements();
+        setState(() {
+         this._departments = d;
+        });
+
+    }
+    else{
+        d = pfm.offlineDepartments;
+        this._departments = d;
+
+    }
+    // setState(() {
+    //   this._departments = d;
+    // });
     // for (String dep in _departments) {
 
     // }
@@ -154,7 +169,7 @@ class MyFormState extends State<MyForm> {
     for (int i = 0; i < _departments.length; i++) {
       prefs.setString("depart$i", d[i]);
     }
-    // return d;
+  //  return d;
   }
 
   String checkConnection() {
