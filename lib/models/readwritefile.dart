@@ -271,6 +271,23 @@ class PlanningFormModel {
     }
 
 
+      Future<List<String> > getceCostElements() async {
+
+      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/ceCe");
+      var jsonData = json.decode(data.body);
+    
+      List costElements = jsonData['costElements'];
+      String cE = costElements.toString();
+      cE = cE.substring(1,costElements.toString().length-1);
+        print("*************costElements ***************** =" + cE);
+        this.costElements = new List<String>();
+      // for(String ce in cE.split(",")){
+      //   this.costElements.add(ce);
+      // }
+      return cE.split(",") ;
+    }
+
+
 
 
 
@@ -1024,7 +1041,7 @@ class PlanningFormModel {
       String department = "department"; //this.department;
       String year = "2019"; //this.year;
       String month = "janaury"; //this.month;
-     path ="/" + " organization" +"/" + "organization" + "/" +  "company" +  "/" + "company" +  "/" + "Cleaning Product Department/"+ "Cleaning Product Department" ;
+     path ="/" + " organizationSaved" +"/" + "organizationSaved" + "/" +  "company" +  "/" + "company" +  "/" + "Cleaning Product Department/"+ "Cleaning Product Department" ;
       // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
       //path = "/" + company + "/" + department + "/" + year + "/" + month;
       List mPAmts;

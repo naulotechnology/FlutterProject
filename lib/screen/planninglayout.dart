@@ -69,6 +69,7 @@ class MyFormState extends State<MyForm> {
   bool showChart = false;
 
   List<String> _departments = [];
+  List<String> _costelement = [];
 
   bool connected;
 
@@ -110,13 +111,6 @@ class MyFormState extends State<MyForm> {
     }
   }
 
-  //Future<List<Users>> dropDownValueForDepartment1() async {
-  //  List<String> valueDepartment;
-  //  Future<List<String>> department = await pfm.getDepartments();
-
-  //  return department;
-  //}
-
   @override
   void dispose() {
     // controller.dispose();
@@ -126,10 +120,7 @@ class MyFormState extends State<MyForm> {
 
   initState() {
     super.initState();
-    // print("Hellow this is Department = $valueForDepartMent()");
-
     setState(() {
-      // users = dropDownValueForDepartment();
       _selectedDepartment = "";
     });
   }
@@ -140,28 +131,10 @@ class MyFormState extends State<MyForm> {
   }
 
   Future<List<String>> fetchDepartments() async {
-    List<String> d ;
-    // = await this.pfm.getDepartments();
-
-    if(pfm.isOnline==true){
-      //  d =await this.pfm.getDepartments();
-        d =await this.pfm.getCostElements();
-        setState(() {
-         this._departments = d;
-        });
-
-    }
-    else{
-        d = pfm.offlineDepartments;
-        this._departments = d;
-
-    }
-    // setState(() {
-    //   this._departments = d;
-    // });
-    // for (String dep in _departments) {
-
-    // }
+    List<String> d = await this.pfm.getDepartments();
+    setState(() {
+      this._departments = d;
+    });
     print("Department is $d");
 
     final prefs = await SharedPreferences.getInstance();
@@ -169,7 +142,24 @@ class MyFormState extends State<MyForm> {
     for (int i = 0; i < _departments.length; i++) {
       prefs.setString("depart$i", d[i]);
     }
-  //  return d;
+    return d;
+  }
+  
+  Future<List<String>> fetchCostElement() async {
+    List<String> d = await this.pfm.getCostElements();
+    setState(() {
+      this._costelement = d;
+    });
+    print("Department is $d");
+    Fluttertoast.showToast(msg: '${d}', toastLength: Toast.LENGTH_LONG);
+
+    final prefs = await SharedPreferences.getInstance();
+    //prefs.setString(key, value);
+    for (int i = 0; i < _costelement.length; i++) {
+      prefs.setString("costelement$i", d[i]);
+    }
+    
+    return d;
   }
 
   String checkConnection() {
@@ -179,7 +169,6 @@ class MyFormState extends State<MyForm> {
       return "No internet Connection";
     }
   }
-
 
   List<String> preference = [];
   Future<List<String>> myShearedPreferenceGet() async {
@@ -194,8 +183,25 @@ class MyFormState extends State<MyForm> {
       }
     });
 
-   // Fluttertoast.showToast(msg: '${preference.length}', toastLength: Toast.LENGTH_SHORT);
+    // Fluttertoast.showToast(msg: '${preference.length}', toastLength: Toast.LENGTH_SHORT);
     return preference;
+  }
+
+  List<String> preference1 = [];
+  Future<List<String>> myShearedPreferenceGet1() async {
+    fetchCostElement();
+    final prefs1 = await SharedPreferences.getInstance();
+
+    setState(() {
+      if (this.preference1.length != _costelement.length) {
+        for (int i = 0; i < _costelement.length; i++) {
+          this.preference1.add(prefs1.getString("costelement$i"));
+        }
+      }
+    });
+
+    // Fluttertoast.showToast(msg: '${preference.length}', toastLength: Toast.LENGTH_SHORT);
+    return preference1;
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -347,13 +353,13 @@ class MyFormState extends State<MyForm> {
         );
       } else if (index == 2) {
         return Container(
-          height: 70,
+          height: 80,
           width: 200,
           // padding: EdgeInsets.only(left: 50),
           margin: EdgeInsets.only(left: 16),
           child: Padding(
             padding: EdgeInsets.only(bottom: 10),
-            child: actualVariancePlanButton(),
+            child: dropdownButtonForCostElement(),
           ),
         );
       } else if (index == 3) {
@@ -970,6 +976,89 @@ class MyFormState extends State<MyForm> {
     );
   }
 
+  int user1;
+  dropdownButtonForCostElement() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Text(
+            "CostElement",
+            style: TextStyle(fontSize: 12),
+          ),
+          SizedBox(
+            height: 4,
+          ),
+          Container(
+            width: 150,
+            //padding: EdgeInsets.symmetric(horizontal: 10.0),
+            //  padding: EdgeInsets.only(bottom: 10),
+            decoration: new BoxDecoration(
+                color: Color.fromARGB(100, 212, 212, 212),
+                borderRadius: BorderRadius.circular(4.0),
+                border: Border.all(
+                  color: Color.fromARGB(100, 140, 140, 140),
+                  width: 1,
+                )),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Theme(
+                  data: Theme.of(context).copyWith(
+                    canvasColor: Colors.blue.shade200,
+                  ),
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButtonHideUnderline(
+                      // new async dropDown
+                      child: FutureBuilder<List<String>>(
+                          future: this.myShearedPreferenceGet1(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List<String>> snapshot) {
+                            if (snapshot.hasData) {
+                              return DropdownButton<String>(
+                                value:
+                                    this.user1 == null ? null : _costelement[this.user1],
+                                hint: Text(
+                                  'Select a CostElements',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                isExpanded: true,
+                                items: snapshot.data
+                                    .map((dept) => DropdownMenuItem<String>(
+                                          child: Text(
+                                            dept.toString(),
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                          value: dept,
+                                        ))
+                                    .toList(),
+                                onChanged: (String selectedDept) {
+                                  print(
+                                      "selected deptment is = " + selectedDept);
+                                  setState(() {
+                                    this.user1 = _costelement.indexOf(selectedDept);
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "indexOf selected deptment is = $user1",
+                                        toastLength: Toast.LENGTH_LONG);
+                                  });
+                                },
+                              );
+                            } else
+                              return CircularProgressIndicator();
+                          }),
+                      //end new async dorpDown
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   myHeader() {
     return Container(
       margin: EdgeInsets.only(left: 16),
@@ -1037,7 +1126,7 @@ class MyFormState extends State<MyForm> {
                                       return DropdownButton<String>(
                                         value: this.user == null
                                             ? null
-                                            : preference[user],
+                                            : _departments[user],
                                         hint: Text(
                                           'Selec a Department',
                                           style: TextStyle(fontSize: 12),
@@ -1058,12 +1147,15 @@ class MyFormState extends State<MyForm> {
                                           print("selected deptment is = " +
                                               selectedDept);
                                           setState(() {
-                                            user = preference
+                                            user = _departments
                                                 .indexOf(selectedDept);
 
                                             print(
                                                 "indexOf selected deptment is = $user");
-                                                Fluttertoast.showToast(msg: "indexOf selected deptment is = $user", toastLength: Toast.LENGTH_LONG);
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "indexOf selected deptment is = $user",
+                                                toastLength: Toast.LENGTH_LONG);
                                           });
                                         },
                                       );
@@ -1071,32 +1163,6 @@ class MyFormState extends State<MyForm> {
                                       return CircularProgressIndicator();
                                   }),
                               //end new async dorpDown
-                              /*
-                              child: DropdownButton<String>(
-                                isExpanded: true,
-                                hint: Text("Select Department",
-                                    style: TextStyle(fontSize: 12)),
-                                value: this._selectedDepartment == null ? null : this._selectedDepartment,
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    //user = users.indexOf(newValue);
-                                    print("new item "+newValue+" selected");
-                                    //value1 = newValue;
-                                  });
-                                },
-                              
-                                items: this.pfm.departments.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value,
-                                          style: TextStyle(fontSize: 12)),
-                                    );
-                                  },
-                                ).toList(),
-                              ),
-                              */
-                              //
                             ),
                           ),
                         ),
