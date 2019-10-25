@@ -1,8 +1,7 @@
 import 'dart:core';
 import 'dart:io';
+import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:flutterproject/screen/planninglayout.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,7 +20,7 @@ class PlanningFormModel {
   List data;
   String year;
  // bool isOnline;
-  bool isOnline = true;
+  bool isOnline = false;
   String month;
 
   bool isFatches = true;
@@ -119,8 +118,11 @@ class PlanningFormModel {
     // getActualData();
     // getVariecneData();
      
+    // getDepartments().whenComplete((){
+    //    getCostElements(String selcetedDepartment);
+    // });
     
-    getCostElements();
+  // print("returned cost elememt value = " + getCostElements().toString());
    setAllData();
    
    
@@ -190,9 +192,10 @@ class PlanningFormModel {
     
 //   }
 
-  void setSelectedDepartment(String department){
-    this.selectedDepartment = department;
-  }
+  //  setSelectedDepartment(String department){
+
+  //   this.selectedDepartment = department;
+  // }
 
   Future<List<String>> getDepartments() async {
    // if(isOnline == true) {
@@ -227,17 +230,70 @@ class PlanningFormModel {
     // }
   }
 
-    // getDepartment() async {
+    Future<List<String> > getCostElements(String selectedDepartment) async {
+      print("*************costElements ***************** =");
+        String cE1;
+  //       this.departments =  new List<String>();
+  //     this.departments.add("Cleaning Product Department");
+  // this.departments.add("Consumer Electronics");
+  // this.departments.add("Beauty Products Department");
 
-    //   var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartment");
-    //   var jsonData = json.decode(data.body);
+
+print("*************departments ***************** =" +  this.departments.toString());
+
+ //  String selectedDepartment = "Cleaning Product Department";
+
+     for(String department in this.departments) {
+    //    print("*************entering for loop ***************** ");
+   //i = department.indexOf("Cleaning Product Department");
+  if( selectedDepartment ==department) {
+    String cE = selectedDepartment ;
+    String newCe =cE.split(" ").join();
+     print("*************splited ce ***************** =" + newCe );
+    //  String d = "https://us-central1-flutterproject-fe05f.cloudfunctions.net/CleaningProductDepartment" + newCe;
+        var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/" + newCe);
+    //  var da = await http.get(d);
+      
+    //    var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/CleaningProductDepartment");
+        
+      var jsonData = json.decode(data.body);
+
+ print("*************decoded data ***************** =" + jsonData.toString());
+      
     
-    //   String department1 = jsonData['Department'];
-    //     print("*************department ***************** =" + department1 );
-    //   this.department = department1 ;
-     
+      List costElements = jsonData['costElements'];
+       cE1 = costElements.toString();
+      cE1 = cE1.substring(1,costElements.toString().length-1);
+        print("*************costElements ***************** =" + cE1);
+        this.costElements = new List<String>();
+      // for(String ce in cE.split(",")){
+      //   this.costElements.add(ce);
+      // }
+      
 
-    // }
+  }
+}
+return cE1.split(",") ;
+
+}
+
+// selectedCostElement() {
+//   String d ;
+//   int i;
+//   this.departments = new List<String>();
+//   this.departments.add("Cleaning Product Department");
+//   this.departments.add("Consumer Electronics");
+//   this.departments.add("Beauty Products Department");
+  
+//   for(String department in this.departments) {
+//    //i = department.indexOf("Cleaning Product Department");
+//   if( d ==department) {
+//     String ce = d ;
+    
+
+//   }
+// }
+// }
 
     //  Future<List<String> > getDepartments() async {
 
@@ -254,38 +310,38 @@ class PlanningFormModel {
     //   return data1.split(",") ;
     // }
 
-   Future<List<String> > getCostElements() async {
+  //  Future<List<String> > getCostElements() async {
+  //      print("*************entering costElements *****************");
+  //     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/CleaningProductDepartment");
+  //     var jsonData = json.decode(data.body);
+  //    print("*************passed url *****************");
+  //     List costElements = jsonData['costElements'];
+  //     String cE = costElements.toString();
+  //     cE = cE.substring(1,costElements.toString().length-1);
+  //       print("*************costElements ***************** =" + cE);
+  //       this.costElements = new List<String>();
+  //     // for(String ce in cE.split(",")){
+  //     //   this.costElements.add(ce);
+  //     // }
+  //   // return cE.split(",") ;
+  //   }
 
-      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p");
-      var jsonData = json.decode(data.body);
+
+  //     Future<List<String> > getceCostElements() async {
+
+  //     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/ceCe");
+  //     var jsonData = json.decode(data.body);
     
-      List costElements = jsonData['costElements'];
-      String cE = costElements.toString();
-      cE = cE.substring(1,costElements.toString().length-1);
-        print("*************costElements ***************** =" + cE);
-        this.costElements = new List<String>();
-      // for(String ce in cE.split(",")){
-      //   this.costElements.add(ce);
-      // }
-      return cE.split(",") ;
-    }
-
-
-      Future<List<String> > getceCostElements() async {
-
-      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/ceCe");
-      var jsonData = json.decode(data.body);
-    
-      List costElements = jsonData['costElements'];
-      String cE = costElements.toString();
-      cE = cE.substring(1,costElements.toString().length-1);
-        print("*************costElements ***************** =" + cE);
-        this.costElements = new List<String>();
-      // for(String ce in cE.split(",")){
-      //   this.costElements.add(ce);
-      // }
-      return cE.split(",") ;
-    }
+  //     List costElements = jsonData['costElements'];
+  //     String cE = costElements.toString();
+  //     cE = cE.substring(1,costElements.toString().length-1);
+  //       print("*************costElements ***************** =" + cE);
+  //       this.costElements = new List<String>();
+  //     // for(String ce in cE.split(",")){
+  //     //   this.costElements.add(ce);
+  //     // }
+  //     return cE.split(",") ;
+  //   }
 
 
 
