@@ -29,6 +29,8 @@ class MyFormState extends State<MyForm> {
   String dropdowndate = "2018";
   String dropdownMonth = "Jan";
 
+  List<String> planactualvariancetable = ["Plan","Actual","Variance"];
+
   int bordview = 1;
   int user;
   List<String> users;
@@ -58,6 +60,8 @@ class MyFormState extends State<MyForm> {
 
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
+
+  bool showcostelement=false;
 
   PlanningFormModel pfm;
 
@@ -151,7 +155,7 @@ class MyFormState extends State<MyForm> {
       this._costelement = d;
     });
     print("Department is $d");
-    Fluttertoast.showToast(msg: '${d}', toastLength: Toast.LENGTH_LONG);
+    //Fluttertoast.showToast(msg: '${d}', toastLength: Toast.LENGTH_LONG);
 
     final prefs = await SharedPreferences.getInstance();
     //prefs.setString(key, value);
@@ -159,7 +163,7 @@ class MyFormState extends State<MyForm> {
       prefs.setString("costelement$i", d[i]);
     }
     
-    return d;
+    //return d;
   }
 
   String checkConnection() {
@@ -301,7 +305,7 @@ class MyFormState extends State<MyForm> {
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: 1,
-          itemExtent: 60.0 * 10,
+          itemExtent: 210,
           itemBuilder: (BuildContext content, int index) {
             if (pfm.isFatches == true) {
               return fatchDataLoodingScreen();
@@ -391,7 +395,7 @@ class MyFormState extends State<MyForm> {
       } else if (index == 4) {
         if (showChart == false) {
           return Container(
-            height: 300,
+            height: 210,
             child: myBordView(),
           );
         } else {
@@ -759,7 +763,7 @@ class MyFormState extends State<MyForm> {
               ),
             ),
           ],
-          rows: pfm.costElements
+          rows: planactualvariancetable
               .map(
                 (attr) => DataRow(
                   cells: [
@@ -1014,7 +1018,7 @@ class MyFormState extends State<MyForm> {
                           future: this.myShearedPreferenceGet1(),
                           builder: (BuildContext context,
                               AsyncSnapshot<List<String>> snapshot) {
-                            if (snapshot.hasData) {
+                            if (snapshot.hasData && showcostelement==true) {
                               return DropdownButton<String>(
                                 value:
                                     this.user1 == null ? null : _costelement[this.user1],
@@ -1149,6 +1153,11 @@ class MyFormState extends State<MyForm> {
                                           setState(() {
                                             user = _departments
                                                 .indexOf(selectedDept);
+                                                if(user==0){
+                                                    showcostelement=true;
+                                                }else{
+                                                  showcostelement=false;
+                                                }
 
                                             print(
                                                 "indexOf selected deptment is = $user");

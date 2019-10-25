@@ -20,7 +20,7 @@ class PlanningFormModel {
   List data;
   String year;
  // bool isOnline;
-  bool isOnline = false ;
+  bool isOnline = true ;
   String month;
 
   bool isFatches = true;
@@ -235,9 +235,9 @@ class PlanningFormModel {
       cE =cE.substring(1,costElements.toString().length-1);
         print("*************costElements ***************** =" + cE);
         this.costElements = new List<String>();
-      for(String ce in cE.split(",")){
-        this.costElements.add(ce);
-      }
+      // for(String ce in cE.split(",")){
+      //   this.costElements.add(ce);
+      // }
       return cE.split(",") ;
     }
 
