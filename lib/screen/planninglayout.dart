@@ -350,7 +350,7 @@ class MyFormState extends State<MyForm> {
               scrollDirection: Axis.horizontal,
               itemCount: 1,
               itemBuilder: (BuildContext content, int index) {
-                return myDropDownButtons();
+                //return myDropDownButtons();
               },
             ),
           ),
@@ -363,7 +363,7 @@ class MyFormState extends State<MyForm> {
           margin: EdgeInsets.only(left: 16),
           child: Padding(
             padding: EdgeInsets.only(bottom: 10),
-            child: dropdownButtonForCostElement(),
+           // child: dropdownButtonForCostElement(),
           ),
         );
       } else if (index == 3) {

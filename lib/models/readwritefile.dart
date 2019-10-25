@@ -1,8 +1,7 @@
 import 'dart:core';
 import 'dart:io';
+import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:flutterproject/screen/planninglayout.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,12 +14,17 @@ class PlanningFormModel {
  
   List<String> costElements;
   List<String> departments;
+  List<String> offlineDepartments;
   List<String> hrData;
 
   List data;
   String year;
  // bool isOnline;
+<<<<<<< HEAD
   bool isOnline = true ;
+=======
+  bool isOnline = false;
+>>>>>>> 6ef2cfbd20552d0155e83d18828ceb6e091a0843
   String month;
 
   bool isFatches = true;
@@ -110,60 +114,92 @@ class PlanningFormModel {
     //     getVariecneData();
     //     break;
     // }
-
-  work();
-     }
-
-   work(){
-
-      switch (isOnline) {
-      case false:
-      print("**************phone is offline**************");
-        setAllData();
-
-        break;
-      case true:
-      print("**************phone is online**************");
-        getPlanData();
-        getActualData();
-        getVariecneData();
-        break;
-    }
-
-
-
-// if(this.isOnline ==false ){
-//       print("*********************phone is offline**********************");
+    if(this.isOnline ==false ){
+      print("*********************phone is offline**********************");
      
   
-//     // getPlanData();
-//     // getActualData();
-//     // getVariecneData();
+    // getPlanData();
+    // getActualData();
+    // getVariecneData();
      
+    // getDepartments().whenComplete((){
+    //    getCostElements(String selcetedDepartment);
+    // });
     
-    
-//    setAllData();
+  // print("returned cost elememt value = " + getCostElements().toString());
+   setAllData();
+   
+   
 
     
      
-//     }
-//     if(this.isOnline ==true ){
+    }
+    if(this.isOnline ==true ){
 
-//       print("**************phone is online**************");
-//      // getDepartments();
-//      return getPlanData();
-//     // getActualData();
-//     // getVariecneData();
+      print("**************phone is online**************");
+     // getDepartments();
+      getPlanData();
+    getActualData();
+    getVariecneData();
      
       
 
-//     }
-    
-  }
+    }
 
-  void setSelectedDepartment(String department){
-    this.selectedDepartment = department;
-  }
+  //work();
+     }
+
+//    work(){
+
+//       switch (isOnline) {
+//       case false:
+//       print("**************phone is offline**************");
+//         setAllData();
+
+//         break;
+//       case true:
+//       print("**************phone is online**************");
+//         getPlanData();
+//         getActualData();
+//         getVariecneData();
+//         break;
+//     }
+
+
+
+// // if(this.isOnline ==false ){
+// //       print("*********************phone is offline**********************");
+     
+  
+// //     // getPlanData();
+// //     // getActualData();
+// //     // getVariecneData();
+     
+    
+    
+// //    setAllData();
+
+    
+     
+// //     }
+// //     if(this.isOnline ==true ){
+
+// //       print("**************phone is online**************");
+// //      // getDepartments();
+// //      return getPlanData();
+// //     // getActualData();
+// //     // getVariecneData();
+     
+      
+
+// //     }
+    
+//   }
+
+  //  setSelectedDepartment(String department){
+
+  //   this.selectedDepartment = department;
+  // }
 
   Future<List<String>> getDepartments() async {
    // if(isOnline == true) {
@@ -198,17 +234,70 @@ class PlanningFormModel {
     // }
   }
 
-    // getDepartment() async {
+    Future<List<String> > getCostElements(String selectedDepartment) async {
+      print("*************costElements ***************** =");
+        String cE1;
+  //       this.departments =  new List<String>();
+  //     this.departments.add("Cleaning Product Department");
+  // this.departments.add("Consumer Electronics");
+  // this.departments.add("Beauty Products Department");
 
-    //   var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getDepartment");
-    //   var jsonData = json.decode(data.body);
+
+print("*************departments ***************** =" +  this.departments.toString());
+
+ //  String selectedDepartment = "Cleaning Product Department";
+
+     for(String department in this.departments) {
+    //    print("*************entering for loop ***************** ");
+   //i = department.indexOf("Cleaning Product Department");
+  if( selectedDepartment ==department) {
+    String cE = selectedDepartment ;
+    String newCe =cE.split(" ").join();
+     print("*************splited ce ***************** =" + newCe );
+    //  String d = "https://us-central1-flutterproject-fe05f.cloudfunctions.net/CleaningProductDepartment" + newCe;
+        var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/" + newCe);
+    //  var da = await http.get(d);
+      
+    //    var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/CleaningProductDepartment");
+        
+      var jsonData = json.decode(data.body);
+
+ print("*************decoded data ***************** =" + jsonData.toString());
+      
     
-    //   String department1 = jsonData['Department'];
-    //     print("*************department ***************** =" + department1 );
-    //   this.department = department1 ;
-     
+      List costElements = jsonData['costElements'];
+       cE1 = costElements.toString();
+      cE1 = cE1.substring(1,costElements.toString().length-1);
+        print("*************costElements ***************** =" + cE1);
+        this.costElements = new List<String>();
+      // for(String ce in cE.split(",")){
+      //   this.costElements.add(ce);
+      // }
+      
 
-    // }
+  }
+}
+return cE1.split(",") ;
+
+}
+
+// selectedCostElement() {
+//   String d ;
+//   int i;
+//   this.departments = new List<String>();
+//   this.departments.add("Cleaning Product Department");
+//   this.departments.add("Consumer Electronics");
+//   this.departments.add("Beauty Products Department");
+  
+//   for(String department in this.departments) {
+//    //i = department.indexOf("Cleaning Product Department");
+//   if( d ==department) {
+//     String ce = d ;
+    
+
+//   }
+// }
+// }
 
     //  Future<List<String> > getDepartments() async {
 
@@ -225,11 +314,29 @@ class PlanningFormModel {
     //   return data1.split(",") ;
     // }
 
-   Future<List<String> > getCostElements() async {
+  //  Future<List<String> > getCostElements() async {
+  //      print("*************entering costElements *****************");
+  //     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/CleaningProductDepartment");
+  //     var jsonData = json.decode(data.body);
+  //    print("*************passed url *****************");
+  //     List costElements = jsonData['costElements'];
+  //     String cE = costElements.toString();
+  //     cE = cE.substring(1,costElements.toString().length-1);
+  //       print("*************costElements ***************** =" + cE);
+  //       this.costElements = new List<String>();
+  //     // for(String ce in cE.split(",")){
+  //     //   this.costElements.add(ce);
+  //     // }
+  //   // return cE.split(",") ;
+  //   }
 
-      var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/p");
-      var jsonData = json.decode(data.body);
+
+  //     Future<List<String> > getceCostElements() async {
+
+  //     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/ceCe");
+  //     var jsonData = json.decode(data.body);
     
+<<<<<<< HEAD
       List costElements = jsonData['costElements'];
       String cE = costElements.toString();
       cE =cE.substring(1,costElements.toString().length-1);
@@ -240,6 +347,18 @@ class PlanningFormModel {
       // }
       return cE.split(",") ;
     }
+=======
+  //     List costElements = jsonData['costElements'];
+  //     String cE = costElements.toString();
+  //     cE = cE.substring(1,costElements.toString().length-1);
+  //       print("*************costElements ***************** =" + cE);
+  //       this.costElements = new List<String>();
+  //     // for(String ce in cE.split(",")){
+  //     //   this.costElements.add(ce);
+  //     // }
+  //     return cE.split(",") ;
+  //   }
+>>>>>>> 6ef2cfbd20552d0155e83d18828ceb6e091a0843
 
 
 
@@ -375,6 +494,7 @@ class PlanningFormModel {
        }
      // mPlan.amountInMonth= montlyPlanAmts;
     // this.ceToMpMap["Marketing"] = mPlan;
+   //this.costElements.add(ce);
      this.ceToMaMap[ce] = monthlyActual;
 
    
@@ -440,7 +560,7 @@ class PlanningFormModel {
        }
      // mPlan.amountInMonth= montlyPlanAmts;
     // this.ceToMpMap["Marketing"] = mPlan;
-    
+    //this.costElements.add(ce);
      this.ceToMvMap[ce] = monthlyVariance;
 
    
@@ -486,8 +606,9 @@ class PlanningFormModel {
     print(
         "welcome to planning application data we are initializeData application");
     this.company = "Naulo Tech";
-    this.departments.add("department1");
-    this.departments.add("department2");
+    this.offlineDepartments = new List<String>();
+    offlineDepartments.add("department1");
+    offlineDepartments.add("department2");
 
     this.year = "2019";
      //getCostElements();
@@ -993,7 +1114,7 @@ class PlanningFormModel {
       String department = "department"; //this.department;
       String year = "2019"; //this.year;
       String month = "janaury"; //this.month;
-     path ="/" + " organization" +"/" + "organization" + "/" +  "company" +  "/" + "company" +  "/" + "Cleaning Product Department/"+ "Cleaning Product Department" ;
+     path ="/" + " organizationSaved" +"/" + "organizationSaved" + "/" +  "company" +  "/" + "company" +  "/" + "Cleaning Product Department/"+ "Cleaning Product Department" ;
       // path = "/" + company + "/" + company + "/" + department + "/" + department + "/" + year + "/" + year + "/" + month + "/" + month ;
       //path = "/" + company + "/" + department + "/" + year + "/" + month;
       List mPAmts;
