@@ -1,7 +1,6 @@
 import 'dart:core';
 import 'dart:io';
 import 'dart:async';
-
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +9,7 @@ import 'package:http/http.dart' as http;
 
 class PlanningFormModel {
   String company;
+  String selectedDepartment;
 
  
   List<String> costElements;
@@ -28,7 +28,7 @@ class PlanningFormModel {
    /*
   *This string is used to hold the current selected Department
   */
-  String selectedDepartment;
+  
 
   /*
   Cost Element to Monthly Plan map
@@ -116,14 +116,18 @@ class PlanningFormModel {
   
     // getPlanData();
     // getActualData();
-    // getVariecneData();
+   
      
     // getDepartments().whenComplete((){
-    //    getCostElements(String selcetedDepartment);
+    //    getCostElements("Beauty Products Department").whenComplete((){
+    //    getDatas();
+    //    });
     // });
+    getDatas();
+    
     
   // print("returned cost elememt value = " + getCostElements().toString());
-   setAllData();
+   //setAllData();
    
    
 
@@ -230,9 +234,10 @@ class PlanningFormModel {
     // }
   }
 
-    Future<List<String> > getCostElements(String selectedDepartment) async {
+    Future<List<String> > getCostElements(departmentPassed) async {
       print("*************costElements ***************** =");
         String cE1;
+        this.selectedDepartment = departmentPassed;
   //       this.departments =  new List<String>();
   //     this.departments.add("Cleaning Product Department");
   // this.departments.add("Consumer Electronics");
@@ -241,13 +246,15 @@ class PlanningFormModel {
 
 print("*************departments ***************** =" +  this.departments.toString());
 
- //  String selectedDepartment = "Cleaning Product Department";
+   String selectedDepartment1 = " Consumer Electronics";
 
      for(String department in this.departments) {
-    //    print("*************entering for loop ***************** ");
+        print("*************entering for loop ***************** ");
    //i = department.indexOf("Cleaning Product Department");
-  if( selectedDepartment ==department) {
+  if(selectedDepartment == department) {
+    print("*************Department Selection ***************** =");
     String cE = selectedDepartment ;
+    print("*************selectedDepartment ***************** =" + cE);
     String newCe =cE.split(" ").join();
      print("*************splited ce ***************** =" + newCe );
     //  String d = "https://us-central1-flutterproject-fe05f.cloudfunctions.net/CleaningProductDepartment" + newCe;
@@ -273,7 +280,7 @@ print("*************departments ***************** =" +  this.departments.toStrin
 
   }
 }
-return cE1.split(",") ;
+//return cE1.split(",") ;
 
 }
 
@@ -326,22 +333,130 @@ return cE1.split(",") ;
   //   // return cE.split(",") ;
   //   }
 
+  Future getDatas() async {
+    isFatches = false;
+    List<String> valuetypes = ['plan','actual','varience'];
+    Map valueType;
+    this.costElements = new List<String>();
+    String selectedCostElement = "Eyeshadow";
+    String company = "company";
+    int yr = 2019;
+    String year = yr.toString();
+    this.costElements.add(selectedCostElement);
+    String department = "Beauty Products Department";
+   // String department = selectedDepartment;
 
-  //     Future<List<String> > getceCostElements() async {
 
-  //     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/ceCe");
-  //     var jsonData = json.decode(data.body);
+    // var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/CleaningProductDepartment");
+    // var jsonData = json.decode(data.body);
+    // List costelements = jsonData['costElements'];
+    // print("*************costElements ***************** =" + costelements.toString());
+    // print("*******************************************************************************************");
+    ceToMpMap = new Map<String, MonthlyPlan>();
+    ceToMaMap = new Map<String, MonthlyActual>();
+    ceToMvMap = new Map<String, MonthlyVariance>();
+         
+    // for(String ce in costElements) {
+      //  isFatches = true;
+      // this.costElements.add(ce);
+        // this.costElements.add("Transportation");
     
-  //     List costElements = jsonData['costElements'];
-  //     String cE = costElements.toString();
-  //     cE = cE.substring(1,costElements.toString().length-1);
-  //       print("*************costElements ***************** =" + cE);
-  //       this.costElements = new List<String>();
-  //     // for(String ce in cE.split(",")){
-  //     //   this.costElements.add(ce);
-  //     // }
-  //     return cE.split(",") ;
-  //   }
+  // print("*************ce ***************** =" + ce.toString());
+  
+  MonthlyPlan mPlan = new MonthlyPlan();
+  MonthlyActual mActual = new MonthlyActual();
+  MonthlyVariance mVariance = new MonthlyVariance();
+  mPlan.amountInMonth = new List<PlanValue>();
+  mPlan.hourInMonth = new List<PlanValue>();
+  mActual.amountInMonth = new List<ActualValue>();
+  mActual.hourInMonth = new List<ActualValue>();
+  mVariance.amountInMonth = new List<VarianceValue>();
+  mVariance.hourInMonth = new List<VarianceValue>();
+
+for(String vT in valuetypes){
+  print("*************************************" +vT+"******************************************************");
+  //String  vt = "actual";
+  String  vt = vT;
+  var data1 = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/getCeData?org=organization&company="+ company+"&dept="+department+"&ce="+selectedCostElement+"&year="+ year+ "&valueType="+ vt);
+  valueType= json.decode(data1.body);    
+
+  //if(valueType != null)  {
+  print("*************************************Selected ValueType=" +vt);
+     // Map plan = json.decode(data1.body);
+  String datas = valueType.toString();
+  print(" ************" +selectedCostElement +"Data***************** =" + datas);
+  List amountInMonth = valueType['amountInMonth'];
+  List hourInMonth  = valueType['hourInMonth'];
+
+  
+    
+  print(" ************amountInMonth***************** =" + amountInMonth.toString());
+  print(" ************hourInMonth***************** =" + hourInMonth.toString());
+  print("*******************************************************************************************");
+
+       int i = 0 ;
+       if(vt == "plan"){
+       for(int amount  in amountInMonth) {
+           PlanValue pv = new PlanValue(amount, i);
+         // PlanValue dv = new PlanValue(int.parse(a), i);
+      mPlan.amountInMonth.add(pv);
+      i = i + 1;
+        }
+       for(int hour  in hourInMonth) {
+           PlanValue pv = new PlanValue(hour, i);
+      mPlan.hourInMonth.add(pv);
+      i = i + 1;
+       }
+       this.ceToMpMap[selectedCostElement] = mPlan;
+       };
+
+
+      if(vt == "actual"){
+       for(int amount  in amountInMonth) {
+           ActualValue av = new ActualValue(amount, i);
+         // PlanValue dv = new PlanValue(int.parse(a), i);
+      mActual.amountInMonth.add(av);
+      i = i + 1;
+        }
+       for(int hour  in hourInMonth) {
+           ActualValue av = new ActualValue(hour, i);
+      mActual.hourInMonth.add(av);
+      i = i + 1;
+       }
+       this.ceToMaMap[selectedCostElement] = mActual;
+       }
+
+
+       if (vt == "varience"){
+       for(int amount  in amountInMonth) {
+           VarianceValue vv = new VarianceValue(amount, i);
+         // PlanValue dv = new PlanValue(int.parse(a), i);
+      mVariance.amountInMonth.add(vv);
+      i = i + 1;
+        }
+       for(int hour  in hourInMonth) {
+           VarianceValue vv = new VarianceValue(hour, i);
+      mVariance.hourInMonth.add(vv);
+      i = i + 1;
+       }
+       this.ceToMvMap[selectedCostElement] =  mVariance;
+       }
+
+     //this.ceToMpMap[selectedCostElement] = mPlan;
+   
+     // }
+    // }
+      print("*************list of ce ***************** =" + this.costElements.toString());
+       //isFatches = false;
+      //return ceToMpMap;
+    }
+      print("*******************************************************************************************");
+      // print("****************mPlan=" + mPlan.toJSONString());
+      // print("****************mActual=" + mActual.toJSONString());
+      print("****************mVarience=" + mVariance.toJSONString());
+      print("*******************************************************************************************");
+  }
+
 
 
 
@@ -672,7 +787,7 @@ return cE1.split(",") ;
      mPlan.hourInMonth = montlyPlanHrs;
       mVariance.hourInMonth = monthlyVarianceHrs;
 
-       print("*******************************************************************************************");
+      print("*******************************************************************************************");
       print("****************mPlan=" + mPlan.toString());
       print("*******************************************************************************************");
 
@@ -683,6 +798,7 @@ return cE1.split(",") ;
       this.ceToMaMap[ce] = mActual;
       this.ceToMvMap[ce] = mVariance;
     }
+   
     isFatches = false;
     //assign month plan
     //this.monthLevelPlan = ceToMpMap;
