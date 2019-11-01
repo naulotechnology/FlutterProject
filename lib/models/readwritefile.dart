@@ -10,29 +10,16 @@ import 'package:http/http.dart' as http;
 class PlanningFormModel {
   String company;
   String selectedDepartment;
-
- 
   List<String> costElements;
   List<String> departments;
   List<String> offlineDepartments;
   List<String> hrData;
-
   List data;
   String year;
  // bool isOnline;
   bool isOnline = false;
   String month;
-
   bool isFatches = true;
-
-   /*
-  *This string is used to hold the current selected Department
-  */
-  
-
-  /*
-  Cost Element to Monthly Plan map
-  */
   Map<String, MonthlyPlan> ceToMpMap;
 
   /*
@@ -44,162 +31,33 @@ class PlanningFormModel {
   Cost Element to Monthly Variance map
   */
   Map<String, MonthlyVariance> ceToMvMap;
-
-   Map<String,Map<String,MonthlyValues>> deToMap;
-
-  /*
-  *This string is to hold current state of the App read from Storage
-  */
+  Map<String,Map<String,MonthlyValues>> deToMap;
   String savedStateFromFile = "This is default";
-
-
-  /*
-  *Storge class does the file/cloudstore/db read/write
-  */
   Storage st;
-
   PlanningFormModel() {
-
-   
-
-    //check if data files already exists
-
-    //this.initializeData();
-
-    this.st = new Storage();
-    this.departments = new List<String>();
-    
-    //   this.company = "N Tech";
-    // this.department = "Marketing";
-
-    //  this.year = "2019";
-    // this.costElements = new List<String>();
-    // //mPlan = new MonthlyPlan(this);
-
-    // this.costElements.add("Transportation");
-    //   this.costElements.add("Marketing");
-    //this.initializeData();
-
-    // if (st.readData().toString() == null) {
-    //   this.initializeData();
-    // } else {
-    //   print(
-    //       "data in local file system is available , reading json and populating  data... ");
-    //   print("${st.readData().toString()}");
-    //   //read json from file
-    //   String pfmJSONStringReadFromFile = "";
-    //   //populate data
-    //   // this.initializeData();
-    //   this.instantiatePFMfromJSONString();
-    // }
-   
-    //getDepartments();
-   // getHrData();
-     //setAllData();
-
-    // switch (isOnline) {
-    //   case false:
-    //   print("**************phone is offline**************");
-    //     setAllData();
-
-    //     break;
-    //   case true:
-    //   print("**************phone is online**************");
-    //     getPlanData();
-    //     getActualData();
-    //     getVariecneData();
-    //     break;
-    // }
-    if(this.isOnline ==false ){
+ //this.initializeData();
+  this.st = new Storage();
+  this.departments = new List<String>();
+  if(this.isOnline ==false ){
       print("*********************phone is offline**********************");
-     
-  
-    // getPlanData();
-    // getActualData();
-   
-     
     // getDepartments().whenComplete((){
     //    getCostElements("Beauty Products Department").whenComplete((){
     //    getDatas();
     //    });
     // });
     getDatas();
-    
-    
   // print("returned cost elememt value = " + getCostElements().toString());
    //setAllData();
-   
-   
-
-    
-     
     }
     if(this.isOnline ==true ){
 
-      print("**************phone is online**************");
+    print("**************phone is online**************");
      // getDepartments();
-      getPlanData();
+    getPlanData();
     getActualData();
     getVariecneData();
-     
-      
-
     }
-
-  //work();
      }
-
-//    work(){
-
-//       switch (isOnline) {
-//       case false:
-//       print("**************phone is offline**************");
-//         setAllData();
-
-//         break;
-//       case true:
-//       print("**************phone is online**************");
-//         getPlanData();
-//         getActualData();
-//         getVariecneData();
-//         break;
-//     }
-
-
-
-// // if(this.isOnline ==false ){
-// //       print("*********************phone is offline**********************");
-     
-  
-// //     // getPlanData();
-// //     // getActualData();
-// //     // getVariecneData();
-     
-    
-    
-// //    setAllData();
-
-    
-     
-// //     }
-// //     if(this.isOnline ==true ){
-
-// //       print("**************phone is online**************");
-// //      // getDepartments();
-// //      return getPlanData();
-// //     // getActualData();
-// //     // getVariecneData();
-     
-      
-
-// //     }
-    
-//   }
-
-  //  setSelectedDepartment(String department){
-
-  //   this.selectedDepartment = department;
-  // }
 
   Future<List<String>> getDepartments() async {
    // if(isOnline == true) {
@@ -345,7 +203,6 @@ print("*************departments ***************** =" +  this.departments.toStrin
     this.costElements.add(selectedCostElement);
     String department = "Beauty Products Department";
    // String department = selectedDepartment;
-
 
     // var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/CleaningProductDepartment");
     // var jsonData = json.decode(data.body);
