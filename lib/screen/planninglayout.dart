@@ -146,13 +146,12 @@ class MyFormState extends State<MyForm> {
     //prefs.setString(key, value);
     for (int i = 0; i < _departments.length; i++) {
       prefs.setString("depart$i", d[i]);
-    }
+      }
     return d;
   }
 
   Future<List<String>> fetchCostElement() async {
-    List<String> d =
-        await this.pfm.getCostElements("Cleaning Product Department");
+    List<String> d = await this.pfm.getCostElements("  Cleaning Product Department");
     setState(() {
       this._costelement = d;
     });
