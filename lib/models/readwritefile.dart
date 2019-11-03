@@ -20,11 +20,7 @@ class PlanningFormModel {
   List data;
   String year;
  // bool isOnline;
-<<<<<<< HEAD
-  bool isOnline = true ;
-=======
   bool isOnline = false;
->>>>>>> 6ef2cfbd20552d0155e83d18828ceb6e091a0843
   String month;
 
   bool isFatches = true;
@@ -270,9 +266,9 @@ print("*************departments ***************** =" +  this.departments.toStrin
       cE1 = cE1.substring(1,costElements.toString().length-1);
         print("*************costElements ***************** =" + cE1);
         this.costElements = new List<String>();
-      // for(String ce in cE.split(",")){
-      //   this.costElements.add(ce);
-      // }
+      for(String ce in cE.split(",")){
+        this.costElements.add(ce);
+      }
       
 
   }
@@ -336,18 +332,6 @@ return cE1.split(",") ;
   //     var data = await http.get("https://us-central1-flutterproject-fe05f.cloudfunctions.net/ceCe");
   //     var jsonData = json.decode(data.body);
     
-<<<<<<< HEAD
-      List costElements = jsonData['costElements'];
-      String cE = costElements.toString();
-      cE =cE.substring(1,costElements.toString().length-1);
-        print("*************costElements ***************** =" + cE);
-        this.costElements = new List<String>();
-      // for(String ce in cE.split(",")){
-      //   this.costElements.add(ce);
-      // }
-      return cE.split(",") ;
-    }
-=======
   //     List costElements = jsonData['costElements'];
   //     String cE = costElements.toString();
   //     cE = cE.substring(1,costElements.toString().length-1);
@@ -358,7 +342,6 @@ return cE1.split(",") ;
   //     // }
   //     return cE.split(",") ;
   //   }
->>>>>>> 6ef2cfbd20552d0155e83d18828ceb6e091a0843
 
 
 

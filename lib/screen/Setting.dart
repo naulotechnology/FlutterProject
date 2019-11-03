@@ -24,7 +24,6 @@ class MySetting extends State {
     this.pfm = pfm;
   }
 
-  
   bool _value1 = false;
   void _onChanged1(bool value) {
     setState(() {
@@ -103,28 +102,4 @@ class MySetting extends State {
       ),
     );
   }
-
-  //offLineOnLineToogle() {
-  //   return Container(
-  //     height: 40,
-  //     width: 110,
-  //     child: MaterialSwitch(
-  //       padding: EdgeInsets.only(bottom: 12.0, left: 6.0),
-  //       options: optionListForInternet,
-  //       selectedOption: optionSelectConnectivity,
-  //       selectedBackgroundColor: Colors.blue,
-  //       selectedTextColor: Colors.white,
-  //       onSelect: (String optionList) {
-  //         setState(() {
-  //           optionSelectConnectivity = optionList;
-  //           if (optionSelectConnectivity == "Online") {
-  //             print("Online");
-  //           } else {
-  //             print("Offline");
-  //           }
-  //         });
-  //       },
-  //     ),
-  //   );
-  // }
 }

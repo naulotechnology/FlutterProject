@@ -1,13 +1,14 @@
+import 'dart:async';
+
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutterproject/models/readwritefile.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:material_switch/material_switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:async';
-import 'package:flutter_offline/flutter_offline.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class MyForm extends StatefulWidget {
   PlanningFormModel pfm;
@@ -29,7 +30,7 @@ class MyFormState extends State<MyForm> {
   String dropdowndate = "2018";
   String dropdownMonth = "Jan";
 
-  List<String> planactualvariancetable = ["Plan","Actual","Variance"];
+  List<String> planactualvariancetable = ["Plan", "Actual", "Variance"];
 
   int bordview = 1;
   int user;
@@ -61,7 +62,7 @@ class MyFormState extends State<MyForm> {
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
 
-  bool showcostelement=false;
+  //bool showcostelement=false;
 
   PlanningFormModel pfm;
 
@@ -148,9 +149,10 @@ class MyFormState extends State<MyForm> {
     }
     return d;
   }
-  
+
   Future<List<String>> fetchCostElement() async {
-    List<String> d = await this.pfm.getCostElements();
+    List<String> d =
+        await this.pfm.getCostElements("Cleaning Product Department");
     setState(() {
       this._costelement = d;
     });
@@ -162,7 +164,7 @@ class MyFormState extends State<MyForm> {
     for (int i = 0; i < _costelement.length; i++) {
       prefs.setString("costelement$i", d[i]);
     }
-    
+
     //return d;
   }
 
@@ -350,7 +352,7 @@ class MyFormState extends State<MyForm> {
               scrollDirection: Axis.horizontal,
               itemCount: 1,
               itemBuilder: (BuildContext content, int index) {
-                //return myDropDownButtons();
+                return myDropDownButtons();
               },
             ),
           ),
@@ -363,7 +365,7 @@ class MyFormState extends State<MyForm> {
           margin: EdgeInsets.only(left: 16),
           child: Padding(
             padding: EdgeInsets.only(bottom: 10),
-           // child: dropdownButtonForCostElement(),
+            child: dropdownButtonForCostElement(),
           ),
         );
       } else if (index == 3) {
@@ -1018,10 +1020,11 @@ class MyFormState extends State<MyForm> {
                           future: this.myShearedPreferenceGet1(),
                           builder: (BuildContext context,
                               AsyncSnapshot<List<String>> snapshot) {
-                            if (snapshot.hasData && showcostelement==true) {
+                            if (snapshot.hasData) {
                               return DropdownButton<String>(
-                                value:
-                                    this.user1 == null ? null : _costelement[this.user1],
+                                value: this.user1 == null
+                                    ? null
+                                    : _costelement[this.user1],
                                 hint: Text(
                                   'Select a CostElements',
                                   style: TextStyle(fontSize: 12),
@@ -1040,7 +1043,8 @@ class MyFormState extends State<MyForm> {
                                   print(
                                       "selected deptment is = " + selectedDept);
                                   setState(() {
-                                    this.user1 = _costelement.indexOf(selectedDept);
+                                    this.user1 =
+                                        _costelement.indexOf(selectedDept);
                                     Fluttertoast.showToast(
                                         msg:
                                             "indexOf selected deptment is = $user1",
@@ -1153,11 +1157,6 @@ class MyFormState extends State<MyForm> {
                                           setState(() {
                                             user = _departments
                                                 .indexOf(selectedDept);
-                                                if(user==0){
-                                                    showcostelement=true;
-                                                }else{
-                                                  showcostelement=false;
-                                                }
 
                                             print(
                                                 "indexOf selected deptment is = $user");
