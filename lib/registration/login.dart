@@ -41,12 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     decoration: InputDecoration(labelText: 'Email'),
                     onSaved: (input) {
-                      if (getShearedPreferenceForEmail() == null) {
-                        _email = input;
-                      } else {
-                        input = _email;
-                      }
-
+                      _email = input;
                       //setShearedPreferenceForEmail(input);
                     }),
                 TextFormField(
