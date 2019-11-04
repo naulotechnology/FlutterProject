@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:io';
 import 'dart:async';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -134,11 +135,11 @@ print("*************departments ***************** =" +  this.departments.toStrin
       for(String ce in cE.split(",")){
         this.costElements.add(ce);
       }
-      
+     // Fluttertoast.showToast(msg: '${cE1.split(",")}', toastLength: Toast.LENGTH_SHORT);
 
   }
 }
-//return cE1.split(",") ;
+return cE1.split(",") ;
 
 }
 

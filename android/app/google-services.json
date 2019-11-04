@@ -15,6 +15,43 @@
       },
       "oauth_client": [
         {
+          "client_id": "112478583989-5vj9dmaodqvs2tuq6ui9nk97udp91al6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutterproject",
+            "certificate_hash": "d240420cb7bce7bf2b197b0555f50389ca28366f"
+          }
+        },
+        {
+          "client_id": "112478583989-9a610u31a9qh35q1erf2fvhkd8ebl3f2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCySF4kgJ3f3Eckq_WZkuku4_GabAmeUw4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112478583989-9a610u31a9qh35q1erf2fvhkd8ebl3f2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112478583989:android:b30d0924114cf0542e12fc",
+        "android_client_info": {
+          "package_name": "com.example.photo_library"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "112478583989-9a610u31a9qh35q1erf2fvhkd8ebl3f2.apps.googleusercontent.com",
           "client_type": 3
         }

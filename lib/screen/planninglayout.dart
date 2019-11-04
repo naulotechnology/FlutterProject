@@ -151,12 +151,12 @@ class MyFormState extends State<MyForm> {
   }
 
   Future<List<String>> fetchCostElement() async {
-    List<String> d = await this.pfm.getCostElements("  Cleaning Product Department");
+    List<String> d = await this.pfm.getCostElements(" Cleaning Product Department");
     setState(() {
       this._costelement = d;
     });
     print("Department is $d");
-    //Fluttertoast.showToast(msg: '${d}', toastLength: Toast.LENGTH_LONG);
+    Fluttertoast.showToast(msg: '${d}', toastLength: Toast.LENGTH_LONG);
 
     final prefs = await SharedPreferences.getInstance();
     //prefs.setString(key, value);
@@ -1044,10 +1044,10 @@ class MyFormState extends State<MyForm> {
                                   setState(() {
                                     this.user1 =
                                         _costelement.indexOf(selectedDept);
-                                    Fluttertoast.showToast(
-                                        msg:
-                                            "indexOf selected deptment is = $user1",
-                                        toastLength: Toast.LENGTH_LONG);
+                                    // Fluttertoast.showToast(
+                                    //     msg:
+                                    //         "indexOf selected deptment is = $user1",
+                                    //     toastLength: Toast.LENGTH_LONG);
                                   });
                                 },
                               );

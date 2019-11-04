@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutterproject/models/readwritefile.dart';
+import 'package:flutterproject/registration/login.dart';
 import 'package:flutterproject/screen/Setting.dart';
 import 'package:flutterproject/screen/checking.dart';
 import 'package:flutterproject/screen/planninglayout.dart';
-import 'package:splashscreen/splashscreen.dart';
 
 import 'chart/chart.dart';
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }
