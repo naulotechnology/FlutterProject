@@ -13,6 +13,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  
   String _email, _password;
   bool remberMe = false;
 
@@ -20,6 +24,25 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     // _email = getShearedPreferenceForEmail();
     super.initState();
+
+    autoLogin();
+  }
+
+  autoLogin() async {
+    String email = await getShearedPreferenceForEmail();
+    String password = await getShearedPreferenceForPassword();
+
+    setState(() {
+      _emailController = TextEditingController(text: email);
+      _passwordController = TextEditingController(text: password);
+
+       signIn();
+    });
+
+    //signIn();
+    Fluttertoast.showToast(
+        msg: 'Email: ${email},Password: ${password}',
+        toastLength: Toast.LENGTH_SHORT);
   }
 
   @override
@@ -34,27 +57,36 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: <Widget>[
                 TextFormField(
-                    validator: (input) {
-                      if (input.isEmpty) {
-                        return 'Provide an email';
-                      }
-                    },
-                    decoration: InputDecoration(labelText: 'Email'),
-                    onSaved: (input) {
-                      _email = input;
-                      //setShearedPreferenceForEmail(input);
-                    }),
+                  validator: (input) {
+                    if (_emailController.text.isEmpty) {
+                      return 'Provide an email';
+                    }
+                  },
+                  decoration: InputDecoration(labelText: 'Email'),
+                  controller: _emailController,
+
+                  // onSaved: (input) {
+                  //   input = "hello";
+                  //   //setShearedPreferenceForEmail(input);
+                  // },
+                ),
                 TextFormField(
                   validator: (input) {
-                    if (input.length < 6) {
+                    if (_passwordController.text.length < 6) {
                       return 'password must be greater then 6 character';
                     }
                   },
                   decoration: InputDecoration(labelText: 'Password'),
-                  onSaved: (input) {
-                    _password = input;
-                    //setShearedPreferenceForPassword(input);
-                  },
+                  controller: _passwordController,
+                  // onSaved: (input) {
+                  //   if (getShearedPreferenceForEmail() == null) {
+                  //     _password = input;
+                  //   } else {
+                  //     input = _password;
+                  //   }
+
+                  //   //setShearedPreferenceForPassword(input);
+                  // },
                   obscureText: true,
                 ),
                 Row(
@@ -105,12 +137,14 @@ class _LoginPageState extends State<LoginPage> {
       _formKey.currentState.save();
       try {
         AuthResult user = (await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: _email, password: _password));
+            .signInWithEmailAndPassword(
+                email: _emailController.text,
+                password: _passwordController.text));
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomePage()));
         if (remberMe == true) {
-          setShearedPreferenceForEmail(_email);
-          setShearedPreferenceForPassword(_password);
+          setShearedPreferenceForEmail(_emailController.text);
+          setShearedPreferenceForPassword(_passwordController.text);
         }
       } catch (e) {
         print(e.message);
