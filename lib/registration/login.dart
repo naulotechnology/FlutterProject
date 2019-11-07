@@ -64,7 +64,7 @@ class LoginPageState extends State<LoginPage> {
       child: new Scaffold(
         // backgroundColor: Color.fromRGBO(153, 132, 132, 1),
         appBar: new AppBar(
-          title: Text('Login'),
+          title: Text('SignIn'),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
