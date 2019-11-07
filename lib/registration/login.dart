@@ -35,14 +35,15 @@ class LoginPageState extends State<LoginPage> {
     setState(() {
       _emailController = TextEditingController(text: email);
       _passwordController = TextEditingController(text: password);
-
-      signIn();
+      if (email != null && password != null) {
+        signIn();
+      }
     });
 
     //signIn();
-    Fluttertoast.showToast(
-        msg: 'Email: ${email},Password: ${password}',
-        toastLength: Toast.LENGTH_SHORT);
+    // Fluttertoast.showToast(
+    //     msg: 'Email: ${email},Password: ${password}',
+    //     toastLength: Toast.LENGTH_SHORT);
   }
 
   Future<Null> logout() async {
@@ -61,86 +62,106 @@ class LoginPageState extends State<LoginPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: new Scaffold(
+        // backgroundColor: Color.fromRGBO(153, 132, 132, 1),
         appBar: new AppBar(
           title: Text('Login'),
         ),
-        body: Center(
-          child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    validator: (input) {
-                      if (_emailController.text.isEmpty) {
-                        return 'Provide an email';
-                      }
-                    },
-                    decoration: InputDecoration(labelText: 'Email'),
-                    controller: _emailController,
-
-                    // onSaved: (input) {
-                    //   input = "hello";
-                    //   //setShearedPreferenceForEmail(input);
-                    // },
-                  ),
-                  TextFormField(
-                    validator: (input) {
-                      if (_passwordController.text.length < 6) {
-                        return 'password must be greater then 6 character';
-                      }
-                    },
-                    decoration: InputDecoration(labelText: 'Password'),
-                    controller: _passwordController,
-                    // onSaved: (input) {
-                    //   if (getShearedPreferenceForEmail() == null) {
-                    //     _password = input;
-                    //   } else {
-                    //     input = _password;
-                    //   }
-
-                    //   //setShearedPreferenceForPassword(input);
-                    // },
-                    obscureText: true,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text("Remember me"),
-                      Checkbox(
-                        value: remberMe,
-                        onChanged: (bool value) {
-                          setState(() {
-                            remberMe = value;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - 300,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          child: Text(
-                            "Create New Account",
-                          ),
-                          onTap: () {
-                            navigateToSignUp();
-                          },
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 18.0, 20.0, 15.0),
+                        hintText: "Enter Your Email...",
+                        border: new OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
                         ),
                       ),
-                    ],
-                  ),
-                  RaisedButton(
-                    onPressed: () async {
-                      signIn();
-                      Fluttertoast.showToast(
-                          msg:
-                              'Email: ${await getShearedPreferenceForEmail()},Password: ${await getShearedPreferenceForPassword()}',
-                          toastLength: Toast.LENGTH_SHORT);
-                    },
-                    child: Text('Sign in'),
-                  ),
-                ],
-              )),
+                      validator: (input) {
+                        if (_emailController.text.isEmpty) {
+                          return 'Provide an email';
+                        }
+                      },
+                      controller: _emailController,
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 18.0, 20.0, 15.0),
+                        hintText: "Enter Your Password...",
+                        border: new OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                        ),
+                      ),
+                      validator: (input) {
+                        if (_passwordController.text.length < 6) {
+                          return 'password must be greater then 6 character';
+                        }
+                      },
+                      controller: _passwordController,
+                      obscureText: true,
+                      autocorrect: false,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Text("Remember me"),
+                        Checkbox(
+                          value: remberMe,
+                          onChanged: (bool value) {
+                            setState(() {
+                              remberMe = value;
+                            });
+                          },
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 300,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            child: Text(
+                              "Create New Account",
+                            ),
+                            onTap: () {
+                              navigateToSignUp();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Material(
+                        color: Color(0xff01A0C7),
+                        elevation: 6.0,
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: MaterialButton(
+                          onPressed: () async {
+                            signIn();
+                            Fluttertoast.showToast(
+                                msg:
+                                    'Email: ${await getShearedPreferenceForEmail()},Password: ${await getShearedPreferenceForPassword()}',
+                                toastLength: Toast.LENGTH_SHORT);
+                          },
+                          minWidth: 200.0,
+                          height: 45.0,
+                          child: Text('Sign in'),
+                        ),
+                      ),
+                    )
+                  ],
+                )),
+          ],
         ),
       ),
     );
