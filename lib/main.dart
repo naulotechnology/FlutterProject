@@ -4,6 +4,7 @@ import 'package:flutterproject/registration/login.dart';
 import 'package:flutterproject/screen/Setting.dart';
 import 'package:flutterproject/screen/checking.dart';
 import 'package:flutterproject/screen/planninglayout.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'chart/chart.dart';
 
@@ -44,6 +45,7 @@ class HomePage extends StatefulWidget {
 class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
   int _selectedDrawerIndex = 0;
   PlanningFormModel pfm = new PlanningFormModel();
+  LoginPageState lps = new LoginPageState();
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
@@ -68,6 +70,7 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var drawerOptions = <Widget>[];
+
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
       drawerOptions.add(new ListTile(
@@ -78,33 +81,57 @@ class _HomepageState extends State<HomePage> with TickerProviderStateMixin {
       ));
     }
 
-    return new Scaffold(
-      appBar: new AppBar(
-        // automaticallyImplyLeading: false,
-        title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
-        //automaticallyImplyLeading: false,
-        // leading: IconButton(icon:Icon(Icons.arrow_back),
-        //   onPressed:() => Navigator.pop(context, false),
-        // )
-      ),
-      drawer: new Drawer(
-        child: Column(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text('PrakashBidari'),
-              accountEmail: Text('Pbidari46@gmail.com'),
-              currentAccountPicture: ClipOval(
-                child: Image.asset(
-                  'assets/profile.jpg',
-                  fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: new Scaffold(
+        appBar: new AppBar(
+          title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
+          actions: <Widget>[
+            PopupMenuButton(
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 1,
+                  child: Text("LogOut"),
                 ),
-              ),
+                // PopupMenuItem(
+                //   value: 2,
+                //   child: Text("Second"),
+                // ),
+              ],
+              onSelected: (value) {
+                if (value == 1) {
+                  setState(() {
+                    lps.logout();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  });
+
+                  Fluttertoast.showToast(
+                      msg: 'LogOut', toastLength: Toast.LENGTH_SHORT);
+                }
+              },
             ),
-            Column(children: drawerOptions)
           ],
         ),
+        drawer: new Drawer(
+          child: Column(
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: Text('PrakashBidari'),
+                accountEmail: Text('Pbidari46@gmail.com'),
+                currentAccountPicture: ClipOval(
+                  child: Image.asset(
+                    'assets/profile.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Column(children: drawerOptions)
+            ],
+          ),
+        ),
+        body: _getDrawerItemWidget(_selectedDrawerIndex),
       ),
-      body: _getDrawerItemWidget(_selectedDrawerIndex),
     );
   }
 }
